@@ -37,7 +37,7 @@ MASKING_RATIOS = [
 SIGNIFICANCE_THRESHOLD = 0.1
 
 BASE_SEED = 42
-N_RUNS = 30  # Number of repetitions
+N_RUNS = 10  # Number of repetitions (reduced from 30 for CPU feasibility)
 
 def _mask_sequence_progressive(
     sequence: str,
@@ -378,47 +378,26 @@ class TestProgressiveXMaskingESM2:
         print(_summarise_experiment(random_results, "esm2_t6_8m", "Random"))
         _write_masking_csv(random_results, reports_dir / "x_masking_random_esm2.csv")
 
-    def test_monotonicity_mostly_holds(
-        self,
-        esm2_embedder,
-        standard_sequences: List[str],
-    ):
-        test_sequences = list(TEST_SEQUENCES_BY_LENGTH.values())
-
-        # Progressive masking should have better monotonicity
-        progressive_results = _run_progressive_masking_experiment(
-            embedder=esm2_embedder,
-            embedder_label="esm2_t6_8m",
-            sequences=test_sequences,
-        )
-        total = len([r for r in progressive_results if r["masking_ratio"] > 0])
-        violations = sum(
+        # --- Monotonicity check (uses results already computed above) ---
+        total_prog = len([r for r in progressive_results if r["masking_ratio"] > 0])
+        violations_prog = sum(
             1
             for r in progressive_results
             if r["masking_ratio"] > 0 and not r["monotonic"]
         )
-        ratio = violations / total if total > 0 else 0
-
+        ratio_prog = violations_prog / total_prog if total_prog > 0 else 0
         print(
-            f"\n[ESM2 Progressive Monotonicity] violations = {violations}/{total} ({ratio:.1%})"
+            f"\n[ESM2 Progressive Monotonicity] violations = {violations_prog}/{total_prog} ({ratio_prog:.1%})"
         )
 
-        # Random masking may have more violations (positions change each level)
-        random_results = _run_random_masking_experiment(
-            embedder=esm2_embedder,
-            embedder_label="esm2_t6_8m",
-            sequences=test_sequences,
-        )
         total_rand = len([r for r in random_results if r["masking_ratio"] > 0])
         violations_rand = sum(
             1 for r in random_results if r["masking_ratio"] > 0 and not r["monotonic"]
         )
         ratio_rand = violations_rand / total_rand if total_rand > 0 else 0
-
         print(
             f"[ESM2 Random Monotonicity] violations = {violations_rand}/{total_rand} ({ratio_rand:.1%})"
         )
-        # Random masking allowed more violations since positions are independent
         assert ratio_rand <= 0.40, (
             f"Random monotonicity violated too often: {violations_rand}/{total_rand} ({ratio_rand:.1%})"
         )
