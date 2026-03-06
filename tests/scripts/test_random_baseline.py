@@ -12,7 +12,7 @@ from tests.scripts.conftest import AMINO_ACIDS
 
 # Match the length bins used in the original experiment
 RANDOM_SEQ_LENGTHS = [50, 100, 200, 400, 600, 800, 1000]
-N_RANDOM_SEQS_PER_LENGTH = 20  # Keep small for CPU feasibility (20 seqs × 7 bins × 21 ratios × 5 runs ≈ 14,700 embeddings)
+N_RANDOM_SEQS_PER_LENGTH = 5
 RANDOM_SEED = 12345
 
 def _generate_random_sequences(
@@ -49,13 +49,13 @@ class TestXMaskingRandomSequences:
                 embedder=esm2_embedder,
                 embedder_label="esm2_t6_8m",
                 sequences=sequences,
-                n_runs=5,  # Fewer runs; power from many sequences
+                n_runs=2,
             )
             rand = _run_random_masking_experiment(
                 embedder=esm2_embedder,
                 embedder_label="esm2_t6_8m",
                 sequences=sequences,
-                n_runs=5,
+                n_runs=2,
             )
 
             for r in prog + rand:

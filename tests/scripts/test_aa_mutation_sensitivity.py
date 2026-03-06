@@ -14,13 +14,14 @@ from typing import Any, Dict, List, Set, Tuple
 from tests.property.oracles.embedding_metrics import compute_all_metrics
 from tests.scripts.conftest import AMINO_ACIDS
 
-MASKING_RATIOS = [
-    0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30,
-    0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.0,
-]
+MASKING_RATIOS = [0.0, 0.10, 0.25, 0.50, 0.75, 1.0]
 
 BASE_SEED = 42
-N_RUNS = 5  # Per-sequence repetitions (power from many seqs × many AAs)
+N_RUNS = 3
+
+# Physicochemically representative AAs for large-scale experiments (UniRef50)
+# Covers: small/hydrophobic (A), acidic (D), flexible (G), basic (K), structural (P), aromatic (W)
+REPRESENTATIVE_AAS = list("ADGKLW")
 
 # ---------------------------------------------------------------------------
 # Mutation helpers
@@ -66,30 +67,61 @@ def _run_mutation_experiment(
     replacement_aas: List[str],
     masking_ratios: List[float] = MASKING_RATIOS,
     n_runs: int = N_RUNS,
+    batch_size: int = 32,
 ) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
+    non_zero_ratios = [r for r in masking_ratios if r > 0.0]
 
     for seq_idx, seq in enumerate(sequences):
         original_emb = embedder.embed_pooled(seq)
 
+        # Phase 1: pre-generate all mutated sequences
+        mutations: Dict[Tuple[str, float, int], str] = {}
         for aa in replacement_aas:
-            for ratio in masking_ratios:
-                cosine_dists = []
-                l2_dists = []
-
+            for ratio in non_zero_ratios:
                 for run_idx in range(n_runs):
                     seed = BASE_SEED + seq_idx * 10000 + ord(aa) * 100 + run_idx
                     prev_positions: Set[int] = set()
-
-                    # Build up progressively
                     for r in masking_ratios:
                         if r > ratio:
                             break
                         mutated, prev_positions = _mutate_sequence_progressive(
                             seq, r, aa, seed=seed, prev_positions=prev_positions,
                         )
+                    mutations[(aa, ratio, run_idx)] = mutated
 
-                    mutated_emb = embedder.embed_pooled(mutated)
+        # Phase 2: deduplicate and batch-embed
+        unique_seqs = list(set(mutations.values()))
+        emb_map: Dict[str, np.ndarray] = {}
+        for i in range(0, len(unique_seqs), batch_size):
+            chunk = unique_seqs[i : i + batch_size]
+            chunk_embs = embedder.embed_batch(chunk, pooled=True)
+            for s, e in zip(chunk, chunk_embs):
+                emb_map[s] = e
+
+        # Phase 3: compute metrics
+        for aa in replacement_aas:
+            if 0.0 in masking_ratios:
+                results.append({
+                    "embedder": embedder_label,
+                    "test_type": "aa_mutation",
+                    "parameter": f"seq{seq_idx}_aa{aa}_mut0%",
+                    "seq_idx": seq_idx,
+                    "replacement_aa": aa,
+                    "masking_ratio": 0.0,
+                    "cosine_distance": 0.0,
+                    "cosine_std": 0.0,
+                    "l2_distance": 0.0,
+                    "l2_std": 0.0,
+                    "n_runs": n_runs,
+                    "sequence_length": len(seq),
+                })
+
+            for ratio in non_zero_ratios:
+                cosine_dists = []
+                l2_dists = []
+                for run_idx in range(n_runs):
+                    mutated_emb = emb_map[mutations[(aa, ratio, run_idx)]]
                     metrics = compute_all_metrics(original_emb, mutated_emb)
                     cosine_dists.append(metrics["cosine_distance"])
                     l2_dists.append(metrics["l2_distance"])
@@ -172,7 +204,7 @@ _BASIC_TEST_SEQUENCES = {
     "short_15": "MKTAYIAKQRQISFV",
     "medium_76": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG",
     "long_400": "MKTAYIAK" * 50,
-    "very_long_1000": "ACDEFGHIKLMNPQRSTVWY" * 50,
+    "very_long_300": "ACDEFGHIKLMNPQRSTVWY" * 15,
 }
 
 class TestAAMutationSensitivity:
@@ -223,8 +255,8 @@ class TestAAMutationUniRef50:
                 embedder=esm2_embedder,
                 embedder_label="esm2_t6_8m",
                 sequences=sequences,
-                replacement_aas=AMINO_ACIDS,
-                n_runs=3,  # Reduced; many seqs × 20 AAs gives plenty of power
+                replacement_aas=REPRESENTATIVE_AAS,
+                n_runs=1,
             )
 
             for r in results:

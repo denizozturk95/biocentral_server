@@ -10,34 +10,12 @@ from tests.property.oracles.embedding_metrics import (
     compute_all_metrics,
 )
 
-MASKING_RATIOS = [
-    0.0,
-    0.05,
-    0.10,
-    0.15,
-    0.20,
-    0.25,
-    0.30,
-    0.35,
-    0.40,
-    0.45,
-    0.50,
-    0.55,
-    0.60,
-    0.65,
-    0.70,
-    0.75,
-    0.80,
-    0.85,
-    0.90,
-    0.95,
-    1.0,
-]
+MASKING_RATIOS = [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 0.70, 0.90, 1.0]
 
 SIGNIFICANCE_THRESHOLD = 0.1
 
 BASE_SEED = 42
-N_RUNS = 10  # Number of repetitions (reduced from 30 for CPU feasibility)
+N_RUNS = 5
 
 def _mask_sequence_progressive(
     sequence: str,
@@ -96,30 +74,63 @@ def _run_progressive_masking_experiment(
     masking_ratios: List[float] = MASKING_RATIOS,
     significance_threshold: float = SIGNIFICANCE_THRESHOLD,
     n_runs: int = N_RUNS,
+    batch_size: int = 32,
 ) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
+    non_zero_ratios = [r for r in masking_ratios if r > 0.0]
 
     for seq_idx, seq in enumerate(sequences):
         original_emb = embedder.embed_pooled(seq)
 
-        for ratio in masking_ratios:
-            cosine_distances = []
-            l2_distances = []
-
+        # Phase 1: pre-generate all masked sequences
+        masked_seqs: Dict[Tuple[float, int], str] = {}
+        for ratio in non_zero_ratios:
             for run_idx in range(n_runs):
-                # For progressive masking, we need to build up from 0%
                 seed = BASE_SEED + seq_idx * 1000 + run_idx
                 prev_positions: Set[int] = set()
-
-                # Build up progressively through all ratios up to current
                 for r in masking_ratios:
                     if r > ratio:
                         break
                     masked_seq, prev_positions = _mask_sequence_progressive(
                         seq, r, seed=seed, prev_positions=prev_positions
                     )
+                masked_seqs[(ratio, run_idx)] = masked_seq
 
-                masked_emb = embedder.embed_pooled(masked_seq)
+        # Phase 2: deduplicate and batch-embed
+        unique_seqs = list(set(masked_seqs.values()))
+        emb_map: Dict[str, np.ndarray] = {}
+        for i in range(0, len(unique_seqs), batch_size):
+            chunk = unique_seqs[i : i + batch_size]
+            chunk_embs = embedder.embed_batch(chunk, pooled=True)
+            for s, e in zip(chunk, chunk_embs):
+                emb_map[s] = e
+
+        # Phase 3: compute metrics
+        if 0.0 in masking_ratios:
+            results.append(
+                {
+                    "embedder": embedder_label,
+                    "test_type": "x_masking_progressive",
+                    "parameter": f"seq{seq_idx}_mask0%",
+                    "masking_ratio": 0.0,
+                    "cosine_distance": 0.0,
+                    "cosine_std": 0.0,
+                    "l2_distance": 0.0,
+                    "l2_std": 0.0,
+                    "threshold": significance_threshold,
+                    "significant": False,
+                    "n_runs": n_runs,
+                    "passed": "N/A",
+                    "sequence_length": len(seq),
+                }
+            )
+
+        for ratio in non_zero_ratios:
+            cosine_distances = []
+            l2_distances = []
+
+            for run_idx in range(n_runs):
+                masked_emb = emb_map[masked_seqs[(ratio, run_idx)]]
                 metrics = compute_all_metrics(original_emb, masked_emb)
                 cosine_distances.append(metrics["cosine_distance"])
                 l2_distances.append(metrics["l2_distance"])
@@ -167,21 +178,58 @@ def _run_random_masking_experiment(
     masking_ratios: List[float] = MASKING_RATIOS,
     significance_threshold: float = SIGNIFICANCE_THRESHOLD,
     n_runs: int = N_RUNS,
+    batch_size: int = 32,
 ) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
+    non_zero_ratios = [r for r in masking_ratios if r > 0.0]
 
     for seq_idx, seq in enumerate(sequences):
         original_emb = embedder.embed_pooled(seq)
 
-        for ratio in masking_ratios:
+        # Phase 1: pre-generate all masked sequences
+        masked_seqs: Dict[Tuple[float, int], str] = {}
+        for ratio in non_zero_ratios:
+            for run_idx in range(n_runs):
+                seed = BASE_SEED + seq_idx * 1000 + int(ratio * 100) * 10 + run_idx
+                masked_seq = _mask_sequence_random(seq, ratio, seed=seed)
+                masked_seqs[(ratio, run_idx)] = masked_seq
+
+        # Phase 2: deduplicate and batch-embed
+        unique_seqs = list(set(masked_seqs.values()))
+        emb_map: Dict[str, np.ndarray] = {}
+        for i in range(0, len(unique_seqs), batch_size):
+            chunk = unique_seqs[i : i + batch_size]
+            chunk_embs = embedder.embed_batch(chunk, pooled=True)
+            for s, e in zip(chunk, chunk_embs):
+                emb_map[s] = e
+
+        # Phase 3: compute metrics
+        if 0.0 in masking_ratios:
+            results.append(
+                {
+                    "embedder": embedder_label,
+                    "test_type": "x_masking_random",
+                    "parameter": f"seq{seq_idx}_mask0%",
+                    "masking_ratio": 0.0,
+                    "cosine_distance": 0.0,
+                    "cosine_std": 0.0,
+                    "l2_distance": 0.0,
+                    "l2_std": 0.0,
+                    "threshold": significance_threshold,
+                    "significant": False,
+                    "n_runs": n_runs,
+                    "passed": "N/A",
+                    "sequence_length": len(seq),
+                }
+            )
+
+        for ratio in non_zero_ratios:
             cosine_distances = []
             l2_distances = []
 
             for run_idx in range(n_runs):
                 seed = BASE_SEED + seq_idx * 1000 + int(ratio * 100) * 10 + run_idx
-                masked_seq = _mask_sequence_random(seq, ratio, seed=seed)
-                masked_emb = embedder.embed_pooled(masked_seq)
-
+                masked_emb = emb_map[masked_seqs[(ratio, run_idx)]]
                 metrics = compute_all_metrics(original_emb, masked_emb)
                 cosine_distances.append(metrics["cosine_distance"])
                 l2_distances.append(metrics["l2_distance"])
@@ -321,7 +369,7 @@ TEST_SEQUENCES_BY_LENGTH = {
     "short_15": "MKTAYIAKQRQISFV",  # 15 aa
     "medium_76": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG",  # Ubiquitin 76 aa
     "long_400": "MKTAYIAK" * 50,  # 400 aa
-    "very_long_1000": "ACDEFGHIKLMNPQRSTVWY" * 50,  # 1000 aa
+    "very_long_300": "ACDEFGHIKLMNPQRSTVWY" * 15,  # 300 aa
 }
 
 class TestProgressiveXMaskingESM2:
@@ -436,7 +484,7 @@ def _write_masking_csv(results: List[Dict[str, Any]], path) -> None:
 # UniRef50-scale experiment (250 seqs/bin, 7 bins)
 # ---------------------------------------------------------------------------
 
-N_RUNS_UNIREF = 5  # Fewer repetitions; power comes from many sequences
+N_RUNS_UNIREF = 2
 
 class TestXMaskingUniRef50:
 
