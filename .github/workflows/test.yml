@@ -272,7 +272,7 @@ jobs:
           UV_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
 
       - name: Fetch UniRef50 sequences
-        run: uv run python tests/scripts/fetch_uniref50_sequences.py --seqs-per-bin 20
+        run: uv run python tests/scripts/fetch_uniref50_sequences.py --seqs-per-bin 100
         timeout-minutes: 15
 
       - name: Run script experiments
