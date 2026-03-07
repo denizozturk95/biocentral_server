@@ -195,3 +195,33 @@ class TestReversedSequenceESM2:
         write_metrics_csv(
             all_results, reports_dir / "reversed_sequence_esm2_diverse.csv"
         )
+
+
+class TestReversedSequenceOneHot:
+    """One-hot encoding baseline: position-insensitive, so reversal should yield
+    identical (or near-identical) pooled embeddings — a sanity check contrasting
+    with the order-sensitive ESM2 results."""
+
+    def test_reversal_one_hot(
+        self,
+        one_hot_embedder,
+        extended_sequences: List[str],
+        reports_dir,
+    ):
+        results = _run_reversal_experiment(
+            embedder=one_hot_embedder,
+            embedder_label="one_hot_encoding",
+            sequences=extended_sequences,
+        )
+
+        table = format_metrics_table(results, title="Reversed Sequence — One-Hot Encoding")
+        print(table)
+        write_metrics_csv(results, reports_dir / "reversed_sequence_one_hot.csv")
+        print(_summarise_reversal(results, "one_hot_encoding"))
+
+        # One-hot pooled embedding is bag-of-residues → reversal should be identical
+        for r in results:
+            assert r["cosine_distance"] < 1e-6, (
+                f"One-hot should be order-insensitive but cosine_dist "
+                f"is {r['cosine_distance']:.8f} for {r['parameter']}"
+            )

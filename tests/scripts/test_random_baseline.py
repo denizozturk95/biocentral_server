@@ -12,7 +12,7 @@ from tests.scripts.conftest import AMINO_ACIDS
 
 # Match the length bins used in the original experiment
 RANDOM_SEQ_LENGTHS = [50, 100, 200, 400, 600, 800, 1000]
-N_RANDOM_SEQS_PER_LENGTH = 5
+N_RANDOM_SEQS_PER_LENGTH = 50
 RANDOM_SEED = 12345
 
 def _generate_random_sequences(

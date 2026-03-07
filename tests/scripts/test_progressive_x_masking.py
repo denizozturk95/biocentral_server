@@ -10,7 +10,7 @@ from tests.property.oracles.embedding_metrics import (
     compute_all_metrics,
 )
 
-MASKING_RATIOS = [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 0.70, 0.90, 1.0]
+MASKING_RATIOS = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.0]
 
 SIGNIFICANCE_THRESHOLD = 0.1
 
@@ -468,6 +468,7 @@ _MASKING_CSV_FIELDS = [
     "n_runs",
     "passed",
     "sequence_length",
+    "bin",
 ]
 
 def _write_masking_csv(results: List[Dict[str, Any]], path) -> None:
@@ -578,3 +579,46 @@ class TestXMaskingOneHot:
         )
         print(table)
         _write_masking_csv(random_results, reports_dir / "x_masking_random_one_hot.csv")
+
+
+class TestXMaskingOneHotUniRef50:
+    """Run one-hot encoding baseline on full UniRef50 dataset.
+    One-hot is cheap to compute, so this adds negligible runtime
+    while providing a strong non-contextual baseline at scale."""
+
+    def test_one_hot_uniref50_masking(self, one_hot_embedder, reports_dir):
+        try:
+            from tests.scripts.fetch_uniref50_sequences import load_uniref50_sequences
+        except ImportError:
+            import pytest
+            pytest.skip("UniRef50 FASTA not available – run fetch_uniref50_sequences.py first")
+
+        try:
+            bin_seqs = load_uniref50_sequences()
+        except FileNotFoundError:
+            import pytest
+            pytest.skip("UniRef50 FASTA not found – run fetch_uniref50_sequences.py first")
+
+        all_progressive = []
+
+        for bin_target in sorted(bin_seqs.keys()):
+            sequences = bin_seqs[bin_target]
+            if not sequences:
+                continue
+
+            print(f"\n[One-Hot UniRef50] bin={bin_target}, n_seqs={len(sequences)}")
+
+            prog = _run_progressive_masking_experiment(
+                embedder=one_hot_embedder,
+                embedder_label="one_hot_encoding",
+                sequences=sequences,
+                n_runs=N_RUNS_UNIREF,
+            )
+
+            for r in prog:
+                r["bin"] = bin_target
+
+            all_progressive.extend(prog)
+
+        _write_masking_csv(all_progressive, reports_dir / "x_masking_progressive_one_hot_uniref50.csv")
+        print(f"\n[One-Hot UniRef50] Progressive results: {len(all_progressive)} rows")

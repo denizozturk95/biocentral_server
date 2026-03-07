@@ -24,9 +24,11 @@ def _load_and_prepare(path: Path) -> pd.DataFrame | None:
         print(f"File not found: {path}")
         return None
     df = pd.read_csv(path)
-    df["masking_ratio"] = (
-        df["parameter"].str.extract(r"mask(\d+)%").astype(float) / 100
-    )
+    # Use existing masking_ratio column; fall back to parsing from parameter string
+    if "masking_ratio" not in df.columns:
+        df["masking_ratio"] = (
+            df["parameter"].str.extract(r"mask(\d+)%").astype(float) / 100
+        )
     df["seq_idx"] = df["parameter"].str.extract(r"seq(\d+)").astype(int)
     df["cosine_similarity"] = 1 - df["cosine_distance"]
     return df
@@ -89,7 +91,7 @@ def plot_masking_results():
 
         ax.set_xlabel("Masking Rate p (%)", fontsize=12)
         ax.set_ylabel("Cosine Similarity", fontsize=12)
-        ax.set_title(f"{title}\n(ESM2-T6-8M, n=30 runs)", fontsize=13, fontweight="bold")
+        ax.set_title(f"{title}\n(ESM2-T6-8M)", fontsize=13, fontweight="bold")
         ax.set_xlim(-2, 108)
         ax.set_ylim(-0.05, 1.02)
         ax.legend(loc="lower left", fontsize=10)
@@ -327,7 +329,8 @@ def plot_uniref50_vs_random_baseline():
     configs = [
         ("x_masking_progressive_uniref50.csv", "UniRef50 (ESM2)", "-"),
         ("x_masking_progressive_random_seqs.csv", "Random Seqs (ESM2)", ":"),
-        ("x_masking_progressive_one_hot.csv", "One-Hot Encoding", "--"),
+        ("x_masking_progressive_one_hot.csv", "One-Hot Encoding (basic)", "--"),
+        ("x_masking_progressive_one_hot_uniref50.csv", "One-Hot Encoding (UniRef50)", "-."),
     ]
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
