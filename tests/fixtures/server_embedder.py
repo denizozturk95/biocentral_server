@@ -80,6 +80,8 @@ class ServerEmbedder:
         return response.json()["task_id"]
 
     def _poll_task(self, task_id: str) -> Dict:
+        from biocentral_server.server_management.task_management.task_interface import TaskStatus
+
         start = time.time()
 
         while time.time() - start < self.timeout:
@@ -98,9 +100,9 @@ class ServerEmbedder:
             latest = dtos[-1]
             status = latest.get("status", "").upper()
 
-            if status in ("FINISHED", "COMPLETED", "DONE"):
+            if status == TaskStatus.FINISHED.value:
                 return latest
-            elif status in ("FAILED", "ERROR"):
+            elif status == TaskStatus.FAILED.value:
                 raise RuntimeError(
                     f"Embedding task failed: {latest.get('error', 'unknown')}"
                 )

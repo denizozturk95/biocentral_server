@@ -8,14 +8,18 @@ import redis
 from urllib.parse import urlparse
 from typing import Any, Dict, Generator
 
+from biotrainer.input_files import BiotrainerSequenceRecord
+
+from biocentral_server.server_management.embedding_database import EmbeddingsDatabase
+from biocentral_server.server_management.task_management.task_interface import TaskStatus
 from tests.fixtures.test_dataset import CANONICAL_TEST_DATASET
 
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logging.getLogger("httpcore").setLevel(logging.WARNING)
 
-TERMINAL_SUCCESS_STATUSES = {"FINISHED", "COMPLETED", "DONE"}
-TERMINAL_FAILURE_STATUSES = {"FAILED", "ERROR"}
+TERMINAL_SUCCESS_STATUSES = {TaskStatus.FINISHED.value}
+TERMINAL_FAILURE_STATUSES = {TaskStatus.FAILED.value}
 
 EMBEDDER_ESM2_T6_8M = "facebook/esm2_t6_8M_UR50D"
 EMBEDDER_FIXED = "fixed"
@@ -154,64 +158,29 @@ def client(server_url) -> Generator[httpx.Client, None, None]:
         # Write fake embeddings directly to the database so subsequent reads
         # (e.g., get_missing_embeddings, prediction tasks) find cached data.
         # This simulates what the real embedding worker would do.
+        # Delegates to the server's EmbeddingsDatabase API.
         def _save_embeddings_to_db(
             sequences: Dict[str, str], embedder_name: str, reduced: bool, fe
         ):
-            import psycopg
-            import blosc2
-            from datetime import datetime
-            from biotrainer.utilities import calculate_sequence_hash
-
-            db_host = os.environ.get("POSTGRES_HOST", "localhost")
-            db_port = int(os.environ.get("POSTGRES_PORT", "5432"))
-            db_name = os.environ.get("POSTGRES_DB", "embeddings_db")
-            db_user = os.environ.get("POSTGRES_USER", "embeddingsuser")
-            db_pass = os.environ.get("POSTGRES_PASSWORD", "embeddingspwd")
+            postgres_config = {
+                "host": os.environ.get("POSTGRES_HOST", "localhost"),
+                "port": int(os.environ.get("POSTGRES_PORT", "5432")),
+                "dbname": os.environ.get("POSTGRES_DB", "embeddings_db"),
+                "user": os.environ.get("POSTGRES_USER", "embeddingsuser"),
+                "password": os.environ.get("POSTGRES_PASSWORD", "embeddingspwd"),
+            }
 
             try:
-                conn = psycopg.connect(
-                    host=db_host,
-                    port=db_port,
-                    dbname=db_name,
-                    user=db_user,
-                    password=db_pass,
-                )
-
-                with conn.cursor() as cur:
-                    for _, sequence in sequences.items():
-                        seq_hash = calculate_sequence_hash(sequence)
-                        seq_len = len(sequence)
-
-                        if reduced:
-                            emb_array = fe.embed_pooled(sequence)
-                            per_seq_compressed = blosc2.pack_array(emb_array)
-                            per_res_compressed = None
-                        else:
-                            emb_array = fe.embed(sequence)
-                            per_seq_compressed = None
-                            per_res_compressed = blosc2.pack_array(emb_array)
-
-                        cur.execute(
-                            """
-                            INSERT INTO embeddings
-                            (sequence_hash, sequence_length, last_updated, embedder_name, per_sequence, per_residue)
-                            VALUES (%s, %s, %s, %s, %s, %s)
-                            ON CONFLICT (sequence_hash, embedder_name) DO UPDATE SET
-                                last_updated = EXCLUDED.last_updated,
-                                per_sequence = COALESCE(EXCLUDED.per_sequence, embeddings.per_sequence),
-                                per_residue = COALESCE(EXCLUDED.per_residue, embeddings.per_residue)
-                            """,
-                            (
-                                seq_hash,
-                                seq_len,
-                                datetime.now(),
-                                embedder_name,
-                                per_seq_compressed,
-                                per_res_compressed,
-                            ),
-                        )
-                conn.commit()
-                conn.close()
+                db = EmbeddingsDatabase(postgres_config)
+                records = [
+                    BiotrainerSequenceRecord(
+                        seq_id=seq_id,
+                        seq=sequence,
+                        embedding=fe.embed_pooled(sequence) if reduced else fe.embed(sequence),
+                    )
+                    for seq_id, sequence in sequences.items()
+                ]
+                db.save_embeddings(records, embedder_name, reduced=reduced)
             except Exception as e:
                 print(f"[FIXED EMBEDDER] Warning: Failed to save to DB: {e}")
 
@@ -265,8 +234,8 @@ def client(server_url) -> Generator[httpx.Client, None, None]:
                 method = data.get("method", "pca")
                 n_components = data.get("config", {}).get("n_components", 2)
 
-                valid_methods = {"pca", "umap", "tsne", "pacmap", "trimap"}
-                if method.lower() not in valid_methods:
+                from protspace.utils import REDUCERS
+                if method.lower() not in REDUCERS:
                     return FakeResponse(400, {"detail": f"Unknown method: {method}"})
 
                 task_id = f"local-{uuid.uuid4().hex[:8]}"
@@ -355,35 +324,31 @@ def client(server_url) -> Generator[httpx.Client, None, None]:
 def _make_request_with_retry(
     client, method: str, url: str, max_retries: int = 5, **kwargs
 ) -> httpx.Response:
-    last_error = None
+    """Retry requests on 5xx server errors.
+
+    Connection-level errors (RemoteProtocolError, ConnectError, ReadTimeout)
+    are already handled by the _resilient_call monkey-patch on the client.
+    This function only adds retries for transient server-side failures.
+    """
     for attempt in range(max_retries):
-        try:
-            if method.upper() == "GET":
-                response = client.get(url, **kwargs)
-            elif method.upper() == "POST":
-                response = client.post(url, **kwargs)
-            else:
-                raise ValueError(f"Unsupported method: {method}")
-            if response.status_code >= 500 and attempt < max_retries - 1:
-                wait_time = min(2**attempt, 30)
-                logging.debug(
-                    f"Request got {response.status_code} "
-                    f"(attempt {attempt + 1}/{max_retries}), retrying in {wait_time}s..."
-                )
-                time.sleep(wait_time)
-                continue
-            return response
-        except (httpx.RemoteProtocolError, httpx.ConnectError, httpx.ReadTimeout) as e:
-            last_error = e
+        if method.upper() == "GET":
+            response = client.get(url, **kwargs)
+        elif method.upper() == "POST":
+            response = client.post(url, **kwargs)
+        else:
+            raise ValueError(f"Unsupported method: {method}")
+
+        if response.status_code >= 500 and attempt < max_retries - 1:
             wait_time = min(2**attempt, 30)
             logging.debug(
-                f"Request failed (attempt {attempt + 1}/{max_retries}): {e}. Retrying in {wait_time}s..."
+                f"Request got {response.status_code} "
+                f"(attempt {attempt + 1}/{max_retries}), retrying in {wait_time}s..."
             )
-            if attempt < max_retries - 1:
-                time.sleep(wait_time)
-                continue
-            raise
-    raise last_error
+            time.sleep(wait_time)
+            continue
+        return response
+
+    return response  # Return last response even if 5xx after all retries
 
 
 def validate_task_dto(task_dto: Dict[str, Any]) -> Dict[str, Any]:
@@ -801,8 +766,6 @@ def verify_embedding_cache(client, embedder_name, shared_embedding_sequences):
 
 @pytest.fixture(scope="session")
 def precache_prott5_embeddings(shared_embedding_sequences):
-    from biotrainer.input_files import BiotrainerSequenceRecord
-    from biocentral_server.server_management.embedding_database import EmbeddingsDatabase
     from tests.fixtures.fixed_embedder import FixedEmbedder
 
     postgres_config = {
