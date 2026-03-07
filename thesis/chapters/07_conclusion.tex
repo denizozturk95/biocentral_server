@@ -1,0 +1,34 @@
+% !TeX root = ../main.tex
+
+\chapter{Conclusion}\label{chapter:conclusion}
+
+% ~1--2 pages
+
+\section{Summary of Contributions}\label{sec:contributions-summary}
+\begin{itemize}
+  \item Multi-layer test pyramid for embedding-driven ML services: unit $\to$ integration $\to$ property/oracle $\to$ performance $\to$ metamorphic experiments
+  \item FixedEmbedder: deterministic, GPU-free test infrastructure enabling fast CI for PLM-based services
+  \item 8 metamorphic experiments for PLM embeddings: X-masking divergence, reversed sequence sensitivity, AA mutation sensitivity, with validation at UniRef50 scale (1,750 real proteins)
+  \item Oracle test pattern with statistical utilities for robust invariant checking under numerical noise
+  \item Mutation testing evaluation quantifying unit test fault-detection capability
+  \item Quantitative analysis of the time-vs-coverage trade-off: concrete recommendations for CI test portfolios
+\end{itemize}
+
+\section{Key Findings}\label{sec:key-findings}
+\begin{itemize}
+  \item Summarize the most important result for the RQ (e.g., ``Integration tests with FixedEmbedder provide X\% of fault detection at Y\% of the CI time of full GPU tests'')
+  \item Metamorphic experiments reveal: [insert key behavioral findings about ESM2, e.g., critical masking ratio, sensitivity ranking]
+  \item Oracle tests confirm: [insert which invariants hold/fail, e.g., batch invariance holds perfectly, projection distance preservation varies by method]
+  \item Mutation testing reveals: [insert mutation score and what it implies about test adequacy]
+\end{itemize}
+
+\section{Future Work}\label{sec:future-work}
+\begin{itemize}
+  \item Extend metamorphic experiments to larger PLMs: ESM2-650M, ESM2-3B, ProtT5-XL --- do behavioral properties change with model scale?
+  \item Adversarial testing: design inputs that maximize embedding instability or prediction errors
+  \item Automated MR discovery: use search-based techniques to find new metamorphic relations that maximize fault detection
+  \item Coverage-guided property testing: combine mutation testing feedback with property test generation to target untested code
+  \item Cross-platform evaluation: apply the test strategy to other ML serving frameworks (TensorFlow Serving, TorchServe, BentoML)
+  \item Production monitoring: extend oracle tests into runtime monitors that flag anomalous embeddings in production
+  \item Developer study: evaluate the test suite's usability with external developers contributing to biocentral
+\end{itemize}

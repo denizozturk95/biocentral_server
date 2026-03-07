@@ -11,13 +11,13 @@
 \newcommand*{\getFaculty}{Informatics}
 \newcommand*{\getDegree}{Informatics}
 \newcommand*{\getSchool}{Computation, Information and Technology}
-\newcommand*{\getTitle}{Thesis title}
-\newcommand*{\getTitleGer}{Titel der Abschlussarbeit}
-\newcommand*{\getAuthor}{Author}
+\newcommand*{\getTitle}{Testing Strategies for Reliable Embedding-Driven ML Systems: A Case Study on Biocentral Services}
+\newcommand*{\getTitleGer}{Teststrategien für zuverlässige einbettungsbasierte ML-Systeme: Eine Fallstudie zu Biocentral-Diensten}
+\newcommand*{\getAuthor}{Deniz Özturk}
 \newcommand*{\getDoctype}{Bachelor's Thesis}
-\newcommand*{\getSupervisor}{Supervisor}
+\newcommand*{\getSupervisor}{Sebastian Franz}
 \newcommand*{\getAdvisor}{Advisor}
-\newcommand*{\getKeywords}{keyword;another keyword;one more}
+\newcommand*{\getKeywords}{software testing;protein language models;metamorphic testing;machine learning;embeddings;continuous integration}
 \newcommand*{\getSubmissionDate}{Submission date}
 \newcommand*{\getSubmissionLocation}{Munich}
 
@@ -35,6 +35,7 @@
 
 \input{pages/title}
 \input{pages/disclaimer}
+\input{pages/ai_transparency}
 \input{pages/acknowledgments}
 \input{pages/abstract}
 \microtypesetup{protrusion=false}
@@ -44,7 +45,12 @@
 \mainmatter{}
 
 \input{chapters/01_introduction}
-% TODO: add more chapters here
+\input{chapters/02_background}
+\input{chapters/03_related_work}
+\input{chapters/04_approach}
+\input{chapters/05_evaluation}
+\input{chapters/06_discussion}
+\input{chapters/07_conclusion}
 
 \appendix{}
 
@@ -54,7 +60,24 @@
 \begin{acronym}
 	\itemsep-.25\baselineskip
 	\acro{TUM}[TUM]{Technical University of Munich}
-	% TODO: add acronyms
+	\acro{PLM}[PLM]{Protein Language Model}
+	\acro{ESM}[ESM]{Evolutionary Scale Modeling}
+	\acro{CI}[CI]{Continuous Integration}
+	\acro{MR}[MR]{Metamorphic Relation}
+	\acro{API}[API]{Application Programming Interface}
+	\acro{GPU}[GPU]{Graphics Processing Unit}
+	\acro{ONNX}[ONNX]{Open Neural Network Exchange}
+	\acro{PCA}[PCA]{Principal Component Analysis}
+	\acro{UMAP}[UMAP]{Uniform Manifold Approximation and Projection}
+	\acro{t-SNE}[t-SNE]{t-distributed Stochastic Neighbor Embedding}
+	\acro{GP}[GP]{Gaussian Process}
+	\acro{FNN}[FNN]{Feedforward Neural Network}
+	\acro{AA}[AA]{Amino Acid}
+	\acro{RQ}[RQ]{Research Question}
+	\acro{ML}[ML]{Machine Learning}
+	\acro{DNN}[DNN]{Deep Neural Network}
+	\acro{REST}[REST]{Representational State Transfer}
+	\acro{DB}[DB]{Database}
 \end{acronym}
 
 \listoffigures{}

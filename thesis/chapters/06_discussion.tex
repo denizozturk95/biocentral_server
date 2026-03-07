@@ -1,0 +1,54 @@
+% !TeX root = ../main.tex
+
+\chapter{Discussion}\label{chapter:discussion}
+
+% ~2--3 pages
+
+\section{Trade-Off Summary}\label{sec:tradeoff-summary}
+\begin{itemize}
+  \item Restate the RQ and summarize the answer with concrete numbers from Chapter 5
+  \item Optimal allocation of CI budget across test layers
+  \item The FixedEmbedder as a key enabler: percentage of integration tests that can run GPU-free; what fraction of real bugs does it catch vs.\ miss?
+  \item Diminishing returns: at what point does adding more metamorphic tests stop improving fault detection?
+  \item Cost of false security: what types of bugs can only be caught with real GPU inference?
+\end{itemize}
+
+\section{Generalizability}\label{sec:generalizability}
+\begin{itemize}
+  \item Beyond biocentral: applicability to other PLM-based services (e.g., ColabFold, bio-embeddings servers)
+  \item Beyond protein embeddings: applicability to NLP embedding services (sentence transformers, BERT-based APIs)
+  \item Beyond embeddings: applicability to other ML inference services (image classifiers, recommendation systems)
+  \item Which parts of the approach are domain-specific (canonical protein dataset, AA mutation MRs) vs.\ generalizable (test pyramid, FixedEmbedder pattern, oracle framework)?
+  \item Multi-service testing: the approach handles complex Docker deployments (server + workers + GPU + DB) --- relevant for any microservice-based ML system
+\end{itemize}
+
+\section{Limitations}\label{sec:limitations}
+\begin{itemize}
+  \item Single PLM for experiments: ESM2-T6-8M is the smallest ESM2 variant; larger models (650M, 3B) or different architectures (ProtT5) may exhibit different behavior
+  \item No adversarial testing: the metamorphic experiments use structured transformations, not adversarial inputs designed to fool models
+  \item FixedEmbedder expressiveness: SHA-256-based embeddings do not capture real biological properties --- bugs that require biologically meaningful embeddings will be missed
+  \item No end-user study: the test suite was developed by the author; no external developer usability evaluation
+  \item Limited mutation testing scope: mutmut only targets unit tests; integration/property tests not evaluated for mutation score
+  \item Hardware-specific timings: execution times depend on specific CPU/GPU; relative ratios are more meaningful than absolutes
+\end{itemize}
+
+\section{Threats to Validity}\label{sec:threats}
+\begin{itemize}
+  \item Internal validity:
+    \begin{itemize}
+      \item GPU non-determinism tolerance thresholds were chosen empirically --- different thresholds could change pass/fail outcomes
+      \item FixedEmbedder monkey-patching may mask real HTTP/serialization bugs
+      \item Mutation testing results depend on mutmut's mutation operators --- different tools may produce different scores
+    \end{itemize}
+  \item External validity:
+    \begin{itemize}
+      \item Results specific to biocentral's architecture (FastAPI + Redis + Triton) --- other frameworks may have different failure modes
+      \item ESM2-T6-8M behavior may not generalize to larger or differently trained models
+      \item UniRef50 sequences are biased toward well-studied proteins --- rare/novel proteins underrepresented
+    \end{itemize}
+  \item Construct validity:
+    \begin{itemize}
+      \item ``Test coverage'' measured via mutation score and code coverage --- other metrics (fault detection rate in production) would be more meaningful but are unavailable
+      \item ``CI execution time'' measured on a single machine --- cloud CI environments may differ
+    \end{itemize}
+\end{itemize}

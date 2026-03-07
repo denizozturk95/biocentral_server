@@ -1,3 +1,9 @@
 \chapter{\abstractname}
 
-%TODO: Abstract
+Protein language models (PLMs) such as ESM2 and ProtT5 are increasingly integrated into production bioinformatics platforms, yet systematic approaches to testing these embedding-driven systems remain scarce. The absence of ground-truth oracles, GPU-induced non-determinism, and high computational cost make traditional software testing techniques insufficient.
+
+This thesis presents a comprehensive, multi-layer testing strategy for PLM-based services, developed and evaluated as a case study on the biocentral server---an open-source platform for embedding-based protein analysis. The strategy comprises five layers: unit tests with mocked dependencies, integration tests against the live server, property-based oracle tests verifying mathematical invariants, performance benchmarks, and metamorphic experiments validating PLM embedding behavior at scale.
+
+Key contributions include (1)~a deterministic, GPU-free testing infrastructure (\textit{FixedEmbedder}) that enables the full integration test suite to run in CI without GPU resources, (2)~eight metamorphic experiments---including progressive X-masking, reversed sequence sensitivity, and amino acid mutation sensitivity---validated on 1,750 real protein sequences from UniRef50, (3)~a reusable oracle testing framework with statistical utilities for robust invariant checking, and (4)~mutation testing evaluation of the test suite's fault-detection capability.
+
+The evaluation quantifies the trade-off between CI execution time and test coverage across all layers, providing concrete recommendations for allocating testing budgets in embedding-driven ML services. Results demonstrate that integration tests with the FixedEmbedder offer the strongest cost-effectiveness ratio, while metamorphic experiments provide unique behavioral insights into PLM properties that no other test layer captures.

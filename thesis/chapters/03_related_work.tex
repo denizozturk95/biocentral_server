@@ -1,0 +1,52 @@
+% !TeX root = ../main.tex
+
+\chapter{Related Work}\label{chapter:related-work}
+
+% ~2--3 pages
+
+\section{Testing Machine Learning Systems}\label{sec:rw-ml-testing}
+\begin{itemize}
+  \item DeepTest (Tian et al., 2018): metamorphic testing for autonomous driving DNNs --- image transformations as MRs
+  \item DeepXplore (Pei et al., 2017): neuron coverage as test adequacy criterion; differential testing across multiple DNNs
+  \item TensorFuzz (Odena \& Goodfellow, 2019): coverage-guided fuzzing for neural networks
+  \item Zhang et al. (2020) survey on ML testing: taxonomy of test adequacy criteria, test input generation, oracle problem solutions
+  \item Braiek \& Khomh (2020): testing ML-based systems --- challenges and practices
+  \item Key takeaway: most work focuses on image classifiers / autonomous driving; less attention to embedding models and scientific software
+\end{itemize}
+
+\section{Metamorphic Testing for Deep Learning}\label{sec:rw-metamorphic}
+\begin{itemize}
+  \item Chen et al. (1998): original metamorphic testing proposal
+  \item Segura et al. (2016): comprehensive survey of metamorphic testing across domains
+  \item Xie et al. (2011): metamorphic testing for ML classifiers (k-NN, Na\"ive Bayes) --- MRs based on data permutation, addition, duplication
+  \item Dwarakanath et al. (2018): metamorphic testing for image classifiers in industry (identifying bugs in production models)
+  \item Murphy et al. (2008): properties for testing ML programs --- additive/multiplicative MRs
+  \item Gap: MRs specifically designed for protein language model embeddings (X-masking, AA mutation, reversal) are novel
+\end{itemize}
+
+\section{Testing Scientific and Bioinformatics Software}\label{sec:rw-scientific}
+\begin{itemize}
+  \item Kanewala \& Bieman (2014): testing scientific software --- challenges (oracle problem, floating-point, rare domain expertise overlap with testing expertise)
+  \item Hook \& Kelly (2009): mutation testing for scientific software
+  \item Storer (2017): bridging the gap between software engineering and scientific computing
+  \item Bioinformatics-specific: limited formal testing literature; most tools rely on example-based tests and manual validation
+  \item biotrainer, bio-embeddings: domain tools used by biocentral --- their own test practices as baseline comparison
+\end{itemize}
+
+\section{Property-Based Testing for Data Pipelines}\label{sec:rw-property}
+\begin{itemize}
+  \item Claessen \& Hughes (2000): QuickCheck --- property-based testing with random generation
+  \item MacIver et al. (2019): Hypothesis --- property-based testing for Python
+  \item FIT (Facets of Inadequacy in Testing): using properties to identify gaps in test suites
+  \item Application to data pipelines: schema validation, idempotency, commutativity of transformations
+  \item Limited prior work on applying oracle-pattern testing to ML inference pipelines specifically
+\end{itemize}
+
+\section{Research Gap}\label{sec:rw-gap}
+\begin{itemize}
+  \item No prior work specifically addresses testing PLM-based embedding services with a multi-layer test strategy
+  \item The time-vs-coverage trade-off for property-based testing in CI for ML services is unexplored
+  \item Metamorphic relations for protein embeddings (X-masking divergence, AA mutation sensitivity, sequence reversal) are novel contributions
+  \item GPU-free deterministic testing infrastructure for embedding services is not addressed in existing literature
+  \item This thesis fills the gap by combining classical SE testing (unit, integration, mutation testing) with ML-specific techniques (MRs, oracles) for a real-world production system
+\end{itemize}

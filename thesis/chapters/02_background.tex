@@ -1,0 +1,92 @@
+% !TeX root = ../main.tex
+
+\chapter{Background}\label{chapter:background}
+
+% ~7--9 pages
+
+\section{Protein Language Models}\label{sec:plms}
+\begin{itemize}
+  \item Proteins as sequences of amino acids; 20 standard residues + special tokens (X, B, Z, U, O)
+  \item Language model paradigm: treat protein sequences like natural language sentences
+  \item Transformer architecture applied to proteins (self-attention, positional encoding)
+  \item Pre-training objective: masked language modeling on large protein databases (UniRef, BFD)
+  \item Key models: ESM2 (Meta, 8M to 15B parameters), ProtT5 (Elnaggar et al.), ProstT5
+  \item Embeddings: per-residue (sequence length $\times$ hidden dim) vs.\ pooled (single vector per protein via mean reduction)
+  \item Downstream tasks enabled by embeddings: secondary structure prediction, subcellular localization, binding site prediction, disorder prediction, conservation, variant effects
+  \item Baseline encodings for comparison: one-hot encoding, BLOSUM62 substitution matrix
+\end{itemize}
+
+\section{The Biocentral Platform}\label{sec:biocentral}
+\begin{itemize}
+  \item Overview: open-source platform for embedding-based protein analysis (Franz et al., JMB 2026)
+  \item Client-server architecture: Flutter desktop client + FastAPI backend
+  \item Server components: FastAPI web framework, Redis task queue (rq), PostgreSQL embedding database, SeaweedFS file storage, NVIDIA Triton Inference Server for GPU inference
+  \item Docker Compose orchestration: 7+ services (server, workers, Redis, PostgreSQL, SeaweedFS, Triton, Prometheus)
+  \item Async task pattern: POST returns \texttt{task\_id} $\to$ client polls \texttt{/task\_status/\{task\_id\}} until completion
+  \item Worker model: 4 RQ worker processes with priority queues (high, default, low)
+  \item API modules overview (each under \texttt{/api/v1/}):
+    \begin{itemize}
+      \item Embeddings: compute PLM embeddings, cache in PostgreSQL, HDF5 import/export
+      \item Predictions: 9 pre-trained ONNX models (TMbed, Seth, BindEmbed, VespaG, etc.)
+      \item Projections: PCA, UMAP, t-SNE via ProtSpace library
+      \item Custom Models: train/evaluate custom ML models via biotrainer
+      \item Active Learning / Bayesian Optimization: GP and FNN-based iterative protein engineering
+      \item PLM Eval: automated PLM benchmarking
+      \item PPI: protein-protein interaction dataset analysis
+      \item Proteins: taxonomy lookup
+    \end{itemize}
+  \item Middleware: CORS, rate limiting (FastAPI-Limiter), body size limits (200\,MB), user management via request headers
+  \item Figure idea: architecture diagram showing client $\to$ server $\to$ workers $\to$ Triton/DB
+\end{itemize}
+
+\section{Software Testing Fundamentals}\label{sec:testing-fundamentals}
+\begin{itemize}
+  \item The test pyramid: unit tests (fast, isolated, mocked) $\to$ integration tests (component interaction, live services) $\to$ system/E2E tests (full stack)
+  \item Unit testing: test isolation via mocking/stubbing, fast feedback, high coverage of edge cases
+  \item Integration testing: verify component interactions, database queries, API contracts, async flows
+  \item Test-driven development and continuous integration (CI): run tests on every commit, fast feedback loops
+  \item Key concepts: test fixtures, parametrization, markers, session-scoped setup
+  \item Pytest framework: markers (\texttt{@pytest.mark.integration}, \texttt{@pytest.mark.slow}), fixtures, conftest.py hierarchy
+  \item Code coverage vs.\ fault detection: coverage measures executed lines, not correctness
+  \item Mutation testing: inject syntactic faults (mutants), check if tests detect them (mutation score), mutmut tool
+\end{itemize}
+
+\section{Challenges of Testing ML Systems}\label{sec:ml-testing-challenges}
+\begin{itemize}
+  \item The oracle problem: no known ``correct'' output for a given protein embedding --- cannot write \texttt{assert embedding == expected}
+  \item Non-determinism: GPU floating-point operations are non-associative; batch ordering, cuDNN algorithm selection, and parallelism cause bit-level variation
+  \item Data dependency: model behavior depends on training data, not just code --- traditional unit tests miss data-induced bugs
+  \item Computational cost: embedding a single protein can take seconds on GPU; full test suites with real models are prohibitively slow for CI
+  \item Model opacity: transformer internals are not interpretable --- testing must focus on behavioral properties rather than internal state
+  \item Infrastructure complexity: multi-service deployments (server + workers + GPU + DB + file storage) create integration failure modes absent in monolithic software
+  \item Versioning: model weights, tokenizers, and inference frameworks (ONNX, Triton) must all be version-consistent
+\end{itemize}
+
+\section{Metamorphic Testing}\label{sec:metamorphic-testing}
+\begin{itemize}
+  \item Definition: testing technique that verifies \emph{relations} between inputs and outputs across multiple executions, rather than checking individual outputs against expected values
+  \item Metamorphic relations (MRs): if input is transformed in a specific way, the output should change (or not change) in a predictable way
+  \item Advantage: circumvents the oracle problem --- does not require knowing the ``correct'' output
+  \item Classic example: $\sin(x) = \sin(\pi - x)$ --- can verify without knowing $\sin(x)$ for any specific $x$
+  \item Application to ML: e.g., adding noise to input should not drastically change classification; rotating an image should not change object detection
+  \item Application to PLM embeddings: replacing residues with X (unknown token) should cause monotonically increasing divergence; reversing sequence order should change embedding (positional encoding sensitivity); specific AA substitutions should cause predictable sensitivity patterns
+  \item Distinction from property-based testing: MRs relate multiple executions; properties constrain single executions
+  \item Key papers: Chen et al. (1998) original proposal; Segura et al. (2016) survey; applications in ML by Xie et al.
+\end{itemize}
+
+\section{Property-Based and Oracle Testing}\label{sec:oracle-testing}
+\begin{itemize}
+  \item Property-based testing: specify invariants that must hold for all (or randomly generated) inputs, rather than specific input-output pairs
+  \item Tools: Hypothesis (Python), QuickCheck (Haskell) --- generate random inputs, check properties
+  \item Oracle pattern: encapsulate a reusable invariant check in a class with a \texttt{check()} method returning structured pass/fail + metrics
+  \item Examples of oracles for embedding systems:
+    \begin{itemize}
+      \item Determinism: same input $\to$ same output (within tolerance for GPU)
+      \item Batch invariance: embedding unchanged regardless of batch composition
+      \item Output validity: probabilities in $[0,1]$, sum to 1 (classification); finite values (regression)
+      \item Shape invariance: output dimensions match specification
+      \item Distance preservation: pairwise distances in input space correlate with distances in projected space
+    \end{itemize}
+  \item Statistical robustness: tolerance thresholds, confidence intervals, effect sizes (Cohen's $d$), significance tests (Mann-Whitney $U$)
+  \item Combining oracles with MRs: oracles verify single-execution invariants; MRs verify cross-execution relations; together they form a comprehensive behavioral test suite
+\end{itemize}

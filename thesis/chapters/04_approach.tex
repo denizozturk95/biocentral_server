@@ -1,0 +1,193 @@
+% !TeX root = ../main.tex
+
+\chapter{Approach}\label{chapter:approach}
+
+% ~8--10 pages
+
+\section{Overall Test Architecture}\label{sec:test-architecture}
+\begin{itemize}
+  \item Multi-layer test pyramid tailored for embedding-driven ML services
+  \item 5 layers: unit (mocked) $\to$ integration (live server) $\to$ property/oracle (invariants) $\to$ performance (benchmarks) $\to$ metamorphic experiments (MRs at scale)
+  \item Total: $\sim$180 test functions across 24 test files
+  \item Pytest markers for selective execution: \texttt{@integration}, \texttt{@slow}, \texttt{@gpu}, \texttt{@performance}, \texttt{@property}
+  \item CI integration: markers enable running fast tests on every commit, expensive tests nightly/on-demand
+  \item Figure idea: test pyramid diagram with layer names, test counts, and approximate execution times
+\end{itemize}
+
+\section{Test Infrastructure}\label{sec:test-infrastructure}
+
+\subsection{Canonical Test Dataset}\label{sec:canonical-dataset}
+\begin{itemize}
+  \item 37 protein sequences in \texttt{test\_sequences.fasta}, organized into 8 categories
+  \item Categories: standard (3 typical proteins), length variants (1--400\,aa), unknown token variants (7 sequences with X, B, Z, J, U, O), all 20 standard AAs, homopolymers, composition extremes, ambiguous codes, structural motifs, real-world proteins (insulin B chain, ubiquitin, GFP core)
+  \item Pydantic-based loader (\texttt{test\_dataset.py}) with category filtering: \texttt{get\_test\_sequences(categories=[``real'', ``edge\_case''])}
+  \item Design rationale: cover normal cases, boundary conditions, and biologically meaningful edge cases in a single reusable dataset
+\end{itemize}
+
+\subsection{FixedEmbedder}\label{sec:fixed-embedder}
+\begin{itemize}
+  \item Problem: real PLM inference (ESM2, ProtT5) requires GPU and takes seconds per sequence --- too slow and expensive for CI
+  \item Solution: deterministic, GPU-free embedder that produces embeddings with correct dimensionality and reproducible values
+  \item Algorithm:
+    \begin{enumerate}
+      \item Hash the input sequence via SHA-256 to obtain a deterministic seed
+      \item Seed a NumPy random number generator with the hash
+      \item Generate per-amino-acid base embeddings combined with positional noise
+      \item Output shape matches the target PLM: e.g., ProtT5 $\to$ 1024 dims, ESM2-T33 $\to$ 1280 dims
+    \end{enumerate}
+  \item Singleton registry (\texttt{FixedEmbedderRegistry}) avoids redundant instantiation
+  \item \texttt{strict\_dataset} mode: optionally validates sequences against the canonical FASTA
+  \item Key property: same sequence $\to$ same embedding, regardless of call context, batch, or machine
+  \item 341 lines of implementation; 36 dedicated unit tests verifying determinism, dimensions, edge cases, and embedding quality (no zeros/NaN/Inf)
+  \item Figure idea: diagram showing SHA-256 $\to$ seed $\to$ RNG $\to$ embedding pipeline
+\end{itemize}
+
+\subsection{Integration Test Infrastructure}\label{sec:integration-infra}
+\begin{itemize}
+  \item 832-line \texttt{conftest.py} providing the integration test framework
+  \item \texttt{poll\_task()}: async task polling with configurable timeout, terminal status detection, consecutive error tracking
+  \item \texttt{FakeResponse} class: intercepts outgoing HTTP calls, generates embeddings via FixedEmbedder, writes directly to PostgreSQL --- enables full end-to-end flow testing without GPU
+  \item Monkey-patching: replaces real HTTP embedding calls with FixedEmbedder at the request level
+  \item Session-scoped fixtures for expensive resources: DB connections, HTTP clients, sequence data
+  \item Environment variables: \texttt{CI\_SERVER\_URL} (server address), \texttt{CI\_EMBEDDER} (mode: \texttt{esm2\_t6\_8m} or \texttt{fixed})
+\end{itemize}
+
+\section{Unit Tests}\label{sec:unit-tests}
+\begin{itemize}
+  \item 63 unit tests across 4 test files
+  \item FastAPI \texttt{TestClient} with fully mocked backends: \texttt{MockedTaskManager}, \texttt{UserManager}, \texttt{FileManager}, \texttt{EmbeddingDatabaseFactory}, Redis-based \texttt{RateLimiter}
+  \item Tests validate request/response contracts without starting the real server
+  \item Endpoint coverage:
+    \begin{itemize}
+      \item Embeddings (13 tests): embedder listing, embed requests (valid/empty/missing), missing embeddings (valid/invalid JSON/non-dict), HDF5 upload (valid/invalid base64)
+      \item Predictions (8 tests): model metadata, predict requests (valid/unknown/empty models/empty seqs/too short/too long sequences)
+      \item Projections (6 tests): config listing, project requests (valid/unknown method/missing fields/custom config passthrough)
+    \end{itemize}
+  \item FixedEmbedder unit tests (36 tests): determinism (same seq, different instances, different seeds, pooled, batch$\to$individual consistency), dimension correctness (8 model variants), edge cases (empty/single residue/very long/unknown AA/all AAs/homopolymer/lowercase), embedding quality (no zeros/NaN/Inf, float32, reasonable magnitude, position-sensitivity)
+  \item Design principle: test validation logic and error handling exhaustively; mock all I/O and compute
+\end{itemize}
+
+\section{Integration Tests}\label{sec:integration-tests}
+\begin{itemize}
+  \item 56 integration tests across 5 test files
+  \item Run against a live server via Docker Compose (\texttt{docker-compose.dev.yml})
+  \item Use \texttt{httpx} with retry logic for resilience against transient failures
+  \item Endpoint flow tests:
+    \begin{itemize}
+      \item Embedding flow (7 tests): embedder listing, rejection flows, full embed $\to$ poll $\to$ cache verification, multi-embedder
+      \item Prediction flow (8 tests): metadata structure/consistency, rejection flows, full predict task completion
+      \item Projection flow (5 tests): config retrieval, rejection flows, PCA/UMAP task completion with cache verification
+      \item Training/inference flow (16 tests): config options (classification/regression), config verify, training start (2 protocols + error cases), inference, model files, \textbf{full train $\to$ inference flow} with prediction verification, train/val split
+    \end{itemize}
+  \item Triton standalone tests (20 tests): all embedding models (ProtT5, ESM2-T33, ESM2-T36) pooled + per-residue; all prediction models (SecondaryStructure, Conservation, BindEmbed, TMbed, SETH, LightAttention, VespaG); model availability checks. Requires Docker with 24\,GB+ RAM.
+  \item These tests are the \textbf{main contribution}: they validate real end-to-end system behavior including database caching, task queuing, and result retrieval
+\end{itemize}
+
+\section{Property-Based Oracle Tests}\label{sec:oracle-tests}
+\begin{itemize}
+  \item 21 oracle tests across 3 test files
+  \item Oracle pattern: reusable class with \texttt{check()} method returning structured result (pass/fail + metric value)
+  \item Statistical utilities (\texttt{statistics.py}): \texttt{compute\_confidence\_interval} (t-distribution), \texttt{compute\_cohens\_d}, \texttt{derive\_significance\_threshold} (k-sigma), \texttt{run\_with\_replicates}, \texttt{mann\_whitney\_test}
+  \item Metric utilities (\texttt{embedding\_metrics.py}): cosine distance, L2 distance, CSV report generation
+  \item Specific oracles and their tolerances:
+    \begin{itemize}
+      \item \texttt{BatchInvarianceOracle}: embedding identical regardless of batch composition (cosine $\leq 10^{-6}$)
+      \item \texttt{PredictionDeterminismOracle}: same input $\to$ bit-identical output for ONNX models (exact match)
+      \item \texttt{OutputValidityOracle}: probabilities sum to 1, values in $[0,1]$ (classification) or finite (regression); tolerance $10^{-5}$
+      \item \texttt{ShapeInvarianceOracle}: output shape = (seq\_len, n\_classes) (exact)
+      \item \texttt{ProjectionDeterminismOracle}: PCA bit-identical; UMAP Procrustes distance $\leq 0.3$
+      \item \texttt{DimensionalityOracle}: output matches requested dimensions (exact)
+      \item \texttt{ProjectionValueValidityOracle}: no NaN/Inf, finite values
+      \item \texttt{DistancePreservationOracle}: Spearman correlation $\geq 0.3$ between input and projected distances
+    \end{itemize}
+  \item Models tested directly via ONNX (bypassing server): ProtT5SecondaryStructure (3 classes), BindEmbed (3 classes), TMbed (7 classes), Seth (regression)
+\end{itemize}
+
+\section{Metamorphic Experiments}\label{sec:metamorphic-experiments}
+\begin{itemize}
+  \item 8 experiments implemented as pytest scripts, producing CSV reports in \texttt{tests/reports/}
+  \item All use ESM2-T6-8M as the primary model; one-hot encoding as baseline
+  \item UniRef50-scale validation: 1,750 real protein sequences across 7 length bins (50--1000\,aa), fetched via UniRef50 REST API
+\end{itemize}
+
+\subsection{Idempotency}\label{sec:exp-idempotency}
+\begin{itemize}
+  \item Same sequence embedded multiple times must return identical results
+  \item Tolerance: cosine distance $\leq 10^{-5}$ (allows GPU non-determinism)
+  \item 10 sequences $\times$ 4 repeats
+\end{itemize}
+
+\subsection{Batch Invariance}\label{sec:exp-batch-invariance}
+\begin{itemize}
+  \item Embedding invariant to batch composition: embed(A, B) vs.\ embed(A) alone
+  \item Transformer self-attention operates within single sequences, not across batch --- batch composition must be invisible
+  \item Batch sizes: 2, 5, 10, 20; target sequence at random positions
+  \item Pooled variant: cosine $\leq 0.01$; per-residue variant: max absolute difference $\leq 10^{-5}$
+\end{itemize}
+
+\subsection{Progressive X-Masking}\label{sec:exp-xmasking}
+\begin{itemize}
+  \item MR: progressively replace amino acids with X (unknown token) at 14 masking ratios (0--100\%)
+  \item Measure cosine distance from original embedding as a function of masking ratio
+  \item Questions: Is divergence monotonically increasing? At what ratio $r^*$ does cosine distance exceed 0.1?
+  \item Progressive (superset) vs.\ random (independent) masking variants
+  \item 4 variants: basic (4 sequences $\times$ 5 runs), UniRef50 scale (250 seqs/bin $\times$ 7 bins $\times$ 2 runs), one-hot baseline (4 seqs), one-hot UniRef50
+  \item Monotonicity violations allowed $<30\%$
+  \item Figure idea: cosine similarity vs.\ masking ratio curve, ESM2 vs.\ one-hot vs.\ random baseline
+\end{itemize}
+
+\subsection{Reversed Sequence}\label{sec:exp-reversal}
+\begin{itemize}
+  \item MR: reverse amino acid order and compare embeddings
+  \item ESM2 expected to be order-sensitive (positional encoding) $\to$ cosine distance $> 0.001$
+  \item One-hot baseline expected to be order-insensitive $\to$ cosine distance $< 10^{-6}$
+  \item Double-reversal identity check: reverse(reverse(seq)) $=$ seq $\to$ cosine $\leq 10^{-5}$
+  \item Skips palindromic and repetitive sequences
+\end{itemize}
+
+\subsection{Amino Acid Mutation Sensitivity}\label{sec:exp-mutation}
+\begin{itemize}
+  \item MR: replace residues with each of the 20 standard amino acids at 6 masking ratios (0--100\%)
+  \item Questions: Which AA substitutions cause largest embedding change? Does sensitivity correlate with physicochemical properties (charged, hydrophobic, polar)?
+  \item Comparison to X-masking: structured substitution vs.\ unknown token
+  \item Basic variant: 4 seqs $\times$ 20 AAs $\times$ 3 runs; UniRef50 variant: 250 seqs/bin $\times$ 6 representative AAs (A, D, G, K, L, W)
+  \item Figure ideas: heatmap (AA $\times$ masking ratio), line overlay (all 20 AAs), bar ranking by physicochemical group
+\end{itemize}
+
+\subsection{Random Baseline}\label{sec:exp-random}
+\begin{itemize}
+  \item X-masking on randomly generated (non-biological) sequences: uniform sampling from 20 standard AAs
+  \item 7 length bins (50--1000\,aa) $\times$ 50 random sequences $\times$ 2 runs
+  \item Purpose: determine whether X-masking divergence profile differs for ``meaningless'' vs.\ real protein sequences
+\end{itemize}
+
+\subsection{Projection Determinism}\label{sec:exp-projection}
+\begin{itemize}
+  \item PCA (2D, 3D): expect bit-identical coordinates across runs
+  \item UMAP, t-SNE: stochastic $\to$ check structural similarity via Procrustes distance ($\leq 0.3$)
+\end{itemize}
+
+\subsection{Training Determinism}\label{sec:exp-training}
+\begin{itemize}
+  \item Same sequences + same model + same seed $\to$ identical embeddings across 3 repeated training preparations
+  \item 8 sequences with binary labels; tolerance: cosine $\leq 10^{-5}$
+\end{itemize}
+
+\section{Performance Tests}\label{sec:performance-tests}
+\begin{itemize}
+  \item 23 performance tests across 3 test files, using real ESM2-T6-8M model
+  \item Throughput tests (10 tests): latency at 4 sequence lengths (10/15/211/400\,aa), canonical dataset throughput, batch throughput, pooled embedding latency, ESM2 vs.\ FixedEmbedder comparison, scaling report with JSON output
+  \item Memory tests (8 tests): leak detection (repeated single/batch with GC), footprint verification (\texttt{nbytes == seq\_len $\times$ dim $\times$ 4}), pooled vs.\ per-residue memory ($<10\%$ difference), memory-per-dimension ratio, batch memory estimation
+  \item Scaling tests (5 tests): O($n$) linear scaling with sequence length (ratio $< 3\times$), linear scaling with batch size, sequential vs.\ batch comparison
+  \item Purpose: establish baseline performance characteristics and detect regressions
+\end{itemize}
+
+\section{Mutation Testing}\label{sec:mutation-testing}
+\begin{itemize}
+  \item Tool: mutmut (Python mutation testing framework)
+  \item Scope: mutates \texttt{biocentral\_server/} source code; runs only unit tests (excludes slow/integration/performance)
+  \item Mutation operators: arithmetic, boundary, negation, statement deletion, constant replacement
+  \item Mutation score = killed mutants / total mutants
+  \item Purpose: measure how well the unit test suite detects injected faults --- complements code coverage
+  \item Configuration in \texttt{tests/setup.cfg}
+\end{itemize}
