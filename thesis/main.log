@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.7)  8 MAR 2026 09:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.7)  8 MAR 2026 12:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1581,25 +1581,8 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 Package nag Info: Command \hc@caption not defined, skipping amendment on input line 26.
 Package nag Info: Command \topcaption not defined, skipping amendment on input line 26.
- (./pages/cover.tex
+ (./pages/title.tex
 <logos/tum-black.pdf, id=10, 54.02583pt x 28.4523pt>
-File: logos/tum-black.pdf Graphic file (type pdf)
-<use logos/tum-black.pdf>
-Package pdftex.def Info: logos/tum-black.pdf  used on input line 16.
-(pdftex.def)             Requested size: 108.06454pt x 56.9055pt.
-<logos/faculty-black.pdf, id=11, 28.85307pt x 30.07582pt>
-File: logos/faculty-black.pdf Graphic file (type pdf)
-<use logos/faculty-black.pdf>
-Package pdftex.def Info: logos/faculty-black.pdf  used on input line 36.
-(pdftex.def)             Requested size: 54.59462pt x 56.9055pt.
- [1
-
-
-
-{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc} <./logos/tum-black.pdf> <./logos/faculty-black.pdf
-
-pdfTeX warning: pdflatex (file ./logos/faculty-black.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->]) (./pages/title.tex
 File: logos/tum-black.pdf Graphic file (type pdf)
 <use logos/tum-black.pdf>
 Package pdftex.def Info: logos/tum-black.pdf  used on input line 8.
@@ -1628,6 +1611,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `zplm' (encoding: OT1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
+<logos/faculty-black.pdf, id=11, 28.85307pt x 30.07582pt>
 File: logos/faculty-black.pdf Graphic file (type pdf)
 <use logos/faculty-black.pdf>
 Package pdftex.def Info: logos/faculty-black.pdf  used on input line 33.
@@ -1636,7 +1620,11 @@ Package pdftex.def Info: logos/faculty-black.pdf  used on input line 33.
 
 
 
-]) (./pages/disclaimer.tex [2]) (./pages/ai_transparency.tex [3
+
+{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc} <./logos/tum-black.pdf> <./logos/faculty-black.pdf
+
+pdfTeX warning: pdflatex (file ./logos/faculty-black.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>]) (./pages/disclaimer.tex [2]) (./pages/ai_transparency.tex [3
 
 
 
@@ -1661,7 +1649,7 @@ Overfull \hbox (1.51627pt too wide) in paragraph at lines 7--8
 
 
 ]
-Package tocbasic Info: character protrusion at toc deactivated on input line 41.
+Package tocbasic Info: character protrusion at toc deactivated on input line 42.
  (./main.toc [6
 
 
@@ -1676,24 +1664,58 @@ LaTeX Font Info:    Font shape `T1/pplx/m/sl' in size <10.95> not available
 
  [8] (./chapters/01_introduction.tex
 chapter 1.
-LaTeX Font Info:    Trying to load font information for TS1+pplx on input line 10.
-(/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ts1pplx.fd
-File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
-)
 Package acronym Info: Label `acro:PLM' newly defined as it shall be overridden
 although it is yet undefined on input line 10.
- [1
+Package acronym Info: Label `acro:API' newly defined as it shall be overridden
+although it is yet undefined on input line 10.
+Package acronym Info: Label `acro:GPU' newly defined as it shall be overridden
+although it is yet undefined on input line 12.
+Package acronym Info: Label `acro:ML' newly defined as it shall be overridden
+although it is yet undefined on input line 14.
+Package acronym Info: Label `acro:CI' newly defined as it shall be overridden
+although it is yet undefined on input line 14.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.16 D
+      espite the growing deployment of \ac{PLM}-based services, the problem ... [1
 
 
 
 ]
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.26 \section
+             {Research Question}\label{sec:research-question} [2]
+Package acronym Info: Label `acro:RQ' newly defined as it shall be overridden
+although it is yet undefined on input line 31.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-) (./chapters/02_background.tex [2{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.47 \end{enumerate}
+                     [3{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]) (./chapters/02_background.tex
+pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.3 \chapter
+            {Background}\label{chapter:background} [4]
 chapter 2.
-[3
+LaTeX Font Info:    Trying to load font information for TS1+pplx on input line 9.
+(/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ts1pplx.fd
+File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
+)
+pdfTeX warning (ext4): destination with the same identifier (name{page.5}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.25   \item A
+              sync task pattern: POST returns \texttt{task\_id} $\to$ client... [5
 
 
 ]
@@ -1701,27 +1723,42 @@ Overfull \hbox (2.33289pt too wide) in paragraph at lines 25--26
 []\T1/pplx/m/n/10.95 (-20) Async task pat-tern: POST re-turns \T1/cmtt/m/n/10.95 task_id $\OMS/zplm/m/n/10.95 !$ \T1/pplx/m/n/10.95 (-20) client polls \T1/cmtt/m/n/10.95 /task_status/{task_id}
  []
 
-[4] [5] [6]) (./chapters/03_related_work.tex [7]
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.6}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.49   \item P
+              ytest framework: markers (\texttt{@pytest.mark.integration}, \... [6]
+pdfTeX warning (ext4): destination with the same identifier (name{page.7}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.69   \item A
+              dvantage: circumvents the oracle problem --- does not require ... [7]
+pdfTeX warning (ext4): destination with the same identifier (name{page.8}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.90   \item S
+              tatistical robustness: tolerance thresholds, confidence interv... [8]) (./chapters/03_related_work.tex [9]
 chapter 3.
 
 Overfull \hbox (5.64484pt too wide) in paragraph at lines 23--24
 []\T1/pplx/m/n/10.95 (-20) Murphy et al. (2008): prop-er-ties for test-ing ML pro-grams --- ad-di-tive/multiplicative
  []
 
-[8
+[10
 
 
-] [9]) (./chapters/04_approach.tex [10]
+] [11]) (./chapters/04_approach.tex [12]
 chapter 4.
 
 Overfull \hbox (135.29878pt too wide) in paragraph at lines 23--24
 []\T1/pplx/m/n/10.95 (-20) Pydantic-based loader (\T1/cmtt/m/n/10.95 test_dataset.py\T1/pplx/m/n/10.95 (-20) ) with cat-e-gory fil-ter-ing: \T1/cmtt/m/n/10.95 get_test_sequences(categories=[``real'',
  []
 
-[11
+[13
 
 
-] [12]
+] [14]
 Overfull \hbox (13.24307pt too wide) in paragraph at lines 58--59
 []\T1/pplx/m/n/10.95 (-20) FastAPI \T1/cmtt/m/n/10.95 TestClient \T1/pplx/m/n/10.95 (-20) with fully mocked back-ends: \T1/cmtt/m/n/10.95 MockedTaskManager\T1/pplx/m/n/10.95 (-20) , \T1/cmtt/m/n/10.95 UserManager\T1/pplx/m/n/10.95 (-20) ,
  []
@@ -1746,7 +1783,7 @@ Overfull \hbox (35.97377pt too wide) in paragraph at lines 64--65
 []\T1/pplx/m/n/10.95 (-20) Projections (6 tests): con-fig list-ing, project re-quests (valid/unknown method/missing
  []
 
-[13]
+[15]
 Overfull \hbox (9.05624pt too wide) in paragraph at lines 90--91
 []\T1/pplx/m/n/10.95 (-20) Statistical util-i-ties (\T1/cmtt/m/n/10.95 statistics.py\T1/pplx/m/n/10.95 (-20) ): \T1/cmtt/m/n/10.95 compute_confidence_interval \T1/pplx/m/n/10.95 (-20) (t-distribution),
  []
@@ -1761,19 +1798,19 @@ Overfull \hbox (4.80984pt too wide) in paragraph at lines 95--96
 []\T1/cmtt/m/n/10.95 PredictionDeterminismOracle\T1/pplx/m/n/10.95 (-20) : same in-put $\OMS/zplm/m/n/10.95 !$ \T1/pplx/m/n/10.95 (-20) bit-identical out-put for ONNX
  []
 
-[14]
+[16]
 Overfull \hbox (25.11523pt too wide) in paragraph at lines 108--109
 []\T1/pplx/m/n/10.95 (-20) 8 ex-per-i-ments im-ple-mented as pytest scripts, pro-duc-ing CSV re-ports in \T1/cmtt/m/n/10.95 tests/reports/ 
  []
 
-[15] [16] [17]) (./chapters/05_evaluation.tex [18]
+[17] [18] [19]) (./chapters/05_evaluation.tex [20]
 chapter 5.
-[19
+[21
 
 
-] [20] [21] [22]) (./chapters/06_discussion.tex [23]
+] [22] [23] [24]) (./chapters/06_discussion.tex [25]
 chapter 6.
-[24
+[26
 
 
 ]
@@ -1781,41 +1818,45 @@ Overfull \hbox (10.36504pt too wide) in paragraph at lines 31--32
 []\T1/pplx/m/n/10.95 (-20) Limited mu-ta-tion test-ing scope: mut-mut only tar-gets unit tests; in-te-gra-tion/property
  []
 
-[25]) (./chapters/07_conclusion.tex [26]
+[27]) (./chapters/07_conclusion.tex [28]
 chapter 7.
-[27
+[29
 
 
-]) [28]
+]) [30]
 chapter without number
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-[29
+[31
 
 
 ]
-Package tocbasic Info: character protrusion at lof deactivated on input line 82.
+Package tocbasic Info: character protrusion at lof deactivated on input line 83.
  (./main.lof)
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
- [30
+ [32
 
 
 ]
-Package tocbasic Info: character protrusion at lot deactivated on input line 83.
+Package tocbasic Info: character protrusion at lot deactivated on input line 84.
  (./main.lot)
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
+ [33
 
 
-LaTeX Warning: Empty bibliography on input line 85.
-
+]
+chapter without number
+Package microtype Info: Character `029' is missing
+(microtype)             in font `T1/pplx/m/sc/10.95'.
+(microtype)             Ignoring protrusion settings for this character.
 No complaints by nag.
-[31
+[34
 
 
 ] (./main.aux)
@@ -1828,18 +1869,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 52548 strings out of 467525
- 1151039 string characters out of 5418983
- 2275755 words of memory out of 5000000
- 80194 multiletter control sequences out of 15000+600000
- 680903 words of font info for 309 fonts, out of 8000000 for 9000
+ 52843 strings out of 467525
+ 1157277 string characters out of 5418983
+ 2276689 words of memory out of 5000000
+ 80451 multiletter control sequences out of 15000+600000
+ 683210 words of font info for 328 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  108i,8n,107p,11258b,3812s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfsx1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (40 pages, 211862 bytes).
+</usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfsx1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on main.pdf (42 pages, 245116 bytes).
 PDF statistics:
- 603 PDF objects out of 1000 (max. 8388607)
- 533 compressed objects within 6 object streams
- 113 named destinations out of 1000 (max. 500000)
- 84531 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 710 PDF objects out of 1000 (max. 8388607)
+ 635 compressed objects within 7 object streams
+ 129 named destinations out of 1000 (max. 500000)
+ 82491 words of extra memory for PDF output out of 89155 (max. 10000000)
 

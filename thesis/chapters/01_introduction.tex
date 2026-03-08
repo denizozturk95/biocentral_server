@@ -5,46 +5,59 @@
 
 % ~3--4 pages
 
-\section{Motivation}
-\begin{itemize}
-  \item \ac{PLM}-based services (ESM2, ProtT5) are increasingly adopted in computational biology research
-  \item Biocentral is a published, production-grade platform for embedding-driven protein analysis (Franz et al., JMB 2026)
-  \item Traditional software testing assumes deterministic outputs and known expected values --- neither holds for ML embedding systems
-  \item Key challenges: no ground-truth oracle for embeddings, GPU non-determinism (floating-point), expensive compute for CI, model opacity
-  \item Testing these systems is essential but under-explored compared to model development
-\end{itemize}
+\section{Motivation}\label{sec:motivation}
 
-\section{Problem Statement}
-\begin{itemize}
-  \item Biocentral server has 8 API modules, GPU-accelerated inference (Triton), async task pipelines, and database-backed caching
-  \item Ensuring correctness across this stack requires a multi-layer test strategy
-  \item Property-based and metamorphic tests can validate ML behavior without ground truth, but are computationally expensive
-  \item Core tension: thorough testing vs.\ fast CI feedback loops
-\end{itemize}
+\ac{PLM}-based services have become a central component in computational biology research. Models such as ESM2 and ProtT5 encode protein sequences into high-dimensional embedding vectors that capture structural and functional properties learned from large-scale pre-training on protein databases~\cite{elnaggar2021prottranscrackinglanguagelifes}. These embeddings enable a broad range of downstream analyses, including secondary structure prediction, subcellular localization, and variant effect estimation, without requiring explicit feature engineering. As a result, embedding-driven systems are increasingly deployed as production services that expose \ac{PLM} capabilities through \ac{API} endpoints.
 
-\section{Research Question}
-\begin{itemize}
-  \item RQ: \emph{What is the trade-off between CI execution time and test coverage for property-based testing in embedding services?}
-  \item Sub-questions: Which test layers provide the most fault-detection value per unit of CI time? Can GPU-free deterministic embedders replace real models in CI without sacrificing coverage?
-\end{itemize}
+Biocentral is one such system: an open-source, production-grade platform for embedding-based protein analysis~\cite{Franz2025}. Its server component provides nine \ac{API} modules spanning embedding computation, prediction serving, dimensionality reduction, custom model training, and Bayesian optimization. The platform relies on \ac{GPU}-accelerated inference via NVIDIA Triton Inference Server, asynchronous task pipelines backed by Redis, and a PostgreSQL database for embedding caching. This architecture enables scalable protein analysis but introduces substantial complexity in the software stack that must be validated through systematic testing.
 
-\section{Contributions}
-\begin{itemize}
-  \item A multi-layer test pyramid for embedding-driven ML services: unit $\to$ integration $\to$ property/oracle $\to$ performance $\to$ metamorphic experiments
-  \item \texttt{FixedEmbedder}: a SHA-256-based deterministic embedder enabling the entire CI pipeline to run without GPUs
-  \item 8 metamorphic experiments validating PLM embedding behavior (X-masking, reversed sequences, AA mutation sensitivity) at UniRef50 scale
-  \item Oracle test pattern with statistical utilities (confidence intervals, effect sizes, significance thresholds)
-  \item Mutation testing (mutmut) evaluation of the unit test suite's fault-detection capability
-  \item Quantitative analysis of the time-vs-coverage trade-off across test layers
-\end{itemize}
+Traditional software testing relies on two fundamental assumptions: that program outputs are deterministic for a given input, and that expected outputs are known in advance. Neither assumption holds for \ac{ML} embedding systems. \ac{PLM} embeddings lack a ground-truth oracle; there is no reference output against which a given embedding vector can be verified as correct. \ac{GPU}-based floating-point arithmetic introduces non-determinism across hardware configurations and driver versions, meaning that identical inputs may produce numerically different outputs across runs~\cite{chandrasekaran2023testevaluationbest}. Furthermore, the computational cost of loading and executing large transformer models renders exhaustive test execution impractical within typical \ac{CI} time budgets. These characteristics---the absence of an oracle, hardware-induced non-determinism, and prohibitive compute requirements---distinguish \ac{ML} embedding services from conventional software systems and demand testing approaches specifically adapted to these constraints.
 
-\section{Thesis Outline}
-\begin{itemize}
-  \item Brief description of each subsequent chapter (1--2 sentences each)
-  \item Chapter 2: Background on PLMs, biocentral, testing theory
-  \item Chapter 3: Related work on ML system testing
-  \item Chapter 4: Approach --- test architecture, infrastructure, and experiment design
-  \item Chapter 5: Evaluation --- results and trade-off analysis
-  \item Chapter 6: Discussion --- generalizability, limitations, threats to validity
-  \item Chapter 7: Conclusion and future work
-\end{itemize}
+Despite the growing deployment of \ac{PLM}-based services, the problem of testing such systems remains under-explored relative to the attention devoted to model development and training. Research on \ac{CI} practices in \ac{ML} projects indicates that testing is frequently deprioritized in favor of model performance optimization~\cite{bernardo2025continuousintegrationpracticesmachine, rzig2025empiricalanalysiscicdpipeline}. This imbalance is problematic: deployment-grade \ac{ML} services must satisfy not only model-level accuracy requirements but also system-level correctness guarantees covering \ac{API} contracts, data pipeline integrity, caching consistency, and inference reproducibility.
+
+\section{Problem Statement}\label{sec:problem-statement}
+
+The Biocentral server integrates nine \ac{API} modules, \ac{GPU}-accelerated inference through Triton, asynchronous task pipelines with worker processes, and database-backed embedding caching into a single deployable system. Each of these components introduces distinct failure modes: \ac{API} endpoints may violate their contracts, the inference server may produce inconsistent results across model versions, task pipelines may lose or corrupt intermediate state, and the caching layer may serve stale or incorrectly keyed embeddings. Ensuring correctness across this heterogeneous stack requires a test strategy that addresses each layer individually while also validating the interactions between layers.
+
+Conventional unit and integration tests are necessary but insufficient for this setting. Unit tests verify isolated functions but cannot detect faults that arise from component interactions or from the statistical nature of \ac{ML} outputs. Integration tests validate system-level workflows but depend on infrastructure availability and do not address the oracle problem inherent in embedding computation. Property-based and metamorphic testing techniques offer a principled approach to validating \ac{ML} behavior in the absence of ground truth---for example, by asserting that semantically similar inputs produce similar embeddings, or that known sequence transformations induce predictable changes in embedding space. However, these techniques require executing real \ac{PLM} inference, which is computationally expensive and typically demands \ac{GPU} hardware.
+
+This creates a fundamental tension between test thoroughness and \ac{CI} execution time. A comprehensive test suite that includes property-based and metamorphic tests over large protein datasets may require hours of \ac{GPU} computation, rendering it impractical for execution on every commit. Conversely, a fast test suite restricted to unit and lightweight integration tests may fail to detect faults specific to \ac{ML} inference behavior. The central problem addressed in this thesis is therefore the design and evaluation of a multi-layer test strategy for embedding-driven \ac{ML} services that balances fault-detection capability against the practical constraints of \ac{CI} pipelines.
+
+\section{Research Question}\label{sec:research-question}
+
+The preceding observations motivate the following research question:
+
+\begin{quote}
+  \ac{RQ}: \emph{What is the trade-off between \ac{CI} execution time and fault-detection capability when applying property-based and metamorphic testing to embedding-driven \ac{ML} services?}
+\end{quote}
+
+\noindent This question is decomposed into two sub-questions. First, which test layers---unit, integration, property-based, or metamorphic---provide the highest fault-detection value per unit of \ac{CI} time? Second, can \ac{GPU}-free deterministic embedders replace real \ac{PLM} models in \ac{CI} pipelines without reducing the structural coverage achieved by the test suite?
+
+\section{Contributions}\label{sec:contributions}
+
+This thesis makes the following contributions:
+
+\begin{enumerate}
+  \item A multi-layer test pyramid tailored to embedding-driven \ac{ML} services, organized into five layers: unit tests, integration tests, property-based and oracle tests, performance benchmarks, and metamorphic experiments.
+  \item \texttt{FixedEmbedder}, a SHA-256-based deterministic embedder that produces reproducible embedding vectors from protein sequences without requiring \ac{GPU} hardware or neural network inference. This component enables the full \ac{CI} pipeline to execute on commodity hardware.
+  \item Eight metamorphic experiments that validate \ac{PLM} embedding behavior under controlled sequence transformations, including unknown-token masking, sequence reversal, and single-residue mutation sensitivity, evaluated at UniRef50 scale.
+  \item An oracle test pattern supported by statistical utilities for confidence interval estimation, effect size computation, and significance threshold evaluation, enabling quantitative assertions on \ac{ML} outputs.
+  \item A mutation testing evaluation using \texttt{mutmut} that quantifies the fault-detection capability of the unit test suite.
+  \item A quantitative analysis of the trade-off between \ac{CI} execution time and fault-detection coverage across the test layers, providing empirical guidance for test portfolio selection.
+\end{enumerate}
+
+\section{Thesis Outline}\label{sec:outline}
+
+The remainder of this thesis is organized as follows.
+
+\autoref{chapter:background} introduces the foundational concepts underlying this work, including \ac{PLM} architectures and their embedding representations, the Biocentral platform and its server-side components, and software testing fundamentals from the test pyramid to property-based and metamorphic testing.
+
+\autoref{chapter:related-work} surveys related work on testing \ac{ML} systems, covering metamorphic testing for deep learning, testing practices in scientific software, and property-based testing approaches for data pipelines.
+
+\autoref{chapter:approach} presents the test architecture, infrastructure design, and experimental methodology. This includes the five-layer test pyramid, the \texttt{FixedEmbedder} design, the canonical test dataset, integration test infrastructure, and the metamorphic experiment specifications.
+
+\autoref{chapter:evaluation} reports the evaluation results, including code coverage and mutation testing metrics, \ac{CI} execution time measurements per test layer, and the quantitative trade-off analysis between testing thoroughness and pipeline speed.
+
+\autoref{chapter:discussion} interprets the findings, assesses generalizability to other \ac{ML} service architectures, acknowledges limitations of the approach, and identifies threats to internal, external, and construct validity.
+
+\autoref{chapter:conclusion} summarizes the contributions and outlines directions for future work.

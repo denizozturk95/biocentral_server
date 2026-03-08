@@ -1,68 +1,69 @@
 \babel@toc {american}{}\relax 
-\contentsline {chapter}{Transparency in the Use of AI Tools}{iii}{chapter*.1}%
-\contentsline {chapter}{Acknowledgments}{iv}{chapter*.1}%
-\contentsline {chapter}{\nonumberline Abstract}{v}{chapter*.2}%
+\contentsline {chapter}{Transparency in the Use of AI Tools}{3}{chapter*.1}%
+\contentsline {chapter}{Acknowledgments}{4}{chapter*.1}%
+\contentsline {chapter}{\nonumberline Abstract}{5}{chapter*.2}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Motivation}{1}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Problem Statement}{1}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Research Question}{1}{section.1.3}%
-\contentsline {section}{\numberline {1.4}Contributions}{2}{section.1.4}%
-\contentsline {section}{\numberline {1.5}Thesis Outline}{2}{section.1.5}%
-\contentsline {chapter}{\numberline {2}Background}{3}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Protein Language Models}{3}{section.2.1}%
-\contentsline {section}{\numberline {2.2}The Biocentral Platform}{3}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Software Testing Fundamentals}{4}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Challenges of Testing ML Systems}{5}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Metamorphic Testing}{5}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Property-Based and Oracle Testing}{6}{section.2.6}%
-\contentsline {chapter}{\numberline {3}Related Work}{8}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Testing Machine Learning Systems}{8}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Metamorphic Testing for Deep Learning}{8}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Testing Scientific and Bioinformatics Software}{9}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Property-Based Testing for Data Pipelines}{9}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Research Gap}{9}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Approach}{11}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Overall Test Architecture}{11}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Test Infrastructure}{11}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Canonical Test Dataset}{11}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}FixedEmbedder}{12}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Integration Test Infrastructure}{12}{subsection.4.2.3}%
-\contentsline {section}{\numberline {4.3}Unit Tests}{13}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Integration Tests}{13}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Property-Based Oracle Tests}{14}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Metamorphic Experiments}{15}{section.4.6}%
-\contentsline {subsection}{\numberline {4.6.1}Idempotency}{15}{subsection.4.6.1}%
-\contentsline {subsection}{\numberline {4.6.2}Batch Invariance}{15}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}Progressive X-Masking}{16}{subsection.4.6.3}%
-\contentsline {subsection}{\numberline {4.6.4}Reversed Sequence}{16}{subsection.4.6.4}%
-\contentsline {subsection}{\numberline {4.6.5}Amino Acid Mutation Sensitivity}{16}{subsection.4.6.5}%
-\contentsline {subsection}{\numberline {4.6.6}Random Baseline}{17}{subsection.4.6.6}%
-\contentsline {subsection}{\numberline {4.6.7}Projection Determinism}{17}{subsection.4.6.7}%
-\contentsline {subsection}{\numberline {4.6.8}Training Determinism}{17}{subsection.4.6.8}%
-\contentsline {section}{\numberline {4.7}Performance Tests}{17}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Mutation Testing}{18}{section.4.8}%
-\contentsline {chapter}{\numberline {5}Evaluation}{19}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Experimental Setup}{19}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Test Coverage and Mutation Testing Results}{19}{section.5.2}%
-\contentsline {section}{\numberline {5.3}CI Execution Time Analysis}{20}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Metamorphic Experiment Results}{20}{section.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}X-Masking Results}{20}{subsection.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Reversed Sequence Results}{21}{subsection.5.4.2}%
-\contentsline {subsection}{\numberline {5.4.3}AA Mutation Sensitivity Results}{21}{subsection.5.4.3}%
-\contentsline {section}{\numberline {5.5}Oracle Test Findings}{22}{section.5.5}%
-\contentsline {section}{\numberline {5.6}Performance Results}{22}{section.5.6}%
-\contentsline {section}{\numberline {5.7}Discussion of Results}{22}{section.5.7}%
-\contentsline {chapter}{\numberline {6}Discussion}{24}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Trade-Off Summary}{24}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Generalizability}{24}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Limitations}{25}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Threats to Validity}{25}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Conclusion}{27}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Summary of Contributions}{27}{section.7.1}%
-\contentsline {section}{\numberline {7.2}Key Findings}{27}{section.7.2}%
-\contentsline {section}{\numberline {7.3}Future Work}{28}{section.7.3}%
+\contentsline {section}{\numberline {1.2}Problem Statement}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Research Question}{3}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Contributions}{3}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Thesis Outline}{4}{section.1.5}%
+\contentsline {chapter}{\numberline {2}Background}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Protein Language Models}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}The Biocentral Platform}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Software Testing Fundamentals}{6}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Challenges of Testing ML Systems}{7}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Metamorphic Testing}{7}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Property-Based and Oracle Testing}{8}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Related Work}{10}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Testing Machine Learning Systems}{10}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Metamorphic Testing for Deep Learning}{10}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Testing Scientific and Bioinformatics Software}{11}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Property-Based Testing for Data Pipelines}{11}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Research Gap}{11}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Approach}{13}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Overall Test Architecture}{13}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Test Infrastructure}{13}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Canonical Test Dataset}{13}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}FixedEmbedder}{14}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Integration Test Infrastructure}{14}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Unit Tests}{15}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Integration Tests}{15}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Property-Based Oracle Tests}{16}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Metamorphic Experiments}{17}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}Idempotency}{17}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}Batch Invariance}{17}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}Progressive X-Masking}{18}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.4}Reversed Sequence}{18}{subsection.4.6.4}%
+\contentsline {subsection}{\numberline {4.6.5}Amino Acid Mutation Sensitivity}{18}{subsection.4.6.5}%
+\contentsline {subsection}{\numberline {4.6.6}Random Baseline}{19}{subsection.4.6.6}%
+\contentsline {subsection}{\numberline {4.6.7}Projection Determinism}{19}{subsection.4.6.7}%
+\contentsline {subsection}{\numberline {4.6.8}Training Determinism}{19}{subsection.4.6.8}%
+\contentsline {section}{\numberline {4.7}Performance Tests}{19}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Mutation Testing}{20}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Evaluation}{21}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Experimental Setup}{21}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Test Coverage and Mutation Testing Results}{21}{section.5.2}%
+\contentsline {section}{\numberline {5.3}CI Execution Time Analysis}{22}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Metamorphic Experiment Results}{22}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}X-Masking Results}{22}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Reversed Sequence Results}{23}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}AA Mutation Sensitivity Results}{23}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}Oracle Test Findings}{24}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Performance Results}{24}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Discussion of Results}{24}{section.5.7}%
+\contentsline {chapter}{\numberline {6}Discussion}{26}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Trade-Off Summary}{26}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Generalizability}{26}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Limitations}{27}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Threats to Validity}{27}{section.6.4}%
+\contentsline {chapter}{\numberline {7}Conclusion}{29}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Summary of Contributions}{29}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Key Findings}{29}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Future Work}{30}{section.7.3}%
 \def \@chapapp {\appendixname }
-\contentsline {chapter}{\nonumberline Abbreviations}{29}{chapter*.5}%
-\contentsline {chapter}{\nonumberline List of Figures}{30}{chapter*.6}%
-\contentsline {chapter}{\nonumberline List of Tables}{31}{chapter*.7}%
+\contentsline {chapter}{\nonumberline Abbreviations}{31}{chapter*.10}%
+\contentsline {chapter}{\nonumberline List of Figures}{32}{chapter*.11}%
+\contentsline {chapter}{\nonumberline List of Tables}{33}{chapter*.12}%
+\contentsline {chapter}{\nonumberline Bibliography}{34}{chapter*.13}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -16,5 +16,354 @@
   {}
 \endgroup
 
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global/global}
+    \entry{bernardo2025continuousintegrationpracticesmachine}{misc}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=80747864a6b908233e35f5a08696f3de}{%
+           family={Bernardo},
+           familyi={B\bibinitperiod},
+           given={João\bibnamedelima Helis},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4320775d0012fd00deed4fb6b6a1bcc9}{%
+           family={Costa},
+           familyi={C\bibinitperiod},
+           given={Daniel\bibnamedelima Alencar},
+           giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0,
+           prefix={da},
+           prefixi={d\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=f0d06f1fe5a1b84e2039d6ca9b9705f3}{%
+           family={Cogo},
+           familyi={C\bibinitperiod},
+           given={Filipe\bibnamedelima Roseiro},
+           giveni={F\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b21c9c749db6b216d6da67df9b2fdb4f}{%
+           family={Medeiros},
+           familyi={M\bibinitperiod},
+           given={Sérgio\bibnamedelima Queiróz},
+           giveni={S\bibinitperiod\bibinitdelim Q\bibinitperiod},
+           givenun=0,
+           prefix={de},
+           prefixi={d\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=07ad78297e07c9e59f20f84a97ddf038}{%
+           family={Kulesza},
+           familyi={K\bibinitperiod},
+           given={Uirá},
+           giveni={U\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a990ed4aa580c74fb34d6567473ddc0d}
+      \strng{fullhash}{174920e1bcfee8c0f5cb40255c5357c4}
+      \strng{fullhashraw}{174920e1bcfee8c0f5cb40255c5357c4}
+      \strng{bibnamehash}{174920e1bcfee8c0f5cb40255c5357c4}
+      \strng{authorbibnamehash}{174920e1bcfee8c0f5cb40255c5357c4}
+      \strng{authornamehash}{a990ed4aa580c74fb34d6567473ddc0d}
+      \strng{authorfullhash}{174920e1bcfee8c0f5cb40255c5357c4}
+      \strng{authorfullhashraw}{174920e1bcfee8c0f5cb40255c5357c4}
+      \field{labelalpha}{Ber+25}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.SE}
+      \field{eprinttype}{arXiv}
+      \field{title}{Continuous Integration Practices in Machine Learning Projects: The Practitioners` Perspective}
+      \field{year}{2025}
+      \verb{eprint}
+      \verb 2502.17378
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2502.17378
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2502.17378
+      \endverb
+    \endentry
+    \entry{chandrasekaran2023testevaluationbest}{misc}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=78d8ce9a00ff136689272bb352aa1ad7}{%
+           family={Chandrasekaran},
+           familyi={C\bibinitperiod},
+           given={Jaganmohan},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2087d22fb45a26cb9180e61c17f74b1d}{%
+           family={Cody},
+           familyi={C\bibinitperiod},
+           given={Tyler},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0b06245b30ee2185970dddcda7d9d9f5}{%
+           family={McCarthy},
+           familyi={M\bibinitperiod},
+           given={Nicola},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7c60512f46737519f37e413b32c16e0e}{%
+           family={Lanus},
+           familyi={L\bibinitperiod},
+           given={Erin},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cf504bbae224a7126297f4acdb4fcb22}{%
+           family={Freeman},
+           familyi={F\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b502a56803c67ea80be3002704f5f091}
+      \strng{fullhash}{5dbd072f594d80b20cba4a9a2624f871}
+      \strng{fullhashraw}{5dbd072f594d80b20cba4a9a2624f871}
+      \strng{bibnamehash}{5dbd072f594d80b20cba4a9a2624f871}
+      \strng{authorbibnamehash}{5dbd072f594d80b20cba4a9a2624f871}
+      \strng{authornamehash}{b502a56803c67ea80be3002704f5f091}
+      \strng{authorfullhash}{5dbd072f594d80b20cba4a9a2624f871}
+      \strng{authorfullhashraw}{5dbd072f594d80b20cba4a9a2624f871}
+      \field{labelalpha}{Cha+23}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.SE}
+      \field{eprinttype}{arXiv}
+      \field{title}{Test \& Evaluation Best Practices for Machine Learning-Enabled Systems}
+      \field{year}{2023}
+      \verb{eprint}
+      \verb 2310.06800
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2310.06800
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2310.06800
+      \endverb
+    \endentry
+    \entry{elnaggar2021prottranscrackinglanguagelifes}{misc}{}{}
+      \name{author}{12}{}{%
+        {{un=0,uniquepart=base,hash=ffe73c593e2a87fe360a38cbda274f31}{%
+           family={Elnaggar},
+           familyi={E\bibinitperiod},
+           given={Ahmed},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c04fca9e06da18cb002f115133913d24}{%
+           family={Heinzinger},
+           familyi={H\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=381edeaec659df830008a0b2d8646834}{%
+           family={Dallago},
+           familyi={D\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2a031c9dccb588a005a334df6d4ca0cf}{%
+           family={Rihawi},
+           familyi={R\bibinitperiod},
+           given={Ghalia},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b2eccb185095fccfeb40fdffd8b2105f}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2fd2982e30ebcec93ec1cf76e0d797fd}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Llion},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ef99e5f5de2e799b18169a1945451fdd}{%
+           family={Gibbs},
+           familyi={G\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fe3319a4eb730f5484bfff0eb08493f4}{%
+           family={Feher},
+           familyi={F\bibinitperiod},
+           given={Tamas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6f148a1f82c1e04b4a3ef4350c3f0ad5}{%
+           family={Angerer},
+           familyi={A\bibinitperiod},
+           given={Christoph},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c06ac6a6fdcf2ee2092d61fc58c1f21b}{%
+           family={Steinegger},
+           familyi={S\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c0d55bd9ed798928c283ce5b8563638c}{%
+           family={Bhowmik},
+           familyi={B\bibinitperiod},
+           given={Debsindhu},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=66106370d9aa16054179da646f7df55c}{%
+           family={Rost},
+           familyi={R\bibinitperiod},
+           given={Burkhard},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0b41c58aea050e4340e153e891cb2e0d}
+      \strng{fullhash}{3024b64bdd8c26260ae6bc9e9345b0a9}
+      \strng{fullhashraw}{3024b64bdd8c26260ae6bc9e9345b0a9}
+      \strng{bibnamehash}{3024b64bdd8c26260ae6bc9e9345b0a9}
+      \strng{authorbibnamehash}{3024b64bdd8c26260ae6bc9e9345b0a9}
+      \strng{authornamehash}{0b41c58aea050e4340e153e891cb2e0d}
+      \strng{authorfullhash}{3024b64bdd8c26260ae6bc9e9345b0a9}
+      \strng{authorfullhashraw}{3024b64bdd8c26260ae6bc9e9345b0a9}
+      \field{labelalpha}{Eln+21}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.LG}
+      \field{eprinttype}{arXiv}
+      \field{title}{ProtTrans: Towards Cracking the Language of Life's Code Through Self-Supervised Deep Learning and High Performance Computing}
+      \field{year}{2021}
+      \verb{eprint}
+      \verb 2007.06225
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2007.06225
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2007.06225
+      \endverb
+    \endentry
+    \entry{Franz2025}{misc}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=07f272cae8fcc820a70c818e895fe260}{%
+           family={Franz},
+           familyi={F\bibinitperiod},
+           given={Sebastian},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f7db09e1ac73053f0897a18a5032094c}{%
+           family={Olenyi},
+           familyi={O\bibinitperiod},
+           given={Tobias},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2d55a3808b84ab12a1a6d5178da3312b}{%
+           family={Schloetermann},
+           familyi={S\bibinitperiod},
+           given={Paula},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7156d44971392ed4abafa5a45046d6be}{%
+           family={Smaoui},
+           familyi={S\bibinitperiod},
+           given={Amine},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f53fad45a9411745e4e729acb14d1a0f}{%
+           family={Jimenez-Soto},
+           familyi={J\bibinithyphendelim S\bibinitperiod},
+           given={Luisa\bibnamedelima F.},
+           giveni={L\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=66106370d9aa16054179da646f7df55c}{%
+           family={Rost},
+           familyi={R\bibinitperiod},
+           given={Burkhard},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cold Spring Harbor Laboratory}%
+      }
+      \strng{namehash}{b42268b81cafda55f4cdb7683f5c318d}
+      \strng{fullhash}{bc52f929e8ab06494236253f9163b9ae}
+      \strng{fullhashraw}{bc52f929e8ab06494236253f9163b9ae}
+      \strng{bibnamehash}{bc52f929e8ab06494236253f9163b9ae}
+      \strng{authorbibnamehash}{bc52f929e8ab06494236253f9163b9ae}
+      \strng{authornamehash}{b42268b81cafda55f4cdb7683f5c318d}
+      \strng{authorfullhash}{bc52f929e8ab06494236253f9163b9ae}
+      \strng{authorfullhashraw}{bc52f929e8ab06494236253f9163b9ae}
+      \field{labelalpha}{Fra+25}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{11}
+      \field{title}{biocentral: embedding-based protein predictions}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.1101/2025.11.21.689449
+      \endverb
+    \endentry
+    \entry{rzig2025empiricalanalysiscicdpipeline}{misc}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=39fd1011b125e07f685dbc54690ccab0}{%
+           family={Rzig},
+           familyi={R\bibinitperiod},
+           given={Dhia\bibnamedelima Elhaq},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ec2c3cf91e7f6b58cf630239cdca215a}{%
+           family={Houerbi},
+           familyi={H\bibinitperiod},
+           given={Alaa},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=160108dbee836bd671b3ffb9ced49bb4}{%
+           family={Chavan},
+           familyi={C\bibinitperiod},
+           given={Rahul\bibnamedelima Ghanshyam},
+           giveni={R\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=170ef29a1ae10c951e348afe5f3afcfd}{%
+           family={Hassan},
+           familyi={H\bibinitperiod},
+           given={Foyzul},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{fullhash}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{fullhashraw}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{bibnamehash}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{authorbibnamehash}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{authornamehash}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{authorfullhash}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \strng{authorfullhashraw}{2f6d2bf730d1a94e4bdfcf89f380035f}
+      \field{labelalpha}{Rzi+25}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{cs.SE}
+      \field{eprinttype}{arXiv}
+      \field{title}{Empirical Analysis on CI/CD Pipeline Evolution in Machine Learning Projects}
+      \field{year}{2025}
+      \verb{eprint}
+      \verb 2403.12199
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2403.12199
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2403.12199
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
 \endinput
 
