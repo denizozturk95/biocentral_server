@@ -2378,6 +2378,29 @@
     <bcf:citekey order="3" intorder="1">chandrasekaran2023testevaluationbest</bcf:citekey>
     <bcf:citekey order="4" intorder="1">bernardo2025continuousintegrationpracticesmachine</bcf:citekey>
     <bcf:citekey order="4" intorder="2">rzig2025empiricalanalysiscicdpipeline</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">suzek2015uniref</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">lin2023evolutionary</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">elnaggar2021prottranscrackinglanguagelifes</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">Franz2025</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">chen1998metamorphic</bcf:citekey>
+    <bcf:citekey order="10" intorder="1">chen1998metamorphic</bcf:citekey>
+    <bcf:citekey order="11" intorder="1">segura2016survey</bcf:citekey>
+    <bcf:citekey order="12" intorder="1">xie2011testing</bcf:citekey>
+    <bcf:citekey order="13" intorder="1">tian2018deeptest</bcf:citekey>
+    <bcf:citekey order="14" intorder="1">pei2017deepxplore</bcf:citekey>
+    <bcf:citekey order="15" intorder="1">odena2019tensorfuzz</bcf:citekey>
+    <bcf:citekey order="16" intorder="1">zhang2020machine</bcf:citekey>
+    <bcf:citekey order="17" intorder="1">braiek2020testing</bcf:citekey>
+    <bcf:citekey order="18" intorder="1">chen1998metamorphic</bcf:citekey>
+    <bcf:citekey order="19" intorder="1">segura2016survey</bcf:citekey>
+    <bcf:citekey order="20" intorder="1">xie2011testing</bcf:citekey>
+    <bcf:citekey order="21" intorder="1">murphy2008properties</bcf:citekey>
+    <bcf:citekey order="22" intorder="1">dwarakanath2018identifying</bcf:citekey>
+    <bcf:citekey order="23" intorder="1">kanewala2014testing</bcf:citekey>
+    <bcf:citekey order="24" intorder="1">hook2009mutation</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">storer2017bridging</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">claessen2000quickcheck</bcf:citekey>
+    <bcf:citekey order="27" intorder="1">maciver2019hypothesis</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="anyt">

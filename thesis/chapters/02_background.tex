@@ -2,91 +2,74 @@
 
 \chapter{Background}\label{chapter:background}
 
-% ~7--9 pages
+This chapter introduces the foundational concepts that underlie the testing strategy developed in this thesis. It covers protein language models and their embedding representations, the Biocentral platform architecture, classical software testing principles, the specific challenges of testing \ac{ML} systems, and two testing paradigms---metamorphic testing and property-based oracle testing---that address the oracle problem inherent in embedding-driven services.
 
 \section{Protein Language Models}\label{sec:plms}
-\begin{itemize}
-  \item Proteins as sequences of amino acids; 20 standard residues + special tokens (X, B, Z, U, O)
-  \item Language model paradigm: treat protein sequences like natural language sentences
-  \item Transformer architecture applied to proteins (self-attention, positional encoding)
-  \item Pre-training objective: masked language modeling on large protein databases (UniRef, BFD)
-  \item Key models: ESM2 (Meta, 8M to 15B parameters), ProtT5 (Elnaggar et al.), ProstT5
-  \item Embeddings: per-residue (sequence length $\times$ hidden dim) vs.\ pooled (single vector per protein via mean reduction)
-  \item Downstream tasks enabled by embeddings: secondary structure prediction, subcellular localization, binding site prediction, disorder prediction, conservation, variant effects
-  \item Baseline encodings for comparison: one-hot encoding, BLOSUM62 substitution matrix
-\end{itemize}
+
+Proteins are linear chains of amino acids, drawn from an alphabet of 20 standard residues. Additional special tokens represent non-standard or ambiguous residues: X denotes an unknown amino acid, while B, Z, U, and O encode asparagine-or-aspartate ambiguity, glutamine-or-glutamate ambiguity, selenocysteine, and pyrrolysine, respectively. Each protein's biological function is determined by its amino acid sequence, which folds into a three-dimensional structure.
+
+The protein language model paradigm treats amino acid sequences analogously to sentences in natural language. Transformer architectures, originally developed for machine translation, have been adapted to learn representations of protein sequences through self-supervised pre-training on large protein databases. These models employ self-attention mechanisms that capture dependencies between residues at arbitrary sequence positions, combined with positional encodings that preserve information about residue order.
+
+The dominant pre-training objective is masked language modeling: a fraction of residues in each sequence is replaced with a mask token, and the model is trained to predict the original residues from context. Pre-training is performed on large-scale databases such as UniRef~\cite{suzek2015uniref} and BFD. Key models include ESM2 from Meta AI, which spans model sizes from 8 million to 15 billion parameters~\cite{lin2023evolutionary}, and ProtTrans, a family of models including ProtT5 that was trained using high-performance computing infrastructure~\cite{elnaggar2021prottranscrackinglanguagelifes}.
+
+These models produce two types of embedding representations. Per-residue embeddings yield a matrix of dimensions $L \times d$, where $L$ is the sequence length and $d$ is the hidden dimension of the model. Pooled embeddings reduce this matrix to a single vector of dimension $d$ by computing the mean across residue positions, producing a fixed-size representation for each protein regardless of sequence length. These embeddings enable a broad range of downstream tasks without task-specific retraining, including secondary structure prediction, subcellular localization, binding site prediction, disorder prediction, conservation scoring, and variant effect estimation.
+
+For comparison and baseline purposes, simpler encoding schemes exist. One-hot encoding represents each amino acid as a binary vector of length 20, where only the position corresponding to the amino acid is set to one. The BLOSUM62 substitution matrix provides an alternative representation based on observed amino acid substitution frequencies in aligned protein families.
 
 \section{The Biocentral Platform}\label{sec:biocentral}
-\begin{itemize}
-  \item Overview: open-source platform for embedding-based protein analysis (Franz et al., JMB 2026)
-  \item Client-server architecture: Flutter desktop client + FastAPI backend
-  \item Server components: FastAPI web framework, Redis task queue (rq), PostgreSQL embedding database, SeaweedFS file storage, NVIDIA Triton Inference Server for GPU inference
-  \item Docker Compose orchestration: 7+ services (server, workers, Redis, PostgreSQL, SeaweedFS, Triton, Prometheus)
-  \item Async task pattern: POST returns \texttt{task\_id} $\to$ client polls \texttt{/task\_status/\{task\_id\}} until completion
-  \item Worker model: 4 RQ worker processes with priority queues (high, default, low)
-  \item API modules overview (each under \texttt{/api/v1/}):
-    \begin{itemize}
-      \item Embeddings: compute PLM embeddings, cache in PostgreSQL, HDF5 import/export
-      \item Predictions: 9 pre-trained ONNX models (TMbed, Seth, BindEmbed, VespaG, etc.)
-      \item Projections: PCA, UMAP, t-SNE via ProtSpace library
-      \item Custom Models: train/evaluate custom ML models via biotrainer
-      \item Active Learning / Bayesian Optimization: GP and FNN-based iterative protein engineering
-      \item PLM Eval: automated PLM benchmarking
-      \item PPI: protein-protein interaction dataset analysis
-      \item Proteins: taxonomy lookup
-    \end{itemize}
-  \item Middleware: CORS, rate limiting (FastAPI-Limiter), body size limits (200\,MB), user management via request headers
-  \item Figure idea: architecture diagram showing client $\to$ server $\to$ workers $\to$ Triton/DB
-\end{itemize}
+
+Biocentral is an open-source platform for embedding-based protein analysis~\cite{Franz2025}. It follows a client-server architecture: a Flutter-based desktop client provides the graphical user interface, while a FastAPI backend handles computation, data management, and \ac{ML} inference.
+
+The server component integrates several infrastructure services orchestrated via Docker Compose. The core web server is built on FastAPI and exposes a \ac{REST} \ac{API}. Computationally expensive tasks---such as embedding computation or model training---are dispatched to background workers via Redis Queue (rq), which manages four worker processes organized into priority queues (high, default, low). Computed embeddings are cached in a PostgreSQL database to avoid redundant recomputation. File storage is handled by SeaweedFS, a distributed object store. \ac{GPU}-accelerated inference is provided by NVIDIA Triton Inference Server, which serves pre-trained \ac{PLM} and prediction models. Prometheus collects metrics for monitoring. In total, the Docker Compose deployment consists of seven or more interconnected services.
+
+The asynchronous task pattern follows a polling model: the client submits a request via HTTP POST, receives a \texttt{task\_id} in response, and subsequently polls the \texttt{/task\_status/\{task\_id\}} endpoint until the task reaches a terminal state. This decouples long-running computations from the request-response cycle.
+
+The server exposes nine \ac{API} modules under \texttt{/api/v1/}. The \emph{embeddings} module computes \ac{PLM} embeddings, caches them in PostgreSQL, and supports HDF5 import and export. The \emph{predictions} module serves nine pre-trained \ac{ONNX} models including TMbed, SETH, BindEmbed, and VespaG for tasks such as transmembrane topology prediction and variant effect estimation. The \emph{projections} module performs dimensionality reduction via \ac{PCA}, \ac{UMAP}, and \ac{t-SNE} using the ProtSpace library. The \emph{custom models} module enables users to train and evaluate \ac{ML} models on their own data via biotrainer. The \emph{active learning} module supports Bayesian optimization with \ac{GP} and \ac{FNN} surrogate models for iterative protein engineering. The \emph{PLM eval} module provides automated benchmarking of protein language models. The \emph{PPI} module handles protein-protein interaction dataset analysis, and the \emph{proteins} module provides taxonomy lookup functionality.
+
+The server applies middleware for cross-origin resource sharing, rate limiting via FastAPI-Limiter, request body size limits of 200\,MB, and user management through request headers.
 
 \section{Software Testing Fundamentals}\label{sec:testing-fundamentals}
-\begin{itemize}
-  \item The test pyramid: unit tests (fast, isolated, mocked) $\to$ integration tests (component interaction, live services) $\to$ system/E2E tests (full stack)
-  \item Unit testing: test isolation via mocking/stubbing, fast feedback, high coverage of edge cases
-  \item Integration testing: verify component interactions, database queries, API contracts, async flows
-  \item Test-driven development and continuous integration (CI): run tests on every commit, fast feedback loops
-  \item Key concepts: test fixtures, parametrization, markers, session-scoped setup
-  \item Pytest framework: markers (\texttt{@pytest.mark.integration}, \texttt{@pytest.mark.slow}), fixtures, conftest.py hierarchy
-  \item Code coverage vs.\ fault detection: coverage measures executed lines, not correctness
-  \item Mutation testing: inject syntactic faults (mutants), check if tests detect them (mutation score), mutmut tool
-\end{itemize}
+
+The test pyramid is a widely adopted model for organizing automated tests into layers of increasing scope and decreasing execution speed. At the base, unit tests verify individual functions or classes in isolation, using mocking and stubbing to replace external dependencies. Unit tests execute quickly, typically in milliseconds, and provide fast feedback on localized code changes. The middle layer consists of integration tests, which verify interactions between components: database queries return expected results, \ac{API} endpoints honor their contracts, and asynchronous task flows complete correctly. At the top, system or end-to-end tests exercise the full application stack.
+
+Continuous integration (\ac{CI}) is the practice of running automated tests on every code commit, providing rapid feedback to developers and preventing regressions from reaching production. The pytest framework, the standard testing tool for Python, supports this workflow through markers that classify tests (e.g., \texttt{@pytest.mark.integration}, \texttt{@pytest.mark.slow}), fixtures for reusable setup and teardown logic, parametrization for running the same test logic across multiple inputs, and a hierarchical \texttt{conftest.py} system for sharing fixtures across test modules.
+
+Code coverage measures the fraction of source code lines or branches exercised by a test suite. While coverage is a useful proxy for test thoroughness, it does not measure fault-detection capability: a test suite may execute every line without checking that the outputs are correct. Mutation testing addresses this gap by injecting small syntactic faults---called mutants---into the source code (e.g., replacing \texttt{+} with \texttt{-}, negating conditionals, deleting statements) and checking whether any test fails. The mutation score, defined as the ratio of killed mutants to total mutants, provides a more meaningful measure of test suite quality than coverage alone. The mutmut tool implements mutation testing for Python.
 
 \section{Challenges of Testing ML Systems}\label{sec:ml-testing-challenges}
-\begin{itemize}
-  \item The oracle problem: no known ``correct'' output for a given protein embedding --- cannot write \texttt{assert embedding == expected}
-  \item Non-determinism: GPU floating-point operations are non-associative; batch ordering, cuDNN algorithm selection, and parallelism cause bit-level variation
-  \item Data dependency: model behavior depends on training data, not just code --- traditional unit tests miss data-induced bugs
-  \item Computational cost: embedding a single protein can take seconds on GPU; full test suites with real models are prohibitively slow for CI
-  \item Model opacity: transformer internals are not interpretable --- testing must focus on behavioral properties rather than internal state
-  \item Infrastructure complexity: multi-service deployments (server + workers + GPU + DB + file storage) create integration failure modes absent in monolithic software
-  \item Versioning: model weights, tokenizers, and inference frameworks (ONNX, Triton) must all be version-consistent
-\end{itemize}
+
+Testing \ac{ML} systems differs fundamentally from testing conventional software due to several characteristics that violate standard testing assumptions.
+
+The \emph{oracle problem} is the most fundamental challenge. For a conventional function, the developer can specify the expected output for a given input and write an assertion to verify it. For protein embeddings, no such ground truth exists: there is no reference embedding vector against which a computed embedding can be verified as correct. It is not possible to write \texttt{assert embedding == expected} because the expected value is unknown.
+
+\emph{Non-determinism} arises from the hardware and software stack used for inference. \ac{GPU} floating-point arithmetic is non-associative---the order in which additions are performed affects the result at the level of least-significant bits. cuDNN algorithm selection, thread scheduling, and batch-level parallelism introduce further sources of variation. Identical inputs may therefore produce numerically different outputs across runs, even on the same hardware.
+
+\emph{Data dependency} distinguishes \ac{ML} systems from logic-driven software. Model behavior is determined not only by code but also by the training data and learned weights. Bugs may arise from data quality issues, distribution shift, or weight corruption, none of which are detectable by traditional unit tests that only exercise code paths.
+
+\emph{Computational cost} is a practical constraint. Embedding a single protein sequence with a large transformer model takes seconds on a \ac{GPU}; running a full test suite with real model inference over hundreds of sequences can require hours. This cost makes exhaustive testing impractical within typical \ac{CI} time budgets.
+
+\emph{Model opacity} means that the internal state of a transformer model is not directly interpretable. Testing must therefore focus on observable behavioral properties of inputs and outputs rather than on internal representations.
+
+\emph{Infrastructure complexity} in multi-service deployments introduces failure modes absent in monolithic software. The interaction between the web server, task workers, \ac{GPU} inference server, database, and file storage creates a large surface area for integration faults.
+
+Finally, \emph{versioning} requirements are stringent: model weights, tokenizers, and inference frameworks such as \ac{ONNX} Runtime and Triton must all be version-consistent to produce correct results.
 
 \section{Metamorphic Testing}\label{sec:metamorphic-testing}
-\begin{itemize}
-  \item Definition: testing technique that verifies \emph{relations} between inputs and outputs across multiple executions, rather than checking individual outputs against expected values
-  \item Metamorphic relations (MRs): if input is transformed in a specific way, the output should change (or not change) in a predictable way
-  \item Advantage: circumvents the oracle problem --- does not require knowing the ``correct'' output
-  \item Classic example: $\sin(x) = \sin(\pi - x)$ --- can verify without knowing $\sin(x)$ for any specific $x$
-  \item Application to ML: e.g., adding noise to input should not drastically change classification; rotating an image should not change object detection
-  \item Application to PLM embeddings: replacing residues with X (unknown token) should cause monotonically increasing divergence; reversing sequence order should change embedding (positional encoding sensitivity); specific AA substitutions should cause predictable sensitivity patterns
-  \item Distinction from property-based testing: MRs relate multiple executions; properties constrain single executions
-  \item Key papers: Chen et al. (1998) original proposal; Segura et al. (2016) survey; applications in ML by Xie et al.
-\end{itemize}
+
+Metamorphic testing is a testing technique that verifies \emph{relations} between inputs and outputs across multiple executions, rather than checking individual outputs against expected values~\cite{chen1998metamorphic}. A metamorphic relation (MR) specifies that if an input is transformed in a particular way, the output should change---or remain unchanged---in a predictable manner. The key advantage is that metamorphic testing circumvents the oracle problem: it does not require knowing the correct output for any individual input.
+
+A classic example illustrates the principle. The identity $\sin(x) = \sin(\pi - x)$ can be verified without knowing the value of $\sin(x)$ for any specific $x$: one simply computes both sides and checks equality. The relation between the two computations serves as the test oracle.
+
+In the context of \ac{ML} systems, metamorphic relations encode expected behavioral invariances. For image classifiers, rotating an image by a small angle should not change the predicted class. For protein language model embeddings, replacing amino acid residues with X (the unknown token) should cause the embedding to diverge monotonically from the original as the replacement fraction increases. Reversing the amino acid order should alter the embedding, since transformer positional encodings are sensitive to sequence direction. Substituting residues with specific amino acids should produce sensitivity patterns that reflect the physicochemical distinctiveness of the substitution.
+
+Metamorphic testing is distinct from property-based testing in that metamorphic relations relate \emph{multiple} executions of the system under test, whereas properties constrain \emph{single} executions. The original metamorphic testing framework was proposed by Chen et al.~\cite{chen1998metamorphic}, and subsequent surveys have catalogued applications across diverse domains~\cite{segura2016survey}. Applications to \ac{ML} systems have been explored by Xie et al.~\cite{xie2011testing}, who defined relations based on data permutation, addition, and duplication for k-nearest-neighbor and na\"ive Bayes classifiers.
 
 \section{Property-Based and Oracle Testing}\label{sec:oracle-testing}
-\begin{itemize}
-  \item Property-based testing: specify invariants that must hold for all (or randomly generated) inputs, rather than specific input-output pairs
-  \item Tools: Hypothesis (Python), QuickCheck (Haskell) --- generate random inputs, check properties
-  \item Oracle pattern: encapsulate a reusable invariant check in a class with a \texttt{check()} method returning structured pass/fail + metrics
-  \item Examples of oracles for embedding systems:
-    \begin{itemize}
-      \item Determinism: same input $\to$ same output (within tolerance for GPU)
-      \item Batch invariance: embedding unchanged regardless of batch composition
-      \item Output validity: probabilities in $[0,1]$, sum to 1 (classification); finite values (regression)
-      \item Shape invariance: output dimensions match specification
-      \item Distance preservation: pairwise distances in input space correlate with distances in projected space
-    \end{itemize}
-  \item Statistical robustness: tolerance thresholds, confidence intervals, effect sizes (Cohen's $d$), significance tests (Mann-Whitney $U$)
-  \item Combining oracles with MRs: oracles verify single-execution invariants; MRs verify cross-execution relations; together they form a comprehensive behavioral test suite
-\end{itemize}
+
+Property-based testing specifies invariants that must hold for all inputs, rather than enumerating specific input-output pairs. Tools such as Hypothesis for Python and QuickCheck for Haskell generate random inputs and verify that declared properties are satisfied. This approach complements example-based testing by exploring a broader input space and exposing edge cases that manual test design may overlook.
+
+The oracle pattern encapsulates a reusable invariant check in a class with a \texttt{check()} method that returns a structured result containing a pass or fail verdict together with the observed metric value. This pattern is particularly useful for embedding systems, where several invariants can be defined despite the absence of ground-truth outputs. Determinism requires that the same input produces the same output within a specified tolerance. Batch invariance asserts that the embedding of a sequence is unchanged regardless of which other sequences appear in the same batch. Output validity verifies that classification probabilities lie in $[0, 1]$ and sum to one, or that regression outputs are finite. Shape invariance confirms that output dimensions match the model specification. Distance preservation checks that pairwise distances in input space correlate with distances in the projected embedding space.
+
+Because \ac{ML} outputs are subject to numerical noise from floating-point arithmetic and \ac{GPU} non-determinism, oracle tests require statistical robustness. Tolerance thresholds define acceptable deviation. Confidence intervals, computed via the $t$-distribution, quantify uncertainty in mean estimates. Effect sizes such as Cohen's $d$ measure the practical significance of observed differences. Significance tests including the Mann-Whitney $U$ test provide non-parametric comparison of distributions. These statistical utilities enable quantitative assertions on \ac{ML} outputs that account for inherent variability.
+
+Combining oracle tests with metamorphic relations yields a comprehensive behavioral test suite. Oracle tests verify single-execution invariants (e.g., determinism, valid output ranges), while metamorphic relations verify cross-execution relations (e.g., increasing divergence under progressive masking). Together, they provide meaningful test coverage for systems where traditional assertions are inapplicable.

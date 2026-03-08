@@ -2,51 +2,36 @@
 
 \chapter{Related Work}\label{chapter:related-work}
 
-% ~2--3 pages
+This chapter surveys existing work on testing \ac{ML} systems, metamorphic testing for deep learning, testing practices in scientific and bioinformatics software, and property-based testing for data pipelines. It concludes by identifying the research gap that this thesis addresses.
 
 \section{Testing Machine Learning Systems}\label{sec:rw-ml-testing}
-\begin{itemize}
-  \item DeepTest (Tian et al., 2018): metamorphic testing for autonomous driving DNNs --- image transformations as MRs
-  \item DeepXplore (Pei et al., 2017): neuron coverage as test adequacy criterion; differential testing across multiple DNNs
-  \item TensorFuzz (Odena \& Goodfellow, 2019): coverage-guided fuzzing for neural networks
-  \item Zhang et al. (2020) survey on ML testing: taxonomy of test adequacy criteria, test input generation, oracle problem solutions
-  \item Braiek \& Khomh (2020): testing ML-based systems --- challenges and practices
-  \item Key takeaway: most work focuses on image classifiers / autonomous driving; less attention to embedding models and scientific software
-\end{itemize}
+
+The growing deployment of \ac{ML} systems in safety-critical and production settings has motivated a substantial body of work on testing techniques tailored to these systems. Tian et al.\ proposed DeepTest, which applies metamorphic transformations---such as blurring, rain effects, and fog---to input images for autonomous driving \ac{DNN}s and checks whether the steering angle prediction changes beyond a threshold~\cite{tian2018deeptest}. Pei et al.\ introduced DeepXplore, which defines neuron coverage as a test adequacy criterion and uses differential testing across multiple \ac{DNN}s to find inputs that trigger disagreements~\cite{pei2017deepxplore}. Odena and Goodfellow developed TensorFuzz, which extends coverage-guided fuzzing to neural networks by tracking approximate nearest-neighbor coverage of internal activations~\cite{odena2019tensorfuzz}.
+
+Zhang et al.\ provided a comprehensive survey on \ac{ML} testing, offering a taxonomy of test adequacy criteria, test input generation methods, and oracle problem solutions~\cite{zhang2020machine}. Braiek and Khomh examined the challenges and emerging practices for testing \ac{ML}-based systems, including the need for domain-specific test oracles and robustness evaluation~\cite{braiek2020testing}.
+
+A key observation from this literature is that the majority of work focuses on image classification and autonomous driving applications. Comparatively little attention has been paid to embedding models, sequence-based \ac{ML} systems, or scientific software that integrates \ac{PLM}s into production pipelines.
 
 \section{Metamorphic Testing for Deep Learning}\label{sec:rw-metamorphic}
-\begin{itemize}
-  \item Chen et al. (1998): original metamorphic testing proposal
-  \item Segura et al. (2016): comprehensive survey of metamorphic testing across domains
-  \item Xie et al. (2011): metamorphic testing for ML classifiers (k-NN, Na\"ive Bayes) --- MRs based on data permutation, addition, duplication
-  \item Dwarakanath et al. (2018): metamorphic testing for image classifiers in industry (identifying bugs in production models)
-  \item Murphy et al. (2008): properties for testing ML programs --- additive/multiplicative MRs
-  \item Gap: MRs specifically designed for protein language model embeddings (X-masking, AA mutation, reversal) are novel
-\end{itemize}
+
+Metamorphic testing was originally proposed by Chen et al.\ as a general-purpose technique for alleviating the oracle problem~\cite{chen1998metamorphic}. Segura et al.\ later published a comprehensive survey cataloguing metamorphic testing applications across domains including web services, databases, compilers, and numerical programs~\cite{segura2016survey}.
+
+The application of metamorphic testing to \ac{ML} was pioneered by Xie et al., who defined relations based on data permutation, addition, and duplication for $k$-nearest-neighbor and na\"ive Bayes classifiers~\cite{xie2011testing}. Murphy et al.\ proposed additive and multiplicative metamorphic relations for testing \ac{ML} programs~\cite{murphy2008properties}. Dwarakanath et al.\ applied metamorphic testing to industrial image classifiers, demonstrating its effectiveness in identifying bugs in production models at a large enterprise~\cite{dwarakanath2018identifying}.
+
+These works establish the theoretical and practical foundation for metamorphic testing of \ac{ML} systems. However, the metamorphic relations proposed in prior work target classifiers operating on images or tabular data. Relations specifically designed for protein language model embeddings---such as progressive masking with the unknown token X, amino acid mutation sensitivity, and sequence reversal---have not been explored and represent a novel contribution of this thesis.
 
 \section{Testing Scientific and Bioinformatics Software}\label{sec:rw-scientific}
-\begin{itemize}
-  \item Kanewala \& Bieman (2014): testing scientific software --- challenges (oracle problem, floating-point, rare domain expertise overlap with testing expertise)
-  \item Hook \& Kelly (2009): mutation testing for scientific software
-  \item Storer (2017): bridging the gap between software engineering and scientific computing
-  \item Bioinformatics-specific: limited formal testing literature; most tools rely on example-based tests and manual validation
-  \item biotrainer, bio-embeddings: domain tools used by biocentral --- their own test practices as baseline comparison
-\end{itemize}
+
+Scientific software presents distinctive testing challenges. Kanewala and Bieman identified the oracle problem, floating-point precision issues, and the limited overlap between domain expertise and testing expertise as key obstacles~\cite{kanewala2014testing}. Hook and Kelly explored the application of mutation testing to scientific software, demonstrating that syntactic mutations can expose weaknesses in test suites for numerical codes~\cite{hook2009mutation}. Storer discussed the broader gap between software engineering practices and the norms of scientific computing, arguing that testing culture in scientific projects lags behind industry standards~\cite{storer2017bridging}.
+
+In the bioinformatics domain specifically, most widely-used tools rely on example-based tests and manual validation against known datasets rather than systematic property-based or metamorphic approaches. Domain-specific tools used by the Biocentral platform, such as biotrainer for model training and bio-embeddings for embedding computation, maintain their own test suites, but these follow conventional testing patterns and do not address the \ac{ML}-specific challenges outlined in \autoref{sec:ml-testing-challenges}.
 
 \section{Property-Based Testing for Data Pipelines}\label{sec:rw-property}
-\begin{itemize}
-  \item Claessen \& Hughes (2000): QuickCheck --- property-based testing with random generation
-  \item MacIver et al. (2019): Hypothesis --- property-based testing for Python
-  \item FIT (Facets of Inadequacy in Testing): using properties to identify gaps in test suites
-  \item Application to data pipelines: schema validation, idempotency, commutativity of transformations
-  \item Limited prior work on applying oracle-pattern testing to ML inference pipelines specifically
-\end{itemize}
+
+Property-based testing, introduced by Claessen and Hughes through the QuickCheck library for Haskell~\cite{claessen2000quickcheck}, specifies invariants over random inputs rather than enumerating specific test cases. MacIver et al.\ brought this paradigm to Python through the Hypothesis library, which provides sophisticated input generation and shrinking strategies~\cite{maciver2019hypothesis}.
+
+Property-based testing has been applied to data pipelines for verifying schema validity, transformation idempotency, and commutativity of data processing steps. However, its application to \ac{ML} inference pipelines specifically---verifying properties such as batch invariance, output validity bounds, and determinism under floating-point noise---remains limited in the existing literature.
 
 \section{Research Gap}\label{sec:rw-gap}
-\begin{itemize}
-  \item No prior work specifically addresses testing PLM-based embedding services with a multi-layer test strategy
-  \item The time-vs-coverage trade-off for property-based testing in CI for ML services is unexplored
-  \item Metamorphic relations for protein embeddings (X-masking divergence, AA mutation sensitivity, sequence reversal) are novel contributions
-  \item GPU-free deterministic testing infrastructure for embedding services is not addressed in existing literature
-  \item This thesis fills the gap by combining classical SE testing (unit, integration, mutation testing) with ML-specific techniques (MRs, oracles) for a real-world production system
-\end{itemize}
+
+The review of related work reveals several gaps that this thesis addresses. First, no prior work specifically targets the testing of \ac{PLM}-based embedding services with a multi-layer test strategy that spans from unit tests through metamorphic experiments. Second, the trade-off between \ac{CI} execution time and fault-detection capability for property-based testing of \ac{ML} services has not been quantified. Third, the metamorphic relations developed in this thesis---progressive X-masking divergence, amino acid mutation sensitivity across all 20 standard residues, and sequence reversal sensitivity---are novel contributions not found in the metamorphic testing literature. Fourth, \ac{GPU}-free deterministic testing infrastructure for embedding services, embodied in the FixedEmbedder design, addresses a practical gap not treated in existing work. This thesis fills these gaps by combining classical software engineering testing with \ac{ML}-specific techniques, applied to and evaluated on a real-world production system.

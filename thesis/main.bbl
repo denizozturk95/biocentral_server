@@ -85,6 +85,119 @@
       \verb https://arxiv.org/abs/2502.17378
       \endverb
     \endentry
+    \entry{braiek2020testing}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=0eb39a4770813f06b6fc887258866bc4}{%
+           family={Ben\bibnamedelima Braiek},
+           familyi={B\bibinitperiod\bibinitdelim B\bibinitperiod},
+           given={Houssem},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c6c3765c6a405d9d7ef595e760e76337}{%
+           family={Khomh},
+           familyi={K\bibinitperiod},
+           given={Foutse},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6d05db66bdb68b8765308c279772d54f}
+      \strng{fullhash}{6d05db66bdb68b8765308c279772d54f}
+      \strng{fullhashraw}{6d05db66bdb68b8765308c279772d54f}
+      \strng{bibnamehash}{6d05db66bdb68b8765308c279772d54f}
+      \strng{authorbibnamehash}{6d05db66bdb68b8765308c279772d54f}
+      \strng{authornamehash}{6d05db66bdb68b8765308c279772d54f}
+      \strng{authorfullhash}{6d05db66bdb68b8765308c279772d54f}
+      \strng{authorfullhashraw}{6d05db66bdb68b8765308c279772d54f}
+      \field{labelalpha}{BK20}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Systems and Software}
+      \field{title}{On Testing Machine Learning Programs}
+      \field{volume}{164}
+      \field{year}{2020}
+      \field{pages}{110542}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jss.2020.110542
+      \endverb
+    \endentry
+    \entry{chen1998metamorphic}{inproceedings}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=3d4dd39c7d8ff23b7884c3f0c555a5a6}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Tsong\bibnamedelima Yueh},
+           giveni={T\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a3149a93c7d854464e5593e859c8fbc2}{%
+           family={Cheung},
+           familyi={C\bibinitperiod},
+           given={Shing\bibnamedelima Chi},
+           giveni={S\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5195ba71dc251348401e6cc8162706c4}{%
+           family={Yiu},
+           familyi={Y\bibinitperiod},
+           given={Siu\bibnamedelima Ming},
+           giveni={S\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{fullhash}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{fullhashraw}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{bibnamehash}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{authorbibnamehash}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{authornamehash}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{authorfullhash}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \strng{authorfullhashraw}{f7a710d9d3c258a2abcadba77b79fc7a}
+      \field{labelalpha}{CCY98}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Technical Report HKUST-CS98-01, Department of Computer Science, Hong Kong University of Science and Technology}
+      \field{title}{Metamorphic Testing: A New Approach for Generating Next Test Cases}
+      \field{year}{1998}
+    \endentry
+    \entry{claessen2000quickcheck}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=b5810f3c048af7890859f522af846370}{%
+           family={Claessen},
+           familyi={C\bibinitperiod},
+           given={Koen},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=05db43db1a50c29c0eca01fd35ec8758}{%
+           family={Hughes},
+           familyi={H\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{fullhash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{fullhashraw}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{bibnamehash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{authorbibnamehash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{authornamehash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{authorfullhash}{63eb59c9175e0a68b08f258c32e88a31}
+      \strng{authorfullhashraw}{63eb59c9175e0a68b08f258c32e88a31}
+      \field{labelalpha}{CH00}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 5th ACM SIGPLAN International Conference on Functional Programming (ICFP)}
+      \field{title}{{QuickCheck}: A Lightweight Tool for Random Testing of {Haskell} Programs}
+      \field{year}{2000}
+      \field{pages}{268\bibrangedash 279}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/351240.351266
+      \endverb
+    \endentry
     \entry{chandrasekaran2023testevaluationbest}{misc}{}{}
       \name{author}{5}{}{%
         {{un=0,uniquepart=base,hash=78d8ce9a00ff136689272bb352aa1ad7}{%
@@ -143,6 +256,73 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2310.06800
+      \endverb
+    \endentry
+    \entry{dwarakanath2018identifying}{inproceedings}{}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=edf983b8470de174eaba67112469fa8e}{%
+           family={Dwarakanath},
+           familyi={D\bibinitperiod},
+           given={Anurag},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9328a4c363f6ce612d2b3c8c8492c6fc}{%
+           family={Ahuja},
+           familyi={A\bibinitperiod},
+           given={Manish},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bbe9a0a9011ff19acecd9a66c8304c5e}{%
+           family={Sikand},
+           familyi={S\bibinitperiod},
+           given={Samarth},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5e06305f6fd55831dc3ad2d6748b9261}{%
+           family={Rao},
+           familyi={R\bibinitperiod},
+           given={Raghotham\bibnamedelima M.},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9ccf86355cec3ada9efaf35c9864668b}{%
+           family={Bose},
+           familyi={B\bibinitperiod},
+           given={R.\bibnamedelimi P.\bibnamedelimi Jagadeesh\bibnamedelima Chandra},
+           giveni={R\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=94654928c0c9751c07b8d63bf347343f}{%
+           family={Dubey},
+           familyi={D\bibinitperiod},
+           given={Neville},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=995c7386845098c16716f47f140f9f67}{%
+           family={Podder},
+           familyi={P\bibinitperiod},
+           given={Sanjay},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dfb5ccc3e6d520faefce904f2ce7efa8}
+      \strng{fullhash}{a6d486f615b5c31f557b050b10d47e91}
+      \strng{fullhashraw}{a6d486f615b5c31f557b050b10d47e91}
+      \strng{bibnamehash}{a6d486f615b5c31f557b050b10d47e91}
+      \strng{authorbibnamehash}{a6d486f615b5c31f557b050b10d47e91}
+      \strng{authornamehash}{dfb5ccc3e6d520faefce904f2ce7efa8}
+      \strng{authorfullhash}{a6d486f615b5c31f557b050b10d47e91}
+      \strng{authorfullhashraw}{a6d486f615b5c31f557b050b10d47e91}
+      \field{labelalpha}{Dwa+18}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 27th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA)}
+      \field{title}{Identifying Implementation Bugs in Machine Learning Based Image Classifiers Using Metamorphic Testing}
+      \field{year}{2018}
+      \field{pages}{118\bibrangedash 128}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1145/3213846.3213858
       \endverb
     \endentry
     \entry{elnaggar2021prottranscrackinglanguagelifes}{misc}{}{}
@@ -309,6 +489,372 @@
       \verb 10.1101/2025.11.21.689449
       \endverb
     \endentry
+    \entry{hook2009mutation}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=3e003dd0e2eccf59c4781d2c037f79bb}{%
+           family={Hook},
+           familyi={H\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=53331d2172966c151ab11d47c6103db0}{%
+           family={Kelly},
+           familyi={K\bibinitperiod},
+           given={Diane},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{02742e6d553087a57c943290c6dad5da}
+      \strng{fullhash}{02742e6d553087a57c943290c6dad5da}
+      \strng{fullhashraw}{02742e6d553087a57c943290c6dad5da}
+      \strng{bibnamehash}{02742e6d553087a57c943290c6dad5da}
+      \strng{authorbibnamehash}{02742e6d553087a57c943290c6dad5da}
+      \strng{authornamehash}{02742e6d553087a57c943290c6dad5da}
+      \strng{authorfullhash}{02742e6d553087a57c943290c6dad5da}
+      \strng{authorfullhashraw}{02742e6d553087a57c943290c6dad5da}
+      \field{labelalpha}{HK09}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the ICSE Workshop on Software Engineering for Computational Science and Engineering (SECSE)}
+      \field{title}{Testing for Trustworthiness in Scientific Software}
+      \field{year}{2009}
+      \field{pages}{59\bibrangedash 64}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/SECSE.2009.5069163
+      \endverb
+    \endentry
+    \entry{kanewala2014testing}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a1256526008026dd610717465e10f7f0}{%
+           family={Kanewala},
+           familyi={K\bibinitperiod},
+           given={Upulee},
+           giveni={U\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4998c7b6d32d3f558f33168feb867d4a}{%
+           family={Bieman},
+           familyi={B\bibinitperiod},
+           given={James\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7162cd8d085328083656fd382c7cf491}
+      \strng{fullhash}{7162cd8d085328083656fd382c7cf491}
+      \strng{fullhashraw}{7162cd8d085328083656fd382c7cf491}
+      \strng{bibnamehash}{7162cd8d085328083656fd382c7cf491}
+      \strng{authorbibnamehash}{7162cd8d085328083656fd382c7cf491}
+      \strng{authornamehash}{7162cd8d085328083656fd382c7cf491}
+      \strng{authorfullhash}{7162cd8d085328083656fd382c7cf491}
+      \strng{authorfullhashraw}{7162cd8d085328083656fd382c7cf491}
+      \field{labelalpha}{KB14}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Information and Software Technology}
+      \field{number}{10}
+      \field{title}{Testing Scientific Software: A Systematic Literature Review}
+      \field{volume}{56}
+      \field{year}{2014}
+      \field{pages}{1219\bibrangedash 1232}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1016/j.infsof.2014.05.006
+      \endverb
+    \endentry
+    \entry{lin2023evolutionary}{article}{}{}
+      \name{author}{15}{}{%
+        {{un=0,uniquepart=base,hash=c40352c194e60a3ef458ee7e8685afb5}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Zeming},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=15ffaf478ac80f96892efadcc2a135a6}{%
+           family={Akin},
+           familyi={A\bibinitperiod},
+           given={Halil},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0f3a8501ead10f233eccda0b53bf0bd1}{%
+           family={Rao},
+           familyi={R\bibinitperiod},
+           given={Roshan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2218b6e69c35a7ab5d3c0ebfbe634d92}{%
+           family={Hie},
+           familyi={H\bibinitperiod},
+           given={Brian},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=47065c85b39cd5a2d076a7acf7f6280d}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Zhongkai},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=883441545fe75217474c1c94d7936838}{%
+           family={Lu},
+           familyi={L\bibinitperiod},
+           given={Wenting},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=51a9fc39f16c7c9c6d331de0bbdaf57d}{%
+           family={Smetanin},
+           familyi={S\bibinitperiod},
+           given={Nikita},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=46be631e87cb978c860e4b0fa1d4887b}{%
+           family={Verkuil},
+           familyi={V\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f457c482acb006e884966be55f6e745a}{%
+           family={Kabeli},
+           familyi={K\bibinitperiod},
+           given={Ori},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1db73894e13374e91b04144d7376349e}{%
+           family={Shmueli},
+           familyi={S\bibinitperiod},
+           given={Yaniv},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=09e07f9e98fa0c988a1780c8c6240a7f}{%
+           family={Santos\bibnamedelima Costa},
+           familyi={S\bibinitperiod\bibinitdelim C\bibinitperiod},
+           given={Allan},
+           giveni={A\bibinitperiod},
+           givenun=0,
+           prefix={dos},
+           prefixi={d\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=3574995111995617f1b94c9b2646d290}{%
+           family={Fazel-Zarandi},
+           familyi={F\bibinithyphendelim Z\bibinitperiod},
+           given={Maryam},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=21e17f70ffb714b5a29005c2a54cec93}{%
+           family={Sercu},
+           familyi={S\bibinitperiod},
+           given={Tom},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ce19839c1828afcbb3f27851260a85dc}{%
+           family={Candber},
+           familyi={C\bibinitperiod},
+           given={Sal},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=77c951217a087dd3f5981a0a79a87222}{%
+           family={Rives},
+           familyi={R\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{34b09dec96e43e229bc82a24b1bdf1dc}
+      \strng{fullhash}{cf401ffbb25aa7e97f9a2b3a0e101236}
+      \strng{fullhashraw}{cf401ffbb25aa7e97f9a2b3a0e101236}
+      \strng{bibnamehash}{cf401ffbb25aa7e97f9a2b3a0e101236}
+      \strng{authorbibnamehash}{cf401ffbb25aa7e97f9a2b3a0e101236}
+      \strng{authornamehash}{34b09dec96e43e229bc82a24b1bdf1dc}
+      \strng{authorfullhash}{cf401ffbb25aa7e97f9a2b3a0e101236}
+      \strng{authorfullhashraw}{cf401ffbb25aa7e97f9a2b3a0e101236}
+      \field{labelalpha}{Lin+23}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Science}
+      \field{number}{6637}
+      \field{title}{Evolutionary-Scale Prediction of Atomic-Level Protein Structure with a Language Model}
+      \field{volume}{379}
+      \field{year}{2023}
+      \field{pages}{1123\bibrangedash 1130}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1126/science.ade2574
+      \endverb
+    \endentry
+    \entry{maciver2019hypothesis}{article}{}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=5d9443477a57651f0c259575e25044e8}{%
+           family={MacIver},
+           familyi={M\bibinitperiod},
+           given={David\bibnamedelima R.},
+           giveni={D\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b453e963913f0d9b4b7015dcdda7fab6}{%
+           family={Hatfield-Dodds},
+           familyi={H\bibinithyphendelim D\bibinitperiod},
+           given={Zac},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{40a580ea6766a84120edd7f09b354eda}
+      \strng{fullhash}{40a580ea6766a84120edd7f09b354eda}
+      \strng{fullhashraw}{40a580ea6766a84120edd7f09b354eda}
+      \strng{bibnamehash}{40a580ea6766a84120edd7f09b354eda}
+      \strng{authorbibnamehash}{40a580ea6766a84120edd7f09b354eda}
+      \strng{authornamehash}{40a580ea6766a84120edd7f09b354eda}
+      \strng{authorfullhash}{40a580ea6766a84120edd7f09b354eda}
+      \strng{authorfullhashraw}{40a580ea6766a84120edd7f09b354eda}
+      \field{labelalpha}{MH+19}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Open Source Software}
+      \field{number}{43}
+      \field{title}{Hypothesis: A New Approach to Property-Based Testing}
+      \field{volume}{4}
+      \field{year}{2019}
+      \field{pages}{1891}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.21105/joss.01891
+      \endverb
+    \endentry
+    \entry{murphy2008properties}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=abc69386f740dab86bc17c64bce41d44}{%
+           family={Murphy},
+           familyi={M\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ba4f8614e41abacdc91d1064f0890092}{%
+           family={Kaiser},
+           familyi={K\bibinitperiod},
+           given={Gail\bibnamedelima E.},
+           giveni={G\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a34caab7cbf12fd1d8b4f8ac1c623bff}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={Lifeng},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0f75ff3c3325f5b4a628b104c79cf5c7}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Leon},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{fullhash}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{fullhashraw}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{bibnamehash}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{authorbibnamehash}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{authornamehash}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{authorfullhash}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \strng{authorfullhashraw}{3de1a1b990d3732f2e6eb5a70eabee73}
+      \field{labelalpha}{Mur+08}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 20th International Conference on Software Engineering and Knowledge Engineering (SEKE)}
+      \field{title}{Properties of Machine Learning Applications for Use in Metamorphic Testing}
+      \field{year}{2008}
+      \field{pages}{867\bibrangedash 872}
+      \range{pages}{6}
+    \endentry
+    \entry{odena2019tensorfuzz}{inproceedings}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=a04932af4057bbbbad95d73521f2d22b}{%
+           family={Odena},
+           familyi={O\bibinitperiod},
+           given={Augustus},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5d2585c11210cf1d4512e6e0a03ec315}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{fullhash}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{fullhashraw}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{bibnamehash}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{authorbibnamehash}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{authornamehash}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{authorfullhash}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \strng{authorfullhashraw}{4592de854c0f4e9fd84c8edcfba4bd0e}
+      \field{labelalpha}{OG19}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 36th International Conference on Machine Learning (ICML)}
+      \field{title}{{TensorFuzz}: Debugging Neural Networks with Coverage-Guided Fuzzing}
+      \field{year}{2019}
+      \field{pages}{4901\bibrangedash 4911}
+      \range{pages}{11}
+    \endentry
+    \entry{pei2017deepxplore}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=e07e87b6497cef84fd25157727a44f72}{%
+           family={Pei},
+           familyi={P\bibinitperiod},
+           given={Kexin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3a7e58dc54b05a1f9e413693d8ba1ee1}{%
+           family={Cao},
+           familyi={C\bibinitperiod},
+           given={Yinzhi},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b31f5ef99c10b52d454e9e3257df66b1}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Junfeng},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=03829f26d35c66b0a0cd1b49e8866681}{%
+           family={Jana},
+           familyi={J\bibinitperiod},
+           given={Suman},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{fullhash}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{fullhashraw}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{bibnamehash}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{authorbibnamehash}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{authornamehash}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{authorfullhash}{1da11c5e1151c7d6b19b4d6471871260}
+      \strng{authorfullhashraw}{1da11c5e1151c7d6b19b4d6471871260}
+      \field{labelalpha}{Pei+17}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 26th Symposium on Operating Systems Principles (SOSP)}
+      \field{title}{{DeepXplore}: Automated Whitebox Testing of Deep Learning Systems}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 18}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1145/3132747.3132785
+      \endverb
+    \endentry
     \entry{rzig2025empiricalanalysiscicdpipeline}{misc}{}{}
       \name{author}{4}{}{%
         {{un=0,uniquepart=base,hash=39fd1011b125e07f685dbc54690ccab0}{%
@@ -361,6 +907,316 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2403.12199
+      \endverb
+    \endentry
+    \entry{segura2016survey}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=efefdfdaba6c5894f391e59294e0dcbe}{%
+           family={Segura},
+           familyi={S\bibinitperiod},
+           given={Sergio},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fc66f39b83d69c05a49d023f90b98586}{%
+           family={Fraser},
+           familyi={F\bibinitperiod},
+           given={Gordon},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=11409066bbbbf39796ba408a0d779f4d}{%
+           family={Sánchez},
+           familyi={S\bibinitperiod},
+           given={Ana\bibnamedelima B.},
+           giveni={A\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b14c1d1e3d4d80ea3948645cec4ba918}{%
+           family={Ruiz-Cortés},
+           familyi={R\bibinithyphendelim C\bibinitperiod},
+           given={Antonio},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{fullhash}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{fullhashraw}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{bibnamehash}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{authorbibnamehash}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{authornamehash}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{authorfullhash}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \strng{authorfullhashraw}{18d6236bc01b1cc8d9d965ecef67e9a8}
+      \field{labelalpha}{Seg+16}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Software Engineering}
+      \field{number}{9}
+      \field{title}{A Survey on Metamorphic Testing}
+      \field{volume}{42}
+      \field{year}{2016}
+      \field{pages}{805\bibrangedash 824}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1109/TSE.2016.2532875
+      \endverb
+    \endentry
+    \entry{storer2017bridging}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8c5b5bad8454501df9871d4cb1836300}{%
+           family={Storer},
+           familyi={S\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{fullhash}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{fullhashraw}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{bibnamehash}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{authorbibnamehash}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{authornamehash}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{authorfullhash}{8c5b5bad8454501df9871d4cb1836300}
+      \strng{authorfullhashraw}{8c5b5bad8454501df9871d4cb1836300}
+      \field{labelalpha}{Sto17}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ACM Computing Surveys}
+      \field{number}{4}
+      \field{title}{Bridging the Chasm: A Survey of Software Engineering Practice in Scientific Programming}
+      \field{volume}{50}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 32}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1145/3084225
+      \endverb
+    \endentry
+    \entry{suzek2015uniref}{article}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=15d5fb0d24cddd9c4b366661250d8eda}{%
+           family={Suzek},
+           familyi={S\bibinitperiod},
+           given={Baris\bibnamedelima E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=58bd8780f83626188ffe1ad029557801}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Yuqi},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5f08b0c96de5d35f7c52625206f67b0a}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Hongzhan},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=04e05183218b71038133c2018739f1eb}{%
+           family={McGarvey},
+           familyi={M\bibinitperiod},
+           given={Peter\bibnamedelima B.},
+           giveni={P\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ea73b0150b09bc4245e9bf9198cdca94}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Cathy\bibnamedelima H.},
+           giveni={C\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9af6e20c8a4d813dfd1bc268b89d6b9b}{%
+           family={UniProt\bibnamedelima Consortium},
+           familyi={U\bibinitperiod\bibinitdelim C\bibinitperiod},
+           prefix={the},
+           prefixi={t\bibinitperiod},
+           prefixun=0}}%
+      }
+      \strng{namehash}{689688e2e9bc2f3d3cb67258c282f3a6}
+      \strng{fullhash}{6c6ed585a3d22fdad69ee933c9d548ce}
+      \strng{fullhashraw}{6c6ed585a3d22fdad69ee933c9d548ce}
+      \strng{bibnamehash}{6c6ed585a3d22fdad69ee933c9d548ce}
+      \strng{authorbibnamehash}{6c6ed585a3d22fdad69ee933c9d548ce}
+      \strng{authornamehash}{689688e2e9bc2f3d3cb67258c282f3a6}
+      \strng{authorfullhash}{6c6ed585a3d22fdad69ee933c9d548ce}
+      \strng{authorfullhashraw}{6c6ed585a3d22fdad69ee933c9d548ce}
+      \field{labelalpha}{Suz+15}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bioinformatics}
+      \field{number}{6}
+      \field{title}{{UniRef} Clusters: A Comprehensive and Scalable Alternative for Improving Sequence Similarity Searches}
+      \field{volume}{31}
+      \field{year}{2015}
+      \field{pages}{926\bibrangedash 932}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1093/bioinformatics/btu739
+      \endverb
+    \endentry
+    \entry{tian2018deeptest}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=4db45fdabadb703f84aa773549afc928}{%
+           family={Tian},
+           familyi={T\bibinitperiod},
+           given={Yuchi},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e07e87b6497cef84fd25157727a44f72}{%
+           family={Pei},
+           familyi={P\bibinitperiod},
+           given={Kexin},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=03829f26d35c66b0a0cd1b49e8866681}{%
+           family={Jana},
+           familyi={J\bibinitperiod},
+           given={Suman},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0806c08947a2a72e09479f9555c0dad5}{%
+           family={Ray},
+           familyi={R\bibinitperiod},
+           given={Baishakhi},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{fullhash}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{fullhashraw}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{bibnamehash}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{authorbibnamehash}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{authornamehash}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{authorfullhash}{91fdba03fda8ac14034688a04bdc53a2}
+      \strng{authorfullhashraw}{91fdba03fda8ac14034688a04bdc53a2}
+      \field{labelalpha}{Tia+18}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 40th International Conference on Software Engineering (ICSE)}
+      \field{title}{{DeepTest}: Automated Testing of {DNN}-Driven Autonomous Cars}
+      \field{year}{2018}
+      \field{pages}{303\bibrangedash 314}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1145/3180155.3180220
+      \endverb
+    \endentry
+    \entry{xie2011testing}{article}{}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=921c2bbb474b8eec63d1fb0d3dced1ae}{%
+           family={Xie},
+           familyi={X\bibinitperiod},
+           given={Xiaoyuan},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=45211a3b206d32f32bccac8ac196a94b}{%
+           family={Ho},
+           familyi={H\bibinitperiod},
+           given={Joshua\bibnamedelimb W.\bibnamedelimi K.},
+           giveni={J\bibinitperiod\bibinitdelim W\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=abc69386f740dab86bc17c64bce41d44}{%
+           family={Murphy},
+           familyi={M\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8e80a6320dea3d1813d0414bbc779d49}{%
+           family={Kaiser},
+           familyi={K\bibinitperiod},
+           given={Gail},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=33a2fbf36484e35836ed60370fd8e8fd}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Baowen},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3d4dd39c7d8ff23b7884c3f0c555a5a6}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Tsong\bibnamedelima Yueh},
+           giveni={T\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{47359ce0b56a446fc181e9a384eed581}
+      \strng{fullhash}{af231c14976284d2ee0da6606a607cbb}
+      \strng{fullhashraw}{af231c14976284d2ee0da6606a607cbb}
+      \strng{bibnamehash}{af231c14976284d2ee0da6606a607cbb}
+      \strng{authorbibnamehash}{af231c14976284d2ee0da6606a607cbb}
+      \strng{authornamehash}{47359ce0b56a446fc181e9a384eed581}
+      \strng{authorfullhash}{af231c14976284d2ee0da6606a607cbb}
+      \strng{authorfullhashraw}{af231c14976284d2ee0da6606a607cbb}
+      \field{labelalpha}{Xie+11}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Systems and Software}
+      \field{number}{4}
+      \field{title}{Testing and Validating Machine Learning Classifiers by Metamorphic Testing}
+      \field{volume}{84}
+      \field{year}{2011}
+      \field{pages}{544\bibrangedash 558}
+      \range{pages}{15}
+      \verb{doi}
+      \verb 10.1016/j.jss.2010.11.920
+      \endverb
+    \endentry
+    \entry{zhang2020machine}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=f951ea0b08899e03de984bbf9739763f}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Jie\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1a97225992fa23f818d9b1269df83035}{%
+           family={Harman},
+           familyi={H\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=631bdce5289be54717cd74a75f516b25}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Lei},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=621013bf54d3546375ad71f17f020b5b}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Yang},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{fc21840354f653c851774cc7e4f73d49}
+      \strng{fullhash}{fc21840354f653c851774cc7e4f73d49}
+      \strng{fullhashraw}{fc21840354f653c851774cc7e4f73d49}
+      \strng{bibnamehash}{fc21840354f653c851774cc7e4f73d49}
+      \strng{authorbibnamehash}{fc21840354f653c851774cc7e4f73d49}
+      \strng{authornamehash}{fc21840354f653c851774cc7e4f73d49}
+      \strng{authorfullhash}{fc21840354f653c851774cc7e4f73d49}
+      \strng{authorfullhashraw}{fc21840354f653c851774cc7e4f73d49}
+      \field{labelalpha}{Zha+22}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Software Engineering}
+      \field{number}{1}
+      \field{title}{Machine Learning Testing: Survey, Landscapes and Horizons}
+      \field{volume}{48}
+      \field{year}{2022}
+      \field{pages}{1\bibrangedash 36}
+      \range{pages}{36}
+      \verb{doi}
+      \verb 10.1109/TSE.2019.2962027
       \endverb
     \endentry
   \enddatalist

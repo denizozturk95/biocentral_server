@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.7)  8 MAR 2026 12:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.7)  8 MAR 2026 12:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1624,16 +1624,17 @@ Package pdftex.def Info: logos/faculty-black.pdf  used on input line 33.
 {/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/base/8r.enc} <./logos/tum-black.pdf> <./logos/faculty-black.pdf
 
 pdfTeX warning: pdflatex (file ./logos/faculty-black.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->]) (./pages/disclaimer.tex [2]) (./pages/ai_transparency.tex [3
+>]) (./pages/disclaimer.tex
+LaTeX Font Info:    Trying to load font information for TS1+pplx on input line 16.
+ (/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ts1pplx.fd
+File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `cmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+ [2{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]) (./pages/ai_transparency.tex [3
 
-
-
-
-]) (./pages/acknowledgments.tex
-Package scrkbase Info: You've told me to use the font selection of the element
-(scrkbase)             `sectioning' that is an alias of element `disposition'
-(scrkbase)              on input line 7.
- [4
 
 
 ]) (./pages/abstract.tex
@@ -1643,14 +1644,13 @@ Overfull \hbox (1.51627pt too wide) in paragraph at lines 7--8
 []\T1/pplx/m/n/10.95 (-20) Key con-tri-bu-tions in-clude (1) a de-ter-min-is-tic, GPU-free test-ing in-fras-truc-ture (\T1/pplx/m/it/10.95 (-20) FixedEm-
  []
 
-) [5
-
+) [4
 
 
 
 ]
 Package tocbasic Info: character protrusion at toc deactivated on input line 42.
- (./main.toc [6
+ (./main.toc [5
 
 
 
@@ -1658,11 +1658,11 @@ Package tocbasic Info: character protrusion at toc deactivated on input line 42.
 ]
 LaTeX Font Info:    Font shape `T1/pplx/m/sl' in size <10.95> not available
 (Font)              Font shape `T1/pplx/m/it' tried instead on input line 67.
- [7])
+ [6])
 \tf@toc=\write6
 \openout6 = `main.toc'.
 
- [8] (./chapters/01_introduction.tex
+ [7] (./chapters/01_introduction.tex
 chapter 1.
 Package acronym Info: Label `acro:PLM' newly defined as it shall be overridden
 although it is yet undefined on input line 10.
@@ -1691,74 +1691,74 @@ l.26 \section
              {Research Question}\label{sec:research-question} [2]
 Package acronym Info: Label `acro:RQ' newly defined as it shall be overridden
 although it is yet undefined on input line 31.
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `cmtt' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.47 \end{enumerate}
-                     [3{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]) (./chapters/02_background.tex
+                     [3]) (./chapters/02_background.tex
 pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.3 \chapter
             {Background}\label{chapter:background} [4]
 chapter 2.
-LaTeX Font Info:    Trying to load font information for TS1+pplx on input line 9.
-(/usr/local/texlive/2026/texmf-dist/tex/latex/psnfss/ts1pplx.fd
-File: ts1pplx.fd 2004/09/06 font definitions for TS1/pplx.
-)
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.5}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.25   \item A
-              sync task pattern: POST returns \texttt{task\_id} $\to$ client... [5
+l.16 
+      [5
 
 
 ]
-Overfull \hbox (2.33289pt too wide) in paragraph at lines 25--26
-[]\T1/pplx/m/n/10.95 (-20) Async task pat-tern: POST re-turns \T1/cmtt/m/n/10.95 task_id $\OMS/zplm/m/n/10.95 !$ \T1/pplx/m/n/10.95 (-20) client polls \T1/cmtt/m/n/10.95 /task_status/{task_id}
+Package acronym Info: Label `acro:REST' newly defined as it shall be overridden
+although it is yet undefined on input line 23.
+
+Overfull \hbox (3.56926pt too wide) in paragraph at lines 23--24
+\T1/pplx/m/n/10.95 (-20) Docker Com-pose. The core web server is built on FastAPI and ex-poses a [][][]Representational
  []
 
+Package acronym Info: Label `acro:ONNX' newly defined as it shall be overridden
+although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:PCA' newly defined as it shall be overridden
+although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:UMAP' newly defined as it shall be overridden
+although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:t-SNE' newly defined as it shall be overridden
+although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:GP' newly defined as it shall be overridden
+although it is yet undefined on input line 27.
+Package acronym Info: Label `acro:FNN' newly defined as it shall be overridden
+although it is yet undefined on input line 27.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.6}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.49   \item P
-              ytest framework: markers (\texttt{@pytest.mark.integration}, \... [6]
+l.28 
+      [6]
 pdfTeX warning (ext4): destination with the same identifier (name{page.7}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.69   \item A
-              dvantage: circumvents the oracle problem --- does not require ... [7]
-pdfTeX warning (ext4): destination with the same identifier (name{page.8}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.90   \item S
-              tatistical robustness: tolerance thresholds, confidence interv... [8]) (./chapters/03_related_work.tex [9]
+l.43 T
+      he \emph{oracle problem} is the most fundamental challenge. For a conv... [7] [8] [9]) (./chapters/03_related_work.tex [10]
 chapter 3.
-
-Overfull \hbox (5.64484pt too wide) in paragraph at lines 23--24
-[]\T1/pplx/m/n/10.95 (-20) Murphy et al. (2008): prop-er-ties for test-ing ML pro-grams --- ad-di-tive/multiplicative
- []
-
-[10
+Package acronym Info: Label `acro:DNN' newly defined as it shall be overridden
+although it is yet undefined on input line 9.
+[11
 
 
-] [11]) (./chapters/04_approach.tex [12]
+] [12]) (./chapters/04_approach.tex [13]
 chapter 4.
 
 Overfull \hbox (135.29878pt too wide) in paragraph at lines 23--24
 []\T1/pplx/m/n/10.95 (-20) Pydantic-based loader (\T1/cmtt/m/n/10.95 test_dataset.py\T1/pplx/m/n/10.95 (-20) ) with cat-e-gory fil-ter-ing: \T1/cmtt/m/n/10.95 get_test_sequences(categories=[``real'',
  []
 
-[13
+[14
 
 
-] [14]
+] [15]
 Overfull \hbox (13.24307pt too wide) in paragraph at lines 58--59
 []\T1/pplx/m/n/10.95 (-20) FastAPI \T1/cmtt/m/n/10.95 TestClient \T1/pplx/m/n/10.95 (-20) with fully mocked back-ends: \T1/cmtt/m/n/10.95 MockedTaskManager\T1/pplx/m/n/10.95 (-20) , \T1/cmtt/m/n/10.95 UserManager\T1/pplx/m/n/10.95 (-20) ,
  []
@@ -1783,7 +1783,7 @@ Overfull \hbox (35.97377pt too wide) in paragraph at lines 64--65
 []\T1/pplx/m/n/10.95 (-20) Projections (6 tests): con-fig list-ing, project re-quests (valid/unknown method/missing
  []
 
-[15]
+[16]
 Overfull \hbox (9.05624pt too wide) in paragraph at lines 90--91
 []\T1/pplx/m/n/10.95 (-20) Statistical util-i-ties (\T1/cmtt/m/n/10.95 statistics.py\T1/pplx/m/n/10.95 (-20) ): \T1/cmtt/m/n/10.95 compute_confidence_interval \T1/pplx/m/n/10.95 (-20) (t-distribution),
  []
@@ -1798,19 +1798,19 @@ Overfull \hbox (4.80984pt too wide) in paragraph at lines 95--96
 []\T1/cmtt/m/n/10.95 PredictionDeterminismOracle\T1/pplx/m/n/10.95 (-20) : same in-put $\OMS/zplm/m/n/10.95 !$ \T1/pplx/m/n/10.95 (-20) bit-identical out-put for ONNX
  []
 
-[16]
+[17]
 Overfull \hbox (25.11523pt too wide) in paragraph at lines 108--109
 []\T1/pplx/m/n/10.95 (-20) 8 ex-per-i-ments im-ple-mented as pytest scripts, pro-duc-ing CSV re-ports in \T1/cmtt/m/n/10.95 tests/reports/ 
  []
 
-[17] [18] [19]) (./chapters/05_evaluation.tex [20]
+[18] [19] [20]) (./chapters/05_evaluation.tex [21]
 chapter 5.
-[21
+[22
 
 
-] [22] [23] [24]) (./chapters/06_discussion.tex [25]
+] [23] [24] [25]) (./chapters/06_discussion.tex [26]
 chapter 6.
-[26
+[27
 
 
 ]
@@ -1818,18 +1818,18 @@ Overfull \hbox (10.36504pt too wide) in paragraph at lines 31--32
 []\T1/pplx/m/n/10.95 (-20) Limited mu-ta-tion test-ing scope: mut-mut only tar-gets unit tests; in-te-gra-tion/property
  []
 
-[27]) (./chapters/07_conclusion.tex [28]
+[28]) (./chapters/07_conclusion.tex [29]
 chapter 7.
-[29
+[30
 
 
-]) [30]
+]) [31]
 chapter without number
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-[31
+[32
 
 
 ]
@@ -1838,7 +1838,7 @@ Package tocbasic Info: character protrusion at lof deactivated on input line 83.
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
- [32
+ [33
 
 
 ]
@@ -1847,7 +1847,7 @@ Package tocbasic Info: character protrusion at lot deactivated on input line 84.
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
- [33
+ [34
 
 
 ]
@@ -1855,11 +1855,12 @@ chapter without number
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/pplx/m/sc/10.95'.
 (microtype)             Ignoring protrusion settings for this character.
+[35
+
+
+] [36]
 No complaints by nag.
-[34
-
-
-] (./main.aux)
+[37] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -1869,18 +1870,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 52843 strings out of 467525
- 1157277 string characters out of 5418983
- 2276689 words of memory out of 5000000
- 80451 multiletter control sequences out of 15000+600000
- 683210 words of font info for 328 fonts, out of 8000000 for 9000
+ 52989 strings out of 467525
+ 1161072 string characters out of 5418983
+ 2277348 words of memory out of 5000000
+ 80530 multiletter control sequences out of 15000+600000
+ 685144 words of font info for 355 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 108i,8n,107p,11258b,3812s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,9n,107p,11258b,3812s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/fpl/fplrc8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfsx1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on main.pdf (42 pages, 245116 bytes).
+Output written on main.pdf (44 pages, 277957 bytes).
 PDF statistics:
- 710 PDF objects out of 1000 (max. 8388607)
- 635 compressed objects within 7 object streams
- 129 named destinations out of 1000 (max. 500000)
- 82491 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 865 PDF objects out of 1000 (max. 8388607)
+ 787 compressed objects within 8 object streams
+ 165 named destinations out of 1000 (max. 500000)
+ 82483 words of extra memory for PDF output out of 89155 (max. 10000000)
 

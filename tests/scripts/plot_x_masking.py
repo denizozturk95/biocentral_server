@@ -244,12 +244,17 @@ def plot_uniref50_masking():
     prog_path = REPORTS_DIR / "x_masking_progressive_uniref50.csv"
     rand_path = REPORTS_DIR / "x_masking_random_uniref50.csv"
 
-    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
-
     datasets = [
         (prog_path, "Progressive X-Masking"),
         (rand_path, "Random X-Masking"),
     ]
+
+    # Check that at least one data file exists before creating the figure
+    if not any(p.exists() for p, _ in datasets):
+        print("No UniRef50 data files found — skipping plot.")
+        return
+
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
 
     for col, (path, masking_label) in enumerate(datasets):
         if not path.exists():
@@ -262,10 +267,16 @@ def plot_uniref50_masking():
             )
         df["cosine_similarity"] = 1 - df["cosine_distance"]
 
-        bins = sorted(df["bin"].dropna().unique()) if "bin" in df.columns else []
-        if not bins:
-            print(f"No bin column in {path}")
+        # Support both "bin" and "sequence_length" as the grouping column
+        if "bin" in df.columns:
+            group_col = "bin"
+        elif "sequence_length" in df.columns:
+            group_col = "sequence_length"
+        else:
+            print(f"No bin or sequence_length column in {path}")
             continue
+
+        bins = sorted(df[group_col].dropna().unique())
 
         ax_cos = axes[0, col]
         ax_l2 = axes[1, col]
@@ -273,7 +284,7 @@ def plot_uniref50_masking():
         _add_region_shading(ax_l2)
 
         for i, bin_val in enumerate(bins):
-            bin_data = df[df["bin"] == bin_val]
+            bin_data = df[df[group_col] == bin_val]
             agg = bin_data.groupby("masking_ratio").agg(
                 cos_mean=("cosine_similarity", "mean"),
                 cos_std=("cosine_similarity", "std"),
@@ -283,7 +294,7 @@ def plot_uniref50_masking():
 
             x = agg["masking_ratio"] * 100
             color = COLORS[i % len(COLORS)]
-            label = f"bin={int(bin_val)}"
+            label = f"len={int(bin_val)}"
 
             ax_cos.plot(x, agg["cos_mean"], marker="o", markersize=3, linewidth=1.8,
                         label=label, color=color, alpha=0.9)
