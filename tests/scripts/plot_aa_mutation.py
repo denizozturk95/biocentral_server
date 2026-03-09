@@ -218,6 +218,9 @@ def plot_uniref50_per_bin():
     bins = sorted(df["bin"].dropna().unique())
     colors_bin = ["#2E86AB", "#E94F37", "#4CAF50", "#9C27B0", "#FF9800", "#00BCD4", "#795548"]
 
+    # Use only the AAs present in the data, ordered by AA_ORDER
+    available_aas = [aa for aa in AA_ORDER if aa in df["replacement_aa"].unique()]
+
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
     for ax, metric, ylabel in [
@@ -236,7 +239,7 @@ def plot_uniref50_per_bin():
             ranking = (
                 bin_data.groupby("replacement_aa")[metric]
                 .mean()
-                .reindex(AA_ORDER)
+                .reindex(available_aas)
             )
             ax.plot(
                 range(len(ranking)), ranking.values,
@@ -245,8 +248,8 @@ def plot_uniref50_per_bin():
                 alpha=0.8,
             )
 
-        ax.set_xticks(range(len(AA_ORDER)))
-        ax.set_xticklabels(AA_ORDER, fontsize=10, fontfamily="monospace")
+        ax.set_xticks(range(len(available_aas)))
+        ax.set_xticklabels(available_aas, fontsize=10, fontfamily="monospace")
         ax.set_ylabel(ylabel, fontsize=11)
         ax.set_xlabel("Replacement Amino Acid", fontsize=11)
         ax.set_title(f"Per-Bin Mutation Sensitivity at ~10% — {ylabel}", fontsize=12, fontweight="bold")

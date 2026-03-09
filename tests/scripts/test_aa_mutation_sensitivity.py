@@ -19,9 +19,6 @@ MASKING_RATIOS = [0.0, 0.10, 0.25, 0.50, 0.75, 1.0]
 BASE_SEED = 42
 N_RUNS = 3
 
-# Physicochemically representative AAs for large-scale experiments (UniRef50)
-# Covers: small/hydrophobic (A), acidic (D), flexible (G), basic (K), structural (P), aromatic (W)
-REPRESENTATIVE_AAS = list("ADGKLW")
 
 # ---------------------------------------------------------------------------
 # Mutation helpers
@@ -199,37 +196,9 @@ def _format_mutation_summary(results: List[Dict[str, Any]], title: str = "") -> 
 # Test classes
 # ---------------------------------------------------------------------------
 
-# Small set for the basic experiment (same 4 sequences as original masking test)
-_BASIC_TEST_SEQUENCES = {
-    "short_15": "MKTAYIAKQRQISFV",
-    "medium_76": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG",
-    "long_400": "MKTAYIAK" * 50,
-    "very_long_300": "ACDEFGHIKLMNPQRSTVWY" * 15,
-}
-
 class TestAAMutationSensitivity:
 
     def test_all_aa_mutations(self, esm2_embedder, reports_dir):
-        sequences = list(_BASIC_TEST_SEQUENCES.values())
-
-        results = _run_mutation_experiment(
-            embedder=esm2_embedder,
-            embedder_label="esm2_t6_8m",
-            sequences=sequences,
-            replacement_aas=AMINO_ACIDS,
-        )
-
-        summary = _format_mutation_summary(
-            results, title="AA Mutation Sensitivity — ESM2-T6-8M (basic sequences)"
-        )
-        print(summary)
-
-        _write_mutation_csv(results, reports_dir / "aa_mutation_sensitivity_esm2.csv")
-        print(f"Wrote {len(results)} rows to aa_mutation_sensitivity_esm2.csv")
-
-class TestAAMutationUniRef50:
-
-    def test_uniref50_mutation(self, esm2_embedder, reports_dir):
         try:
             from tests.scripts.fetch_uniref50_sequences import load_uniref50_sequences
         except ImportError:
@@ -249,13 +218,13 @@ class TestAAMutationUniRef50:
             if not sequences:
                 continue
 
-            print(f"\n[AA Mutation UniRef50] bin={bin_target}, n_seqs={len(sequences)}")
+            print(f"\n[AA Mutation] bin={bin_target}, n_seqs={len(sequences)}")
 
             results = _run_mutation_experiment(
                 embedder=esm2_embedder,
                 embedder_label="esm2_t6_8m",
                 sequences=sequences,
-                replacement_aas=REPRESENTATIVE_AAS,
+                replacement_aas=AMINO_ACIDS,
                 n_runs=1,
             )
 
@@ -264,10 +233,11 @@ class TestAAMutationUniRef50:
 
             all_results.extend(results)
 
-        _write_mutation_csv(all_results, reports_dir / "aa_mutation_sensitivity_uniref50.csv")
-
         summary = _format_mutation_summary(
             all_results, title="AA Mutation Sensitivity — ESM2-T6-8M (UniRef50)"
         )
         print(summary)
-        print(f"\n[AA Mutation UniRef50] Total rows: {len(all_results)}")
+
+        _write_mutation_csv(all_results, reports_dir / "aa_mutation_sensitivity_esm2.csv")
+        _write_mutation_csv(all_results, reports_dir / "aa_mutation_sensitivity_uniref50.csv")
+        print(f"Wrote {len(all_results)} rows to aa_mutation_sensitivity_esm2.csv and aa_mutation_sensitivity_uniref50.csv")
