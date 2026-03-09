@@ -6,7 +6,7 @@ import numpy as np
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from tests.property.oracles.embedding_metrics import (
+from tests.scripts.embedding_metrics import (
     compute_all_metrics,
 )
 

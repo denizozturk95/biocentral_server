@@ -2,7 +2,7 @@
 
 from typing import List
 
-from tests.property.oracles.embedding_metrics import (
+from tests.scripts.embedding_metrics import (
     compute_all_metrics,
     format_metrics_table,
     write_metrics_csv,
