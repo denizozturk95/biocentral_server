@@ -236,7 +236,7 @@ def plot_uniref50_per_bin():
             ranking = (
                 bin_data.groupby("replacement_aa")[metric]
                 .mean()
-                .reindex([aa for aa in AA_ORDER if aa in bin_data["replacement_aa"].values])
+                .reindex(AA_ORDER)
             )
             ax.plot(
                 range(len(ranking)), ranking.values,
