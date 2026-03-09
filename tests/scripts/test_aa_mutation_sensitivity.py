@@ -11,7 +11,7 @@ import numpy as np
 from pathlib import Path
 from typing import Any, Dict, List, Set, Tuple
 
-from tests.property.oracles.embedding_metrics import compute_all_metrics
+from tests.scripts.embedding_metrics import compute_all_metrics
 from tests.scripts.conftest import AMINO_ACIDS
 
 MASKING_RATIOS = [0.0, 0.10, 0.25, 0.50, 0.75, 1.0]
