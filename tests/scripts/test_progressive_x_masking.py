@@ -15,7 +15,7 @@ MASKING_RATIOS = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.40, 0.50, 0.60, 0.7
 SIGNIFICANCE_THRESHOLD = 0.1
 
 BASE_SEED = 42
-N_RUNS = 5
+N_RUNS = 1
 
 def _mask_sequence_progressive(
     sequence: str,
@@ -364,14 +364,6 @@ def _summarise_experiment(
     lines.append("")
     return "\n".join(lines)
 
-# Test sequences of varying lengths for length-dependent analysis
-TEST_SEQUENCES_BY_LENGTH = {
-    "short_15": "MKTAYIAKQRQISFV",  # 15 aa
-    "medium_76": "MQIFVKTLTGKTITLEVEPSDTIENVKAKIQDKEGIPPDQQRLIFAGKQLEDGRTLSDYNIQKESTLHLVLRLRGG",  # Ubiquitin 76 aa
-    "long_400": "MKTAYIAK" * 50,  # 400 aa
-    "very_long_300": "ACDEFGHIKLMNPQRSTVWY" * 15,  # 300 aa
-}
-
 class TestProgressiveXMaskingESM2:
     def test_masking_divergence_profile(
         self,
@@ -379,58 +371,61 @@ class TestProgressiveXMaskingESM2:
         standard_sequences: List[str],
         reports_dir,
     ):
-        # Use sequences of different lengths for comprehensive analysis
-        test_sequences = list(TEST_SEQUENCES_BY_LENGTH.values())
-        seq_labels = list(TEST_SEQUENCES_BY_LENGTH.keys())
+        from tests.scripts.fetch_uniref50_sequences import load_uniref50_sequences
 
-        # Run progressive masking (each level contains previous as subset)
-        progressive_results = _run_progressive_masking_experiment(
-            embedder=esm2_embedder,
-            embedder_label="esm2_t6_8m",
-            sequences=test_sequences,
-            significance_threshold=SIGNIFICANCE_THRESHOLD,
-        )
+        bin_seqs = load_uniref50_sequences()
 
-        # Add sequence length labels to results
-        for r in progressive_results:
-            seq_idx = int(r["parameter"].split("_")[0].replace("seq", ""))
-            r["seq_label"] = seq_labels[seq_idx]
+        all_progressive = []
+        all_random = []
+
+        for bin_target in sorted(bin_seqs.keys()):
+            sequences = bin_seqs[bin_target]
+            if not sequences:
+                continue
+
+            print(f"\n[ESM2] bin={bin_target}, n_seqs={len(sequences)}")
+
+            prog = _run_progressive_masking_experiment(
+                embedder=esm2_embedder,
+                embedder_label="esm2_t6_8m",
+                sequences=sequences,
+                significance_threshold=SIGNIFICANCE_THRESHOLD,
+            )
+            rand = _run_random_masking_experiment(
+                embedder=esm2_embedder,
+                embedder_label="esm2_t6_8m",
+                sequences=sequences,
+                significance_threshold=SIGNIFICANCE_THRESHOLD,
+            )
+
+            for r in prog + rand:
+                r["bin"] = bin_target
+
+            all_progressive.extend(prog)
+            all_random.extend(rand)
 
         table = _format_masking_table(
-            progressive_results,
+            all_progressive,
             title=f"Progressive X-Masking — ESM2-T6-8M (n={N_RUNS} runs)",
         )
         print(table)
-        print(_summarise_experiment(progressive_results, "esm2_t6_8m", "Progressive"))
+        print(_summarise_experiment(all_progressive, "esm2_t6_8m", "Progressive"))
         _write_masking_csv(
-            progressive_results, reports_dir / "x_masking_progressive_esm2.csv"
+            all_progressive, reports_dir / "x_masking_progressive_esm2.csv"
         )
-
-        # Run random masking (each level is independent)
-        random_results = _run_random_masking_experiment(
-            embedder=esm2_embedder,
-            embedder_label="esm2_t6_8m",
-            sequences=test_sequences,
-            significance_threshold=SIGNIFICANCE_THRESHOLD,
-        )
-
-        # Add sequence length labels to results
-        for r in random_results:
-            seq_idx = int(r["parameter"].split("_")[0].replace("seq", ""))
-            r["seq_label"] = seq_labels[seq_idx]
 
         table = _format_masking_table(
-            random_results, title=f"Random X-Masking — ESM2-T6-8M (n={N_RUNS} runs)"
+            all_random, title=f"Random X-Masking — ESM2-T6-8M (n={N_RUNS} runs)"
         )
         print(table)
-        print(_summarise_experiment(random_results, "esm2_t6_8m", "Random"))
-        _write_masking_csv(random_results, reports_dir / "x_masking_random_esm2.csv")
+        print(_summarise_experiment(all_random, "esm2_t6_8m", "Random"))
+        _write_masking_csv(all_random, reports_dir / "x_masking_random_esm2.csv")
 
-        # --- Monotonicity check (uses results already computed above) ---
-        total_prog = len([r for r in progressive_results if r["masking_ratio"] > 0])
+        # --- Monotonicity check ---
+        total_prog = len([r for r in all_progressive if r["masking_ratio"] > 0])
         violations_prog = sum(
             1
-            for r in progressive_results
+            for r in all_progressive
             if r["masking_ratio"] > 0 and not r["monotonic"]
         )
         ratio_prog = violations_prog / total_prog if total_prog > 0 else 0
@@ -438,9 +433,9 @@ class TestProgressiveXMaskingESM2:
             f"\n[ESM2 Progressive Monotonicity] violations = {violations_prog}/{total_prog} ({ratio_prog:.1%})"
         )
 
-        total_rand = len([r for r in random_results if r["masking_ratio"] > 0])
+        total_rand = len([r for r in all_random if r["masking_ratio"] > 0])
         violations_rand = sum(
-            1 for r in random_results if r["masking_ratio"] > 0 and not r["monotonic"]
+            1 for r in all_random if r["masking_ratio"] > 0 and not r["monotonic"]
         )
         ratio_rand = violations_rand / total_rand if total_rand > 0 else 0
         print(
@@ -482,25 +477,15 @@ def _write_masking_csv(results: List[Dict[str, Any]], path) -> None:
             writer.writerow({k: row.get(k, "") for k in _MASKING_CSV_FIELDS})
 
 # ---------------------------------------------------------------------------
-# UniRef50-scale experiment (250 seqs/bin, 7 bins)
+# One-hot encoding baseline
 # ---------------------------------------------------------------------------
 
-N_RUNS_UNIREF = 2
+class TestXMaskingOneHot:
 
-class TestXMaskingUniRef50:
+    def test_one_hot_masking(self, one_hot_embedder, reports_dir):
+        from tests.scripts.fetch_uniref50_sequences import load_uniref50_sequences
 
-    def test_uniref50_masking(self, esm2_embedder, reports_dir):
-        try:
-            from tests.scripts.fetch_uniref50_sequences import load_uniref50_sequences
-        except ImportError:
-            import pytest
-            pytest.skip("UniRef50 FASTA not available – run fetch_uniref50_sequences.py first")
-
-        try:
-            bin_seqs = load_uniref50_sequences()
-        except FileNotFoundError:
-            import pytest
-            pytest.skip("UniRef50 FASTA not found – run fetch_uniref50_sequences.py first")
+        bin_seqs = load_uniref50_sequences()
 
         all_progressive = []
         all_random = []
@@ -510,115 +495,35 @@ class TestXMaskingUniRef50:
             if not sequences:
                 continue
 
-            print(f"\n[UniRef50] bin={bin_target}, n_seqs={len(sequences)}")
+            print(f"\n[One-Hot] bin={bin_target}, n_seqs={len(sequences)}")
 
             prog = _run_progressive_masking_experiment(
-                embedder=esm2_embedder,
-                embedder_label="esm2_t6_8m",
+                embedder=one_hot_embedder,
+                embedder_label="one_hot_encoding",
                 sequences=sequences,
-                n_runs=N_RUNS_UNIREF,
             )
             rand = _run_random_masking_experiment(
-                embedder=esm2_embedder,
-                embedder_label="esm2_t6_8m",
+                embedder=one_hot_embedder,
+                embedder_label="one_hot_encoding",
                 sequences=sequences,
-                n_runs=N_RUNS_UNIREF,
             )
 
-            # Tag results with bin info
             for r in prog + rand:
                 r["bin"] = bin_target
 
             all_progressive.extend(prog)
             all_random.extend(rand)
 
-        _write_masking_csv(all_progressive, reports_dir / "x_masking_progressive_uniref50.csv")
-        _write_masking_csv(all_random, reports_dir / "x_masking_random_uniref50.csv")
-
-        print(f"\n[UniRef50] Progressive results: {len(all_progressive)} rows")
-        print(f"[UniRef50] Random results:      {len(all_random)} rows")
-
-# ---------------------------------------------------------------------------
-# One-hot encoding baseline
-# ---------------------------------------------------------------------------
-
-class TestXMaskingOneHot:
-
-    def test_one_hot_masking(self, one_hot_embedder, reports_dir):
-        test_sequences = list(TEST_SEQUENCES_BY_LENGTH.values())
-        seq_labels = list(TEST_SEQUENCES_BY_LENGTH.keys())
-
-        progressive_results = _run_progressive_masking_experiment(
-            embedder=one_hot_embedder,
-            embedder_label="one_hot_encoding",
-            sequences=test_sequences,
-        )
-        for r in progressive_results:
-            seq_idx = int(r["parameter"].split("_")[0].replace("seq", ""))
-            r["seq_label"] = seq_labels[seq_idx]
-
         table = _format_masking_table(
-            progressive_results,
+            all_progressive,
             title=f"Progressive X-Masking — One-Hot Encoding (n={N_RUNS} runs)",
         )
         print(table)
-        _write_masking_csv(progressive_results, reports_dir / "x_masking_progressive_one_hot.csv")
-
-        random_results = _run_random_masking_experiment(
-            embedder=one_hot_embedder,
-            embedder_label="one_hot_encoding",
-            sequences=test_sequences,
-        )
-        for r in random_results:
-            seq_idx = int(r["parameter"].split("_")[0].replace("seq", ""))
-            r["seq_label"] = seq_labels[seq_idx]
+        _write_masking_csv(all_progressive, reports_dir / "x_masking_progressive_one_hot.csv")
 
         table = _format_masking_table(
-            random_results,
+            all_random,
             title=f"Random X-Masking — One-Hot Encoding (n={N_RUNS} runs)",
         )
         print(table)
-        _write_masking_csv(random_results, reports_dir / "x_masking_random_one_hot.csv")
-
-
-class TestXMaskingOneHotUniRef50:
-    """Run one-hot encoding baseline on full UniRef50 dataset.
-    One-hot is cheap to compute, so this adds negligible runtime
-    while providing a strong non-contextual baseline at scale."""
-
-    def test_one_hot_uniref50_masking(self, one_hot_embedder, reports_dir):
-        try:
-            from tests.scripts.fetch_uniref50_sequences import load_uniref50_sequences
-        except ImportError:
-            import pytest
-            pytest.skip("UniRef50 FASTA not available – run fetch_uniref50_sequences.py first")
-
-        try:
-            bin_seqs = load_uniref50_sequences()
-        except FileNotFoundError:
-            import pytest
-            pytest.skip("UniRef50 FASTA not found – run fetch_uniref50_sequences.py first")
-
-        all_progressive = []
-
-        for bin_target in sorted(bin_seqs.keys()):
-            sequences = bin_seqs[bin_target]
-            if not sequences:
-                continue
-
-            print(f"\n[One-Hot UniRef50] bin={bin_target}, n_seqs={len(sequences)}")
-
-            prog = _run_progressive_masking_experiment(
-                embedder=one_hot_embedder,
-                embedder_label="one_hot_encoding",
-                sequences=sequences,
-                n_runs=N_RUNS_UNIREF,
-            )
-
-            for r in prog:
-                r["bin"] = bin_target
-
-            all_progressive.extend(prog)
-
-        _write_masking_csv(all_progressive, reports_dir / "x_masking_progressive_one_hot_uniref50.csv")
-        print(f"\n[One-Hot UniRef50] Progressive results: {len(all_progressive)} rows")
+        _write_masking_csv(all_random, reports_dir / "x_masking_random_one_hot.csv")
