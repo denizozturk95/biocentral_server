@@ -21,7 +21,6 @@ LENGTH_BINS: List[Tuple[int, int, int]] = [
     (300, 270, 330),
     (400, 360, 440),
     (500, 450, 550),
-    (600, 540, 660),
 ]
 
 DEFAULT_SEQS_PER_BIN = 250
