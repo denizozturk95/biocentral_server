@@ -83,9 +83,13 @@ def plot_masking_results():
         if df is None:
             continue
 
-        # Assign each sequence to a length bin
-        seq_lengths = _infer_seq_lengths(df)
-        df["bin"] = df["seq_idx"].map(lambda idx: _assign_bin(seq_lengths.get(idx, 0)))
+        # Use existing bin column; fall back to assigning from sequence_length
+        if "bin" not in df.columns:
+            if "sequence_length" in df.columns:
+                df["bin"] = df["sequence_length"].map(_assign_bin)
+            else:
+                seq_lengths = _infer_seq_lengths(df)
+                df["bin"] = df["seq_idx"].map(lambda idx: _assign_bin(seq_lengths.get(idx, 0)))
         df = df.dropna(subset=["bin"])
         df["bin"] = df["bin"].astype(int)
 
@@ -142,9 +146,13 @@ def plot_masking_results_with_l2():
         if df is None:
             continue
 
-        # Assign each sequence to a length bin
-        seq_lengths = _infer_seq_lengths(df)
-        df["bin"] = df["seq_idx"].map(lambda idx: _assign_bin(seq_lengths.get(idx, 0)))
+        # Use existing bin column; fall back to assigning from sequence_length
+        if "bin" not in df.columns:
+            if "sequence_length" in df.columns:
+                df["bin"] = df["sequence_length"].map(_assign_bin)
+            else:
+                seq_lengths = _infer_seq_lengths(df)
+                df["bin"] = df["seq_idx"].map(lambda idx: _assign_bin(seq_lengths.get(idx, 0)))
         df = df.dropna(subset=["bin"])
         df["bin"] = df["bin"].astype(int)
 
