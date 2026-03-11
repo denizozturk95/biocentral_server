@@ -15,12 +15,12 @@ OUTPUT_FASTA = FIXTURES_DIR / "uniref50_sequences.fasta"
 # Length bins and tolerances
 LENGTH_BINS: List[Tuple[int, int, int]] = [
     # (target_length, min_length, max_length)
-    (50, 45, 55),
-    (100, 90, 110),
-    (200, 180, 220),
-    (300, 270, 330),
-    (400, 360, 440),
-    (500, 450, 550),
+    (50, 50, 50),
+    (100, 100, 100),
+    (200, 200, 200),
+    (300, 300, 300),
+    (400, 400, 400),
+    (500, 500, 500),
 ]
 
 DEFAULT_SEQS_PER_BIN = 250
