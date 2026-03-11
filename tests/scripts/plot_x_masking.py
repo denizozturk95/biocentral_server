@@ -8,6 +8,19 @@ from pathlib import Path
 
 REPORTS_DIR = Path(__file__).resolve().parent.parent / "reports"
 
+# Length bins matching fetch_uniref50_sequences.py
+LENGTH_BINS = [50, 100, 200, 300, 400, 500]
+_BIN_EDGES = [0] + [(a + b) // 2 for a, b in zip(LENGTH_BINS, LENGTH_BINS[1:])] + [float("inf")]
+
+
+def _assign_bin(length: int) -> int | None:
+    """Map a sequence length to the nearest LENGTH_BIN."""
+    for i, target in enumerate(LENGTH_BINS):
+        if _BIN_EDGES[i] <= length < _BIN_EDGES[i + 1]:
+            return target
+    return None
+
+
 # Colors for different sequence lengths
 COLORS = [
     "#2E86AB",
@@ -70,19 +83,30 @@ def plot_masking_results():
         if df is None:
             continue
 
+        # Assign each sequence to a length bin
         seq_lengths = _infer_seq_lengths(df)
+        df["bin"] = df["seq_idx"].map(lambda idx: _assign_bin(seq_lengths.get(idx, 0)))
+        df = df.dropna(subset=["bin"])
+        df["bin"] = df["bin"].astype(int)
+
         _add_region_shading(ax)
 
-        for i, seq_idx in enumerate(sorted(df["seq_idx"].unique())):
-            seq_data = df[df["seq_idx"] == seq_idx].sort_values("masking_ratio")
-            seq_len = seq_lengths.get(seq_idx, "?")
+        for i, bin_val in enumerate(sorted(df["bin"].unique())):
+            bin_data = df[df["bin"] == bin_val]
+            agg = bin_data.groupby("masking_ratio").agg(
+                cos_mean=("cosine_similarity", "mean"),
+                cos_std=("cosine_similarity", "std"),
+            ).reset_index()
+            x = agg["masking_ratio"] * 100
+            color = COLORS[i % len(COLORS)]
             ax.plot(
-                seq_data["masking_ratio"] * 100,
-                seq_data["cosine_similarity"],
+                x, agg["cos_mean"],
                 marker="o", markersize=5, linewidth=2,
-                label=f"len={seq_len}",
-                color=COLORS[i % len(COLORS)], alpha=0.9,
+                label=f"bin={bin_val}",
+                color=color, alpha=0.9,
             )
+            ax.fill_between(x, agg["cos_mean"] - agg["cos_std"],
+                            agg["cos_mean"] + agg["cos_std"], alpha=0.12, color=color)
 
         ax.axhline(y=0.9, color="gray", linestyle="--", linewidth=1.5, alpha=0.7)
         ax.text(102, 0.9, "r*", fontsize=10, va="center", color="gray", fontweight="bold")
@@ -118,22 +142,34 @@ def plot_masking_results_with_l2():
         if df is None:
             continue
 
+        # Assign each sequence to a length bin
         seq_lengths = _infer_seq_lengths(df)
+        df["bin"] = df["seq_idx"].map(lambda idx: _assign_bin(seq_lengths.get(idx, 0)))
+        df = df.dropna(subset=["bin"])
+        df["bin"] = df["bin"].astype(int)
+
+        bins = sorted(df["bin"].unique())
 
         # --- Top row: cosine similarity ---
         ax_cos = axes[0, col]
         _add_region_shading(ax_cos)
 
-        for i, seq_idx in enumerate(sorted(df["seq_idx"].unique())):
-            seq_data = df[df["seq_idx"] == seq_idx].sort_values("masking_ratio")
-            seq_len = seq_lengths.get(seq_idx, "?")
+        for i, bin_val in enumerate(bins):
+            bin_data = df[df["bin"] == bin_val]
+            agg = bin_data.groupby("masking_ratio").agg(
+                cos_mean=("cosine_similarity", "mean"),
+                cos_std=("cosine_similarity", "std"),
+            ).reset_index()
+            x = agg["masking_ratio"] * 100
+            color = COLORS[i % len(COLORS)]
             ax_cos.plot(
-                seq_data["masking_ratio"] * 100,
-                seq_data["cosine_similarity"],
+                x, agg["cos_mean"],
                 marker="o", markersize=4, linewidth=2,
-                label=f"len={seq_len}",
-                color=COLORS[i % len(COLORS)], alpha=0.9,
+                label=f"bin={bin_val}",
+                color=color, alpha=0.9,
             )
+            ax_cos.fill_between(x, agg["cos_mean"] - agg["cos_std"],
+                                agg["cos_mean"] + agg["cos_std"], alpha=0.12, color=color)
 
         ax_cos.axhline(y=0.9, color="gray", linestyle="--", linewidth=1.5, alpha=0.7)
         ax_cos.text(102, 0.9, "r*", fontsize=10, va="center", color="gray", fontweight="bold")
@@ -153,16 +189,22 @@ def plot_masking_results_with_l2():
         ax_l2 = axes[1, col]
         _add_region_shading(ax_l2)
 
-        for i, seq_idx in enumerate(sorted(df["seq_idx"].unique())):
-            seq_data = df[df["seq_idx"] == seq_idx].sort_values("masking_ratio")
-            seq_len = seq_lengths.get(seq_idx, "?")
+        for i, bin_val in enumerate(bins):
+            bin_data = df[df["bin"] == bin_val]
+            agg = bin_data.groupby("masking_ratio").agg(
+                l2_mean=("l2_distance", "mean"),
+                l2_std=("l2_distance", "std"),
+            ).reset_index()
+            x = agg["masking_ratio"] * 100
+            color = COLORS[i % len(COLORS)]
             ax_l2.plot(
-                seq_data["masking_ratio"] * 100,
-                seq_data["l2_distance"],
+                x, agg["l2_mean"],
                 marker="s", markersize=4, linewidth=2,
-                label=f"len={seq_len}",
-                color=COLORS[i % len(COLORS)], alpha=0.9,
+                label=f"bin={bin_val}",
+                color=color, alpha=0.9,
             )
+            ax_l2.fill_between(x, agg["l2_mean"] - agg["l2_std"],
+                               agg["l2_mean"] + agg["l2_std"], alpha=0.12, color=color)
 
         _add_region_labels(ax_l2, ax_l2.get_ylim()[1] * 0.97 if ax_l2.get_ylim()[1] > 0 else 0.97)
 
