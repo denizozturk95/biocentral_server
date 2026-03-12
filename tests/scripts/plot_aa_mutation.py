@@ -205,21 +205,24 @@ def plot_uniref50_heatmap():
     plt.close()
 
 
-def plot_uniref50_per_bin():
-    """Per-bin (per-length) mutation sensitivity: one line per length bin at ~10% mutation."""
-    df = _load_mutation_data("aa_mutation_sensitivity_uniref50.csv")
-    if df is None:
-        return
-
-    if "bin" not in df.columns:
-        print("No 'bin' column in UniRef50 mutation data")
-        return
-
+def _plot_uniref50_per_bin_at_ratio(
+    df: pd.DataFrame,
+    target_ratio: float,
+    available_aas: list,
+    suffix: str,
+):
+    """Helper: per-bin mutation sensitivity at a single masking ratio."""
     bins = sorted(df["bin"].dropna().unique())
     colors_bin = ["#2E86AB", "#E94F37", "#4CAF50", "#9C27B0", "#FF9800", "#00BCD4", "#795548"]
 
-    # Use only the AAs present in the data, ordered by AA_ORDER
-    available_aas = [aa for aa in AA_ORDER if aa in df["replacement_aa"].unique()]
+    # Tolerance for matching the target ratio
+    tol = 0.005 if target_ratio <= 0.05 else 0.02
+    subset = df[df["masking_ratio"].between(target_ratio - tol, target_ratio + tol)]
+    if subset.empty:
+        print(f"No data near masking_ratio={target_ratio}")
+        return
+
+    pct_label = f"{int(target_ratio * 100)}%"
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
@@ -227,11 +230,6 @@ def plot_uniref50_per_bin():
         (axes[0], "cosine_distance", "Cosine Distance"),
         (axes[1], "l2_distance", "L2 Distance"),
     ]:
-        # Filter to ~10% mutation rate
-        subset = df[df["masking_ratio"].between(0.09, 0.11)]
-        if subset.empty:
-            subset = df[df["masking_ratio"].between(0.04, 0.16)]
-
         for i, bin_val in enumerate(bins):
             bin_data = subset[subset["bin"] == bin_val]
             if bin_data.empty:
@@ -252,13 +250,29 @@ def plot_uniref50_per_bin():
         ax.set_xticklabels(available_aas, fontsize=10, fontfamily="monospace")
         ax.set_ylabel(ylabel, fontsize=11)
         ax.set_xlabel("Replacement Amino Acid", fontsize=11)
-        ax.set_title(f"Per-Bin Mutation Sensitivity at ~10% — {ylabel}", fontsize=12, fontweight="bold")
+        ax.set_title(f"Per-Bin Mutation Sensitivity at ~{pct_label} — {ylabel}", fontsize=12, fontweight="bold")
         ax.legend(fontsize=8)
         ax.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    _save_plot("aa_mutation_per_bin_uniref50")
+    _save_plot(f"aa_mutation_per_bin_uniref50_{suffix}")
     plt.close()
+
+
+def plot_uniref50_per_bin():
+    """Per-bin (per-length) mutation sensitivity at 2%, 10%, and 70% mutation rates."""
+    df = _load_mutation_data("aa_mutation_sensitivity_uniref50.csv")
+    if df is None:
+        return
+
+    if "bin" not in df.columns:
+        print("No 'bin' column in UniRef50 mutation data")
+        return
+
+    available_aas = [aa for aa in AA_ORDER if aa in df["replacement_aa"].unique()]
+
+    for ratio, suffix in [(0.02, "2pct"), (0.10, "10pct"), (0.75, "70pct")]:
+        _plot_uniref50_per_bin_at_ratio(df, ratio, available_aas, suffix)
 
 
 def plot_mutation_vs_xmasking_comparison():

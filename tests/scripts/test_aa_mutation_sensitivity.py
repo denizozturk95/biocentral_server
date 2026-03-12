@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Set, Tuple
 from tests.scripts.embedding_metrics import compute_all_metrics
 from tests.scripts.conftest import AMINO_ACIDS
 
-MASKING_RATIOS = [0.0, 0.10, 0.20, 0.25, 0.30, 0.40, 0.50, 0.75, 1.0]
+MASKING_RATIOS = [0.0, 0.02, 0.10, 0.20, 0.25, 0.30, 0.40, 0.50, 0.75, 1.0]
 
 BASE_SEED = 42
 N_RUNS = 1
