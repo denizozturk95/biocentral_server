@@ -111,6 +111,80 @@ def plot_line_overlay():
     _save_plot("aa_mutation_line_overlay")
     plt.close()
 
+
+def plot_line_overlay_per_aa():
+    """One plot per amino acid: per-bin mutation curves + X-masking reference."""
+    df_mut = _load_mutation_data()
+    if df_mut is None:
+        return
+
+    # Load X-masking reference once
+    x_agg = {}
+    x_path = REPORTS_DIR / "x_masking_progressive_esm2.csv"
+    if x_path.exists():
+        df_x = pd.read_csv(x_path)
+        df_x["masking_ratio_parsed"] = (
+            df_x["parameter"].str.extract(r"mask(\d+)%").astype(float) / 100
+        )
+        for metric in ["cosine_distance", "l2_distance"]:
+            x_agg[metric] = df_x.groupby("masking_ratio_parsed")[metric].mean().reset_index()
+
+    has_bins = "bin" in df_mut.columns
+    bins = sorted(df_mut["bin"].dropna().unique()) if has_bins else [None]
+    colors_bin = ["#2E86AB", "#E94F37", "#4CAF50", "#9C27B0", "#FF9800", "#00BCD4", "#795548"]
+
+    for aa in AA_ORDER:
+        aa_data = df_mut[df_mut["replacement_aa"] == aa]
+        if aa_data.empty:
+            continue
+
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+        for ax, metric, ylabel in [
+            (axes[0], "cosine_distance", "Cosine Distance"),
+            (axes[1], "l2_distance", "L2 Distance"),
+        ]:
+            if has_bins:
+                for i, bin_val in enumerate(bins):
+                    bin_data = aa_data[aa_data["bin"] == bin_val]
+                    if bin_data.empty:
+                        continue
+                    agg = bin_data.groupby("masking_ratio")[metric].mean().reset_index()
+                    ax.plot(
+                        agg["masking_ratio"] * 100, agg[metric],
+                        marker="o", markersize=3, linewidth=1.5,
+                        label=f"len={int(bin_val)}", color=colors_bin[i % len(colors_bin)],
+                        alpha=0.8,
+                    )
+            else:
+                agg = aa_data.groupby("masking_ratio")[metric].mean().reset_index()
+                ax.plot(
+                    agg["masking_ratio"] * 100, agg[metric],
+                    marker="o", markersize=4, linewidth=2, color="#E94F37",
+                    label=f"AA={aa}",
+                )
+
+            if metric in x_agg:
+                agg_x = x_agg[metric]
+                ax.plot(
+                    agg_x["masking_ratio_parsed"] * 100, agg_x[metric],
+                    linewidth=2.5, color="black", linestyle="--", label="X-masking",
+                    alpha=0.9,
+                )
+
+            ax.set_xlabel("Mutation Rate (%)", fontsize=11)
+            ax.set_ylabel(ylabel, fontsize=11)
+            ax.set_title(f"Mutation to {aa} — {ylabel}", fontsize=12, fontweight="bold")
+            ax.legend(fontsize=8)
+            ax.grid(True, alpha=0.3)
+            ax.set_xticks(np.arange(0, 101, 10))
+
+        plt.suptitle(f"AA Mutation Sensitivity — Replace with {aa}", fontsize=14, fontweight="bold", y=1.02)
+        plt.tight_layout()
+        _save_plot(f"aa_mutation_line_{aa}")
+        plt.close()
+
+
 def plot_bar_ranking():
     df = _load_mutation_data()
     if df is None:
@@ -302,6 +376,7 @@ def _save_plot(name: str):
 if __name__ == "__main__":
     plot_heatmap()
     plot_line_overlay()
+    plot_line_overlay_per_aa()
     plot_bar_ranking()
     plot_uniref50_per_bin()
     plot_mutation_vs_xmasking_comparison()
