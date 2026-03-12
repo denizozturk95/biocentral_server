@@ -276,7 +276,7 @@ jobs:
         timeout-minutes: 15
 
       - name: Run script experiments
-        run: uv run pytest tests/scripts/test_progressive_x_masking.py tests/scripts/test_random_baseline.py -v -s --durations=0 -W "ignore::DeprecationWarning" -W "ignore::UserWarning" -W "ignore::FutureWarning"
+        run: uv run pytest tests/scripts/test_aa_mutation_sensitivity.py tests/scripts/test_random_baseline.py -v -s --durations=0 -W "ignore::DeprecationWarning" -W "ignore::UserWarning" -W "ignore::FutureWarning"
 
       - name: Generate plots
         if: always()
