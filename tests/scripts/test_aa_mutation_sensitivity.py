@@ -238,6 +238,5 @@ class TestAAMutationSensitivity:
         )
         print(summary)
 
-        _write_mutation_csv(all_results, reports_dir / "aa_mutation_sensitivity_esm2.csv")
         _write_mutation_csv(all_results, reports_dir / "aa_mutation_sensitivity_uniref50.csv")
-        print(f"Wrote {len(all_results)} rows to aa_mutation_sensitivity_esm2.csv and aa_mutation_sensitivity_uniref50.csv")
+        print(f"Wrote {len(all_results)} rows to aa_mutation_sensitivity_uniref50.csv")

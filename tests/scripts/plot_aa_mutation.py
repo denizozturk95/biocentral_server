@@ -15,7 +15,7 @@ AA_ORDER = list("GAVLIMFWPSTCYNQHKRDE")
 # Polar:       S T C Y N Q
 # Charged:     H K R D E
 
-def _load_mutation_data(filename: str = "aa_mutation_sensitivity_esm2.csv") -> pd.DataFrame | None:
+def _load_mutation_data(filename: str = "aa_mutation_sensitivity_uniref50.csv") -> pd.DataFrame | None:
     path = REPORTS_DIR / filename
     if not path.exists():
         print(f"File not found: {path}")
@@ -165,46 +165,6 @@ def plot_bar_ranking():
     _save_plot("aa_mutation_bar_ranking")
     plt.close()
 
-def plot_uniref50_heatmap():
-    """Heatmap for UniRef50 AA mutation data, aggregated across all bins."""
-    df = _load_mutation_data("aa_mutation_sensitivity_uniref50.csv")
-    if df is None:
-        return
-
-    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
-
-    for ax, metric, label in [
-        (axes[0], "cosine_distance", "Cosine Distance"),
-        (axes[1], "l2_distance", "L2 Distance"),
-    ]:
-        pivot = df.pivot_table(
-            values=metric,
-            index="replacement_aa",
-            columns="masking_ratio",
-            aggfunc="mean",
-        )
-        ordered_aas = [aa for aa in AA_ORDER if aa in pivot.index]
-        pivot = pivot.reindex(ordered_aas)
-
-        im = ax.imshow(pivot.values, aspect="auto", cmap="YlOrRd", interpolation="nearest")
-        plt.colorbar(im, ax=ax, label=label)
-
-        ax.set_xticks(range(len(pivot.columns)))
-        ax.set_xticklabels([f"{int(c * 100)}%" for c in pivot.columns], rotation=45, ha="right", fontsize=8)
-        ax.set_yticks(range(len(pivot.index)))
-        ax.set_yticklabels(pivot.index, fontsize=10, fontfamily="monospace")
-
-        ax.set_xlabel("Mutation Rate", fontsize=11)
-        ax.set_ylabel("Replacement Amino Acid", fontsize=11)
-        ax.set_title(f"Mutation Sensitivity — {label}", fontsize=12, fontweight="bold")
-
-    plt.suptitle("AA Mutation Sensitivity — UniRef50 (ESM2-T6-8M, 250 seqs/bin)",
-                 fontsize=14, fontweight="bold", y=1.02)
-    plt.tight_layout()
-    _save_plot("aa_mutation_heatmap_uniref50")
-    plt.close()
-
-
 def _plot_uniref50_per_bin_at_ratio(
     df: pd.DataFrame,
     target_ratio: float,
@@ -343,6 +303,5 @@ if __name__ == "__main__":
     plot_heatmap()
     plot_line_overlay()
     plot_bar_ranking()
-    plot_uniref50_heatmap()
     plot_uniref50_per_bin()
     plot_mutation_vs_xmasking_comparison()
