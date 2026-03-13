@@ -239,4 +239,12 @@ class TestAAMutationSensitivity:
         print(summary)
 
         _write_mutation_csv(all_results, reports_dir / "aa_mutation_sensitivity_uniref50.csv")
+        for aa in AMINO_ACIDS:
+            aa_results = [r for r in all_results if r["replacement_aa"] == aa]
+            if aa_results:
+                _write_mutation_csv(
+                    aa_results,
+                    reports_dir / "aa_mutation" / f"aa_mutation_{aa}.csv",
+                )
+        print(f"Wrote per-AA CSVs to {reports_dir / 'aa_mutation' / ''}")
         print(f"Wrote {len(all_results)} rows to aa_mutation_sensitivity_uniref50.csv")
