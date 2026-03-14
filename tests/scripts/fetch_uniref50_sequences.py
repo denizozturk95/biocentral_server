@@ -23,8 +23,7 @@ LENGTH_BINS: List[Tuple[int, int, int]] = [
     (500, 500, 500),
 ]
 
-DEFAULT_SEQS_PER_BIN = 250
-
+DEFAULT_SEQS_PER_BIN = 400
 UNIREF_SEARCH_URL = "https://rest.uniprot.org/uniref/search"
 
 AMINO_ACIDS = set("ACDEFGHIKLMNPQRSTVWY")
