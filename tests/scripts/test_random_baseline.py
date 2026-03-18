@@ -47,13 +47,13 @@ class TestXMaskingRandomSequences:
 
             prog = _run_progressive_masking_experiment(
                 embedder=esm2_embedder,
-                embedder_label="esm2_t6_8m",
+                embedder_label="esm2_t12_35m",
                 sequences=sequences,
                 n_runs=2,
             )
             rand = _run_random_masking_experiment(
                 embedder=esm2_embedder,
-                embedder_label="esm2_t6_8m",
+                embedder_label="esm2_t12_35m",
                 sequences=sequences,
                 n_runs=2,
             )

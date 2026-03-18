@@ -57,7 +57,7 @@ def plot_heatmap():
         ax.set_ylabel("Replacement Amino Acid", fontsize=11)
         ax.set_title(f"Mutation Sensitivity — {label}", fontsize=12, fontweight="bold")
 
-    plt.suptitle("AA Mutation Sensitivity — ESM2-T6-8M", fontsize=14, fontweight="bold", y=1.02)
+    plt.suptitle("AA Mutation Sensitivity — ESM2-T12-35M", fontsize=14, fontweight="bold", y=1.02)
     plt.tight_layout()
     _save_plot("aa_mutation_heatmap")
     plt.close()
@@ -309,6 +309,200 @@ def plot_uniref50_per_bin():
         _plot_uniref50_per_bin_at_ratio(df, ratio, available_aas, suffix)
 
 
+def plot_uniref50_per_bin_mean_map():
+    """Create readable per-bin mean-distance maps.
+
+    For each metric, saves a 2-panel figure:
+    - Left: absolute mean distances (AAs ranked by global sensitivity)
+    - Right: row-wise z-score map to show per-AA bin patterns clearly
+    """
+    df = _load_mutation_data("aa_mutation_sensitivity_uniref50.csv")
+    if df is None:
+        return
+
+    if "bin" not in df.columns:
+        print("No 'bin' column in UniRef50 mutation data")
+        return
+
+    grouped = (
+        df.groupby(["bin", "replacement_aa"])[["cosine_distance", "l2_distance"]]
+        .mean()
+        .reset_index()
+    )
+    grouped["mean_distance"] = grouped[["cosine_distance", "l2_distance"]].mean(axis=1)
+
+    available_aas = [aa for aa in AA_ORDER if aa in grouped["replacement_aa"].unique()]
+    bins = sorted(grouped["bin"].dropna().unique())
+
+    metrics = [
+        ("cosine_distance", "Cosine Distance", "YlOrRd"),
+        ("l2_distance", "L2 Distance", "YlGnBu"),
+        ("mean_distance", "Mean Distance", "magma"),
+    ]
+
+    for metric, label, cmap in metrics:
+        pivot = grouped.pivot_table(
+            values=metric,
+            index="replacement_aa",
+            columns="bin",
+            aggfunc="mean",
+        )
+        pivot = pivot.reindex(index=available_aas, columns=bins)
+
+        # Rank AAs by global mean so important rows are always near the top.
+        aa_rank = pivot.mean(axis=1).sort_values(ascending=False).index
+        pivot_ranked = pivot.reindex(aa_rank)
+
+        row_mean = pivot_ranked.mean(axis=1)
+        row_std = pivot_ranked.std(axis=1).replace(0, np.nan)
+        pivot_z = pivot_ranked.sub(row_mean, axis=0).div(row_std, axis=0).fillna(0.0)
+
+        fig, axes = plt.subplots(1, 2, figsize=(18, 9), gridspec_kw={"width_ratios": [1.25, 1]})
+
+        flat_vals = pivot_ranked.values[np.isfinite(pivot_ranked.values)]
+        if flat_vals.size > 0:
+            vmin = np.quantile(flat_vals, 0.05)
+            vmax = np.quantile(flat_vals, 0.95)
+        else:
+            vmin, vmax = None, None
+
+        im_abs = axes[0].imshow(
+            pivot_ranked.values,
+            aspect="auto",
+            cmap=cmap,
+            interpolation="nearest",
+            vmin=vmin,
+            vmax=vmax,
+        )
+        plt.colorbar(im_abs, ax=axes[0], label=f"{label} (mean)")
+
+        im_z = axes[1].imshow(
+            pivot_z.values,
+            aspect="auto",
+            cmap="RdBu_r",
+            interpolation="nearest",
+            vmin=-2,
+            vmax=2,
+        )
+        plt.colorbar(im_z, ax=axes[1], label="Row z-score")
+
+        for i, ax in enumerate(axes):
+            ax.set_yticks(range(len(pivot_ranked.index)))
+            ax.set_yticklabels(pivot_ranked.index, fontsize=10, fontfamily="monospace")
+            step = max(1, len(pivot_ranked.columns) // 12)
+            tick_idx = list(range(0, len(pivot_ranked.columns), step))
+            ax.set_xticks(tick_idx)
+            ax.set_xticklabels([str(int(pivot_ranked.columns[j])) for j in tick_idx], fontsize=9)
+            ax.set_xlabel("Sequence Length Bin", fontsize=11)
+            ax.set_ylabel("Replacement Amino Acid", fontsize=11)
+            ax.grid(False)
+
+            # Value labels help readability when the matrix is not too dense.
+            if i == 0 and pivot_ranked.shape[0] * pivot_ranked.shape[1] <= 200:
+                for r in range(pivot_ranked.shape[0]):
+                    for c in range(pivot_ranked.shape[1]):
+                        val = pivot_ranked.iat[r, c]
+                        if pd.notna(val):
+                            ax.text(c, r, f"{val:.3f}", ha="center", va="center", fontsize=6, color="black")
+
+        axes[0].set_title(f"Per-Bin Mutation Sensitivity ({label})\nAbsolute mean", fontsize=12, fontweight="bold")
+        axes[1].set_title("Relative bin effect per AA\n(row-wise z-score)", fontsize=12, fontweight="bold")
+
+        plt.suptitle(f"UniRef50 Per-Bin Mean Distance Map - {label}", fontsize=14, fontweight="bold", y=0.99)
+        plt.tight_layout()
+        _save_plot(f"aa_mutation_per_bin_mean_map_{metric}")
+        plt.close()
+
+
+def plot_uniref50_per_bin_mean_profiles(top_n: int = 8):
+    """Non-heatmap view of per-bin mean mutation sensitivity.
+
+    For each metric:
+    - Left panel: line profiles across bins for top-N most sensitive AAs.
+    - Right panel: per-bin population summary across all AAs (mean, std, min-max).
+    """
+    df = _load_mutation_data("aa_mutation_sensitivity_uniref50.csv")
+    if df is None:
+        return
+
+    if "bin" not in df.columns:
+        print("No 'bin' column in UniRef50 mutation data")
+        return
+
+    grouped = (
+        df.groupby(["bin", "replacement_aa"])[["cosine_distance", "l2_distance"]]
+        .mean()
+        .reset_index()
+    )
+    grouped["mean_distance"] = grouped[["cosine_distance", "l2_distance"]].mean(axis=1)
+
+    metrics = [
+        ("cosine_distance", "Cosine Distance", "#E94F37"),
+        ("l2_distance", "L2 Distance", "#2E86AB"),
+        ("mean_distance", "Mean Distance", "#5D3A9B"),
+    ]
+
+    for metric, label, accent in metrics:
+        pivot = grouped.pivot_table(
+            values=metric,
+            index="replacement_aa",
+            columns="bin",
+            aggfunc="mean",
+        )
+        pivot = pivot.reindex(columns=sorted(pivot.columns))
+
+        aa_order = pivot.mean(axis=1).sort_values(ascending=False).index
+        top_aas = aa_order[: min(top_n, len(aa_order))]
+
+        fig, axes = plt.subplots(1, 2, figsize=(16, 6.5), gridspec_kw={"width_ratios": [1.6, 1]})
+
+        cmap = matplotlib.colormaps.get_cmap("tab10")
+        for i, aa in enumerate(top_aas):
+            y = pivot.loc[aa]
+            axes[0].plot(
+                y.index,
+                y.values,
+                marker="o",
+                markersize=3.5,
+                linewidth=1.8,
+                alpha=0.9,
+                color=cmap(i % 10),
+                label=aa,
+            )
+
+        axes[0].set_title(
+            f"Top {len(top_aas)} AA Profiles Across Length Bins - {label}",
+            fontsize=12,
+            fontweight="bold",
+        )
+        axes[0].set_xlabel("Sequence Length Bin", fontsize=11)
+        axes[0].set_ylabel(f"{label} (mean)", fontsize=11)
+        axes[0].grid(True, alpha=0.25)
+        axes[0].legend(title="AA", ncol=2, fontsize=8, title_fontsize=9, loc="upper left")
+
+        per_bin = grouped.groupby("bin")[metric].agg(["mean", "std", "min", "max"]).reset_index()
+        x = per_bin["bin"].values
+        mean_y = per_bin["mean"].values
+        std_y = per_bin["std"].fillna(0.0).values
+        min_y = per_bin["min"].values
+        max_y = per_bin["max"].values
+
+        axes[1].fill_between(x, min_y, max_y, color=accent, alpha=0.15, label="AA range (min-max)")
+        axes[1].fill_between(x, mean_y - std_y, mean_y + std_y, color=accent, alpha=0.25, label="mean ± std")
+        axes[1].plot(x, mean_y, color=accent, linewidth=2.4, marker="o", markersize=4, label="mean")
+
+        axes[1].set_title("Per-Bin Summary Across All AAs", fontsize=12, fontweight="bold")
+        axes[1].set_xlabel("Sequence Length Bin", fontsize=11)
+        axes[1].set_ylabel(label, fontsize=11)
+        axes[1].grid(True, alpha=0.25)
+        axes[1].legend(fontsize=8)
+
+        plt.suptitle(f"UniRef50 Per-Bin Mutation Sensitivity (Non-Heatmap) - {label}", fontsize=14, fontweight="bold")
+        plt.tight_layout()
+        _save_plot(f"aa_mutation_per_bin_mean_profiles_{metric}")
+        plt.close()
+
+
 def plot_mutation_vs_xmasking_comparison():
     """Compare AA mutation distances to X-masking reference across masking ratios.
 
@@ -367,11 +561,8 @@ def plot_mutation_vs_xmasking_comparison():
 def _save_plot(name: str):
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     png_path = REPORTS_DIR / f"{name}.png"
-    pdf_path = REPORTS_DIR / f"{name}.pdf"
     plt.savefig(png_path, dpi=150, bbox_inches="tight")
-    plt.savefig(pdf_path, bbox_inches="tight")
     print(f"Plot saved to: {png_path}")
-    print(f"PDF saved to:  {pdf_path}")
 
 if __name__ == "__main__":
     plot_heatmap()
@@ -379,4 +570,6 @@ if __name__ == "__main__":
     plot_line_overlay_per_aa()
     plot_bar_ranking()
     plot_uniref50_per_bin()
+    plot_uniref50_per_bin_mean_map()
+    plot_uniref50_per_bin_mean_profiles()
     plot_mutation_vs_xmasking_comparison()

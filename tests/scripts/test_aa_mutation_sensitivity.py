@@ -222,7 +222,7 @@ class TestAAMutationSensitivity:
 
             results = _run_mutation_experiment(
                 embedder=esm2_embedder,
-                embedder_label="esm2_t6_8m",
+                embedder_label="esm2_t12_35m",
                 sequences=sequences,
                 replacement_aas=AMINO_ACIDS,
                 n_runs=1,
@@ -234,7 +234,7 @@ class TestAAMutationSensitivity:
             all_results.extend(results)
 
         summary = _format_mutation_summary(
-            all_results, title="AA Mutation Sensitivity — ESM2-T6-8M (UniRef50)"
+            all_results, title="AA Mutation Sensitivity — ESM2-T12-35M (UniRef50)"
         )
         print(summary)
 

@@ -22,14 +22,14 @@ def esm2_embedder():
         from biotrainer.embedders import get_embedding_service
 
         svc = get_embedding_service(
-            embedder_name="facebook/esm2_t6_8M_UR50D",
+            embedder_name="facebook/esm2_t12_35M_UR50D",
             use_half_precision=False,
             custom_tokenizer_config=None,
             device=torch.device("cpu"),
         )
         return _ESM2Wrapper(svc)
     except Exception as exc:
-        pytest.skip(f"ESM2-T6-8M unavailable: {exc}")
+        pytest.skip(f"ESM2-T12-35M unavailable: {exc}")
 
 @pytest.fixture(scope="session")
 def one_hot_embedder():
